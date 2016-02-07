@@ -1,0 +1,18 @@
+node switzerland
+node serbia
+node sri_lanka
+node england
+node china
+node america
+node turkey
+node india
+node bangladesh
+node russia
+node japan
+dir-arc turkey serbia 5756
+dir-arc china india 2324
+dir-arc bangladesh india 100
+undir-arc bangladesh india 353
+undir-arc bangladesh serbia 7500
+undir-arc china japan 343
+undir-arc russia china 2000
