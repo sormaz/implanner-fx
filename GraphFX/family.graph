@@ -1,0 +1,13 @@
+node farah_nasreen_ahmed
+node saif_ahmed
+node nazma_huq
+node arif_ahmed
+node nasir_uddin_ahmed
+node shaekh_ahmed
+dir-arc nazma_huq arif_ahmed mother
+dir-arc arif_ahmed nasir_uddin_ahmed son
+undir-arc nazma_huq nasir_uddin_ahmed spouse
+undir-arc saif_ahmed arif_ahmed sibling
+undir-arc shaekh_ahmed farah_nasreen_ahmed siblings
+undir-arc arif_ahmed farah_nasreen_ahmed sibling
+undir-arc shaekh_ahmed saif_ahmed siblings
