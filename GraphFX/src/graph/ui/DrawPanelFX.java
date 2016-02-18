@@ -113,19 +113,8 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 	@Override
 	public void nodeAdded(Node aNode) {
 		// TODO Auto-generated method stub
-		
-		GraphicsContext gc = getGraphicsContext2D();
-		Random randNumber = new Random();
-		int xCoordinate, yCoordinate; 
-		
-		int minX = 0;
-		int minY = 0;
-		int maxX = (int) gc.getCanvas().getWidth();
-		int maxY = (int) gc.getCanvas().getHeight();	
-		xCoordinate = minX + randNumber.nextInt(maxX - minX);
-		yCoordinate = minY + randNumber.nextInt(maxY - minY);
-		
-		selectables.put(aNode, new Point2D(xCoordinate, yCoordinate));
+				
+		selectables.put(aNode, getRandCoord(aNode));
 		draw();
 	}
 
@@ -172,23 +161,10 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 		// TODO Auto-generated method stub
 		
 		selectables.clear();
-		GraphicsContext gc = getGraphicsContext2D();
-		
-		Random randNumber = new Random();
-		int xCoordinate, yCoordinate; 
-		
-		int minX = 0;
-		int minY = 0;
-		int maxX = (int)gc.getCanvas().getWidth();;
-		int maxY = (int)gc.getCanvas().getHeight();	
-		
-		for (Node aNode : myGraph.getNodes()) {
-
-			xCoordinate = minX + randNumber.nextInt(maxX - minX);
-			yCoordinate = minY + randNumber.nextInt(maxY - minY);
 			
+		for (Node aNode : myGraph.getNodes()) {		
 			selectables.put
-			(aNode, new Point2D(xCoordinate, yCoordinate));
+			(aNode, getRandCoord(aNode));
 		}
 		
 		draw();
@@ -243,6 +219,31 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 		}
 			
 	}
+	
+	/**
+	 * Generate random coordinates for node
+	 * @param aNode
+	 * @return
+	 */
+	public Point2D getRandCoord(Node aNode) {
+		// TODO Auto-generated method stub
+		
+		GraphicsContext gc = getGraphicsContext2D();
+		Random randNumber = new Random();
+		int xCoordinate, yCoordinate; 
+
+		int marginPercent = 10;
+		int minX = (int) gc.getCanvas().getWidth() * (marginPercent) / 100;
+		int minY = (int) gc.getCanvas().getHeight()* (marginPercent) / 100;
+		int maxX = (int) gc.getCanvas().getWidth() * (100 - marginPercent) / 100;
+		int maxY = (int) gc.getCanvas().getHeight()* (100 - marginPercent) / 100;
+
+		xCoordinate = minX + randNumber.nextInt(maxX - minX);
+		yCoordinate = minY + randNumber.nextInt(maxY - minY);
+		
+		return new Point2D(xCoordinate,yCoordinate);
+	}
+	
 	
 	/**
 	 * Gives start angle for directed arcs.
