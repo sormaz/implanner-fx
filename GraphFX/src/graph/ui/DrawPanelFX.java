@@ -9,6 +9,7 @@ import edu.ohio.ent.cs5500.Graph;
 import edu.ohio.ent.cs5500.LayoutChangeListener;
 import edu.ohio.ent.cs5500.Layouter;
 import edu.ohio.ent.cs5500.Node;
+import javafx.event.Event;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
@@ -70,18 +71,16 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 			{
 				int x = (int)me.getX();
 				int y = (int)me.getY();
-				Point2D p = new Point2D(x, y);		
+				Point2D p = new Point2D(x, y);	
 				
-				selectables.replace(current, selectables.get(current), p);				
+				if (!(x < 0 || x > getWidth() || y < 0 || y > getWidth())){
+					selectables.replace(current, selectables.get(current), p);	
+				}
 			}
 			
 			draw();
 			
         });
-        
-//        setOnMouseReleased((MouseEvent me) -> {
-//        	
-//        });
         
         setOnMouseMoved((MouseEvent me) -> {
 			if (find(new Point2D(me.getX(), me.getY())) == null) {
