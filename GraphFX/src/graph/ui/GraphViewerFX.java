@@ -11,6 +11,7 @@ import edu.ohio.ent.cs5500.Arc;
 import edu.ohio.ent.cs5500.DirectedArc;
 import edu.ohio.ent.cs5500.Graph;
 import edu.ohio.ent.cs5500.GraphListener;
+import edu.ohio.ent.cs5500.Layouter;
 import edu.ohio.ent.cs5500.Node;
 import edu.ohio.ent.cs5500.UndirectedArc;
 import javafx.application.Application;
@@ -22,8 +23,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -37,8 +36,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -46,6 +44,7 @@ import javafx.stage.Stage;
 public class GraphViewerFX extends Application implements GraphListener  {
 
 	private Graph myGraph  = new Graph();
+	private Layouter myGraphCanvas;
 	private ObservableList<Node> nodes = 
 			FXCollections.observableArrayList();
 	private ObservableList<Arc> arcs = 
@@ -66,9 +65,33 @@ public class GraphViewerFX extends Application implements GraphListener  {
 
 	@Override
 	public void start(Stage primaryStage) {
+
+
+		BorderPane root = getMainView();
+
+		ToolBar buttons = createToolbar();
+		root.setBottom(buttons);
+
+		addToolTip();
+
 		primaryStage.setTitle("GraphViewer");
-		BorderPane root = new BorderPane();
 		primaryStage.setScene(new Scene(root, 800, 600));
+		primaryStage.show();
+
+		//		AnchorPane.setBottomAnchor(child, value);
+	}  
+
+	private void addToolTip() {
+		Tooltip fromListTT = new Tooltip("From List.");
+		fromNodeList.setTooltip(fromListTT);
+		Tooltip toListTT = new Tooltip("To List.");
+		toNodeList.setTooltip(toListTT);
+		Tooltip arcListTT = new Tooltip("Arc List.");
+		arcList.setTooltip(arcListTT);
+	}
+	
+	private BorderPane getMainView() {
+		BorderPane root = new BorderPane();
 
 		SplitPane mainSplitter = new SplitPane();
 		mainSplitter.setDividerPositions(0.3f, 1.0f);
@@ -78,92 +101,31 @@ public class GraphViewerFX extends Application implements GraphListener  {
 		Tab arcTab = new Tab("Arcs");
 		nodeTab.closableProperty().set(false);
 		arcTab.closableProperty().set(false);
-
 		tab.getTabs().addAll(nodeTab, arcTab);
 		mainSplitter.getItems().add(tab);
-		
-		Tooltip fromListTT = new Tooltip("From List.");
-		fromNodeList.setTooltip(fromListTT);
-		Tooltip toListTT = new Tooltip("To List.");
-		toNodeList.setTooltip(toListTT);
-		Tooltip arcListTT = new Tooltip("Arc List.");
-		arcList.setTooltip(arcListTT);
-
 
 		SplitPane toFromListSplitter = new SplitPane();
 		toFromListSplitter.orientationProperty().set(Orientation.VERTICAL);
 		toFromListSplitter.setDividerPositions(0.5f, 1f);
-
 
 		toFromListSplitter.getItems().addAll(fromNodeList,toNodeList);
 		nodeTab.setContent(toFromListSplitter);
 
 		arcTab.setContent(arcList);
 
-		Canvas graphPanel = createGraphPanel(500, 500);
-		mainSplitter.getItems().add(graphPanel);
+		DrawPanelFX graphCanvas = new DrawPanelFX(myGraph);
+		myGraphCanvas = graphCanvas;
+		StackPane graphPane = new StackPane();
+		graphPane.getChildren().add(graphCanvas);
 
+		graphCanvas.widthProperty().bind(
+				graphPane.widthProperty());
+		graphCanvas.heightProperty().bind(
+				graphPane.heightProperty());
 
+		mainSplitter.getItems().add(graphPane);
 
-		ToolBar buttons = createToolbar();
-		root.setBottom(buttons);
-
-		primaryStage.show();
-
-		//		AnchorPane.setBottomAnchor(child, value);
-	}  
-
-	@Override
-	public void nodeAdded(Node aNode) {
-		// TODO Auto-generated method stub
-		nodes.add(aNode);
-	}
-
-	@Override
-	public void nodeDeleted(Node aNode) {
-		// TODO Auto-generated method stub
-		nodes.remove(aNode);
-	}
-
-	@Override
-	public void arcAdded(Arc anArc) {
-		// TODO Auto-generated method stub
-		arcs.add(anArc);
-	}
-
-	@Override
-	public void arcDeleted(Arc anArc) {
-		// TODO Auto-generated method stub
-		arcs.remove(anArc);
-	}
-
-	@Override
-	public void graphErased() {
-		// TODO Auto-generated method stub
-		nodes.clear();
-		arcs.clear();
-	}
-
-	Canvas createGraphPanel(double width, double height){
-		Canvas canvas = new Canvas(width, height);
-
-		final GraphicsContext gc = canvas.getGraphicsContext2D();
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-		gc.setFill(Color.BLACK);
-		gc.setFont(Font.getDefault());
-		gc.fillText("hello   world!", 15, 50);
-
-		gc.setLineWidth(5);
-		gc.setStroke(Color.PURPLE);
-		gc.setFill(Color.AQUA);
-		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-		gc.strokeOval(10, 60, 30, 30);
-		gc.strokeOval(60, 60, 30, 30);
-		gc.strokeRect(30, 100, 40, 40);
-
-		return canvas;
+		return root;
 	}
 
 	ToolBar createToolbar() {
@@ -238,9 +200,9 @@ public class GraphViewerFX extends Application implements GraphListener  {
 				dialog.setTitle("New Node");
 				dialog.setHeaderText("Enter Node Name:");
 				//				dialog.setContentText("Enter Node Name:");
-				
+
 				Stage parentWindow = (Stage)((Button)event.getSource()).getScene().getWindow();
-					
+
 				dialog.setX 
 				(parentWindow.getX()
 						+ (parentWindow.getWidth() / 2)
@@ -249,7 +211,7 @@ public class GraphViewerFX extends Application implements GraphListener  {
 				(parentWindow.getY()
 						+ (parentWindow.getHeight() / 2)
 						- 125);
-				
+
 				Optional<String> result = dialog.showAndWait();
 				if (!result.isPresent()){
 					return;
@@ -283,10 +245,10 @@ public class GraphViewerFX extends Application implements GraphListener  {
 
 					Node node1 = fromNodeList.getSelectionModel().getSelectedItem();
 					Node node2 = toNodeList.getSelectionModel().getSelectedItem();
-					
+
 					if (node1==null || node2==null) throw new Exception("Select nodes to create arc.");
 					if (node1.equals(node2)) throw new Exception("Cannot create arc within the same node");
-					
+
 					Stage window = new Stage();
 
 					Stage parentWindow = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -324,20 +286,20 @@ public class GraphViewerFX extends Application implements GraphListener  {
 						public void handle(ActionEvent event) {
 
 							try {
-								
+
 								if (arcNameValue.getText()=="") throw new Exception("Choose arc name.");
-							
-							if (arcType.getValue()=="Undirected") {					
-								myGraph.addBiArc(node1, node2, arcNameValue.getText());
-							} else {
-								myGraph.addDiArc(node1, node2, arcNameValue.getText());
-							}
+
+								if (arcType.getValue()=="Undirected") {					
+									myGraph.addBiArc(node1, node2, arcNameValue.getText());
+								} else {
+									myGraph.addDiArc(node1, node2, arcNameValue.getText());
+								}
 							} catch (Exception e) {
 								GraphDialog.error(e.getMessage());
 							} finally {
 								window.close();
 							}
-							
+
 
 						}
 					});
@@ -367,19 +329,19 @@ public class GraphViewerFX extends Application implements GraphListener  {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				try{
-					
+
 					Node aNode = fromNodeList.getSelectionModel().getSelectedItem();
-					
+
 					if (aNode==null) throw new Exception
 					("Select node (use \"From list\") to be deleted ");
-					
+
 					HashSet<Arc> arcs = new HashSet<Arc>(); 
 					arcs.addAll(aNode.getArcs());
 					arcs.addAll(aNode.getInArcs());
 					arcs.addAll(aNode.getOutArcs());		
-					
+
 					myGraph.removeNode(aNode);
-					
+
 				}catch(Exception e){
 					GraphDialog.error(e.getMessage());
 				}
@@ -410,14 +372,7 @@ public class GraphViewerFX extends Application implements GraphListener  {
 			}
 		});
 
-		redrawGraph.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+		redrawGraph.setOnAction(e -> myGraphCanvas.makeLayout());
 
 		clearGraph.setOnAction(e -> myGraph.clearGraph());
 
@@ -444,6 +399,37 @@ public class GraphViewerFX extends Application implements GraphListener  {
 				clearGraph, redrawGraph);
 
 		return buttons;
+	}
+	
+	@Override
+	public void nodeAdded(Node aNode) {
+		// TODO Auto-generated method stub
+		nodes.add(aNode);
+	}
+
+	@Override
+	public void nodeDeleted(Node aNode) {
+		// TODO Auto-generated method stub
+		nodes.remove(aNode);
+	}
+
+	@Override
+	public void arcAdded(Arc anArc) {
+		// TODO Auto-generated method stub
+		arcs.add(anArc);
+	}
+
+	@Override
+	public void arcDeleted(Arc anArc) {
+		// TODO Auto-generated method stub
+		arcs.remove(anArc);
+	}
+
+	@Override
+	public void graphErased() {
+		// TODO Auto-generated method stub
+		nodes.clear();
+		arcs.clear();
 	}
 
 }
