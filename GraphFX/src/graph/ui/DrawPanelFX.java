@@ -18,14 +18,33 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 
+/**
+ * This class defines the canvas where the nodes are drawn.
+ * @author Arif
+ */
 public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layouter{
 
+	/**
+	 * Graph model.
+	 */
 	private Graph myGraph;
+	/**
+	 * List of selectables.
+	 */
 	private HashMap<Node, Point2D> selectables = new HashMap<Node, Point2D>();
+	/**
+	 * Radius of each node  in view.
+	 */
 	private final static int NODE_RADIUS = 15;
-	private double oldX, oldY;
+	/**
+	 * Currently selected node.
+	 */
 	private Node current;
 	
+	/**
+	 * Constructor for graph canvas. Listeners are added and mouse behaviour is set. 
+	 * @param g
+	 */
 	public DrawPanelFX(Graph g) {
 		// TODO Auto-generated constructor stub
 
@@ -38,11 +57,10 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
         heightProperty().addListener(evt -> makeLayout());	
      
         setOnMousePressed((MouseEvent me) -> {
-        	
+        	double oldX, oldY;
 			oldX = me.getX();
 			oldY = me.getY();	
-			current = find(new Point2D(oldX, oldY));
-			
+			current = find(new Point2D(oldX, oldY));			
         });
             
         
@@ -54,8 +72,7 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 				int y = (int)me.getY();
 				Point2D p = new Point2D(x, y);		
 				
-				selectables.replace(current, selectables.get(current), p);	
-				
+				selectables.replace(current, selectables.get(current), p);				
 			}
 			
 			draw();
@@ -94,7 +111,7 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
     }  
     
 	@Override
-	public void nodeAdded(edu.ohio.ent.cs5500.Node aNode) {
+	public void nodeAdded(Node aNode) {
 		// TODO Auto-generated method stub
 		
 		GraphicsContext gc = getGraphicsContext2D();
@@ -113,7 +130,7 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 	}
 
 	@Override
-	public void nodeDeleted(edu.ohio.ent.cs5500.Node aNode) {
+	public void nodeDeleted(Node aNode) {
 		// TODO Auto-generated method stub
 		
 		try {
@@ -178,6 +195,9 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 
 	}
 	
+	/**
+	 * Draw graph nodes and arcs from list of selectables and graph model.
+	 */
 	private void draw() {
 		GraphicsContext gc = getGraphicsContext2D();
 		double width = gc.getCanvas().getWidth();
@@ -224,6 +244,12 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 			
 	}
 	
+	/**
+	 * Gives start angle for directed arcs.
+	 * @param p1
+	 * @param p2
+	 * @return
+	 */
 	private double getStartAngle(Point2D p1, Point2D p2) {
 		double x1 = p1.getX();
 		double x2 = p2.getX();
@@ -235,10 +261,18 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 		return startAngle;
 	}
 	
+	/**
+	 * Get circle that is created for individual node.
+	 * @param p
+	 * @return
+	 */
 	public Circle getCircle(Point2D p) {
 		return new Circle(p.getX(), p.getY(), NODE_RADIUS);
 	}
 	
+	/**
+	 * Find if cursor within area of circle of node.
+	 */
 	public Node find(Point2D p)
 	{
 		for (Node aNode : selectables.keySet())

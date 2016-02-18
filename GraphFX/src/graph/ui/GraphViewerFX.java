@@ -41,28 +41,65 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * This class implements complete GUI for the GraphViewer project.
+ * @author Arif
+ *
+ */
 public class GraphViewerFX extends Application implements GraphListener  {
 
+	/**
+	 * Graph model.
+	 */
 	private Graph myGraph  = new Graph();
+	/**
+	 * Graph layouter. The layouting is done inside the canvas for this project.
+	 */
 	private Layouter myGraphCanvas;
+	/**
+	 * Listmodel for nodes.
+	 */
 	private ObservableList<Node> nodes = 
 			FXCollections.observableArrayList();
+	/**
+	 * Listmodel for arcs.
+	 */
 	private ObservableList<Arc> arcs = 
 			FXCollections.observableArrayList();
 
+	/**
+	 * Listview of "from nodes".
+	 */
 	ListView<Node> fromNodeList = new ListView<>(nodes);
+	/**
+	 * Listview of "to nodes".
+	 */
 	ListView<Node> toNodeList = new ListView<>(nodes);
+	/**
+	 * Listview of arcs.
+	 */
 	ListView<Arc> arcList = new ListView<>(arcs);
 
+	/**
+	 * Start of program.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+	/**
+	 * GraphViewerFX constructor
+	 */
 	public GraphViewerFX () {
 		super();
 		myGraph.addListener(this);
 	}
 
+	/**
+	 * This method is called from main method. This where the GUI is completed.
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 
@@ -81,6 +118,9 @@ public class GraphViewerFX extends Application implements GraphListener  {
 		//		AnchorPane.setBottomAnchor(child, value);
 	}  
 
+	/**
+	 * Add tooltips to panes.
+	 */
 	private void addToolTip() {
 		Tooltip fromListTT = new Tooltip("From List.");
 		fromNodeList.setTooltip(fromListTT);
@@ -90,6 +130,10 @@ public class GraphViewerFX extends Application implements GraphListener  {
 		arcList.setTooltip(arcListTT);
 	}
 	
+	/**
+	 * Main GUI is built here without the toolbar.
+	 * @return
+	 */
 	private BorderPane getMainView() {
 		BorderPane root = new BorderPane();
 
@@ -128,6 +172,10 @@ public class GraphViewerFX extends Application implements GraphListener  {
 		return root;
 	}
 
+	/**
+	 * Create toolbar and button for graphviewer. Provide button action handlers.
+	 * @return
+	 */
 	ToolBar createToolbar() {
 		ToolBar buttons = new ToolBar();
 		Button openFile, saveFile, addNode, addArc, deleteNode, deleteArc, clearGraph, redrawGraph;
