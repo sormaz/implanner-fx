@@ -1,5 +1,6 @@
 package graph.ui;
 
+
 import java.util.HashMap;
 import java.util.Random;
 
@@ -9,16 +10,21 @@ import edu.ohio.ent.cs5500.LayoutChangeListener;
 import edu.ohio.ent.cs5500.Layouter;
 import edu.ohio.ent.cs5500.Node;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
+import javafx.scene.shape.Circle;
 
 public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layouter{
 
 	private Graph myGraph;
-	private HashMap<Point2D, Node> selectables = new HashMap<Point2D, Node>();
-	private double nodeRadius = 15;
+	private HashMap<Node, Point2D> selectables = new HashMap<Node, Point2D>();
+	private final static int NODE_RADIUS = 15;
+	private double oldX, oldY;
+	private Node current;
 	
 	public DrawPanelFX(Graph g) {
 		// TODO Auto-generated constructor stub
@@ -31,6 +37,43 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
         widthProperty().addListener(evt -> makeLayout());
         heightProperty().addListener(evt -> makeLayout());	
      
+        setOnMousePressed((MouseEvent me) -> {
+        	
+			oldX = me.getX();
+			oldY = me.getY();	
+			current = find(new Point2D(oldX, oldY));
+			
+        });
+            
+        
+        setOnMouseDragged((MouseEvent me) -> {
+			        	
+        	if (current != null)
+			{
+				int x = (int)me.getX();
+				int y = (int)me.getY();
+				Point2D p = new Point2D(x, y);		
+				
+				selectables.replace(current, selectables.get(current), p);	
+				
+			}
+			
+			draw();
+			
+        });
+        
+//        setOnMouseReleased((MouseEvent me) -> {
+//        	
+//        });
+        
+        setOnMouseMoved((MouseEvent me) -> {
+			if (find(new Point2D(me.getX(), me.getY())) == null) {
+				setCursor(Cursor.DEFAULT);
+			} else {
+				setCursor(Cursor.CROSSHAIR);
+			}
+        }); 
+
 	}
 	
     @Override
@@ -65,7 +108,7 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 		xCoordinate = minX + randNumber.nextInt(maxX - minX);
 		yCoordinate = minY + randNumber.nextInt(maxY - minY);
 		
-		selectables.put(new Point2D(xCoordinate, yCoordinate), aNode);
+		selectables.put(aNode, new Point2D(xCoordinate, yCoordinate));
 		draw();
 	}
 
@@ -74,7 +117,7 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 		// TODO Auto-generated method stub
 		
 		try {
-			selectables.remove(getSelectable(aNode));
+			selectables.remove(aNode);
 		}catch (Exception e) {
 			GraphDialog.error(e.getMessage());
 		}
@@ -128,7 +171,7 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 			yCoordinate = minY + randNumber.nextInt(maxY - minY);
 			
 			selectables.put
-			(new Point2D(xCoordinate, yCoordinate), aNode);
+			(aNode, new Point2D(xCoordinate, yCoordinate));
 		}
 		
 		draw();
@@ -142,18 +185,19 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 		gc.clearRect(0, 0, width, height);
 		gc.setStroke(Color.BLUE);
 		
-		for (Point2D d : selectables.keySet()) {		
-			gc.strokeOval(d.getX()-nodeRadius, d.getY()-nodeRadius, 
-							nodeRadius*2, nodeRadius*2);
-			gc.fillText(selectables.get(d).getName(), d.getX(), d.getY());
+		for (Node aNode : selectables.keySet()) {	
+			Point2D d = selectables.get(aNode);
+			gc.strokeOval(d.getX()-NODE_RADIUS, d.getY()-NODE_RADIUS, 
+							NODE_RADIUS*2, NODE_RADIUS*2);
+			gc.fillText(aNode.getName(), d.getX(), d.getY());
 		}
 		
 		for (Arc anArc : myGraph.getUndirectedArcs()){
 			Node[] nodes;
 			nodes = anArc.getNodes();
 			Point2D p1,p2;
-			p1 = getSelectable(nodes[0]);
-			p2 = getSelectable(nodes[1]);
+			p1 = selectables.get(nodes[0]);
+			p2 = selectables.get(nodes[1]);
 			gc.strokeLine(p1.getX(),p1.getY(), p2.getX(),p2.getY());
 		}
 		
@@ -161,8 +205,8 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 			Node[] nodes;
 			nodes = anArc.getNodes();
 			Point2D p1,p2;
-			p1 = getSelectable(nodes[0]);
-			p2 = getSelectable(nodes[1]);
+			p1 = selectables.get(nodes[0]);
+			p2 = selectables.get(nodes[1]);
 			double x1 = p1.getX();
 			double x2 = p2.getX();
 			double y1 = p1.getY();
@@ -177,9 +221,7 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 							 Math.toDegrees(startAngle),
 							 180.0, ArcType.OPEN);
 		}
-		
-		
-		
+			
 	}
 	
 	private double getStartAngle(Point2D p1, Point2D p2) {
@@ -193,15 +235,20 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 		return startAngle;
 	}
 	
-	private Point2D getSelectable(Node aNode) {
-		
-		for(Point2D p: selectables.keySet()){
-			if (selectables.get(p) == aNode) {
-				return  p;
-			}
+	public Circle getCircle(Point2D p) {
+		return new Circle(p.getX(), p.getY(), NODE_RADIUS);
+	}
+	
+	public Node find(Point2D p)
+	{
+		for (Node aNode : selectables.keySet())
+		{			
+			Circle c = getCircle(selectables.get(aNode));
+			if (c.contains(p)) return aNode;
 		}
-		
 		return null;
 	}
+	
+
 
 }
