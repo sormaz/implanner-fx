@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane prefHeight="498.0" prefWidth="673.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <bottom>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button fx:id="openFileBtn" mnemonicParsing="false" text="Open File" />
+            <Button fx:id="saveFileBtn" mnemonicParsing="false" text="Save File" />
+            <Button fx:id="addNodeBtn" mnemonicParsing="false" text="Add Node" />
+            <Button fx:id="addArcBtn" mnemonicParsing="false" text="Add Arc" />
+            <Button fx:id="deleteNodeBtn" mnemonicParsing="false" text="Delete Node" />
+            <Button fx:id="deleteArcBtn" mnemonicParsing="false" text="Delete Arc" />
+            <Button fx:id="clearGraphBtn" mnemonicParsing="false" text="Clear Graph" />
+            <Button fx:id="redrawGraphBtn" mnemonicParsing="false" text="Redraw Graph" />
+        </items>
+      </ToolBar>
+   </bottom>
+</BorderPane>
