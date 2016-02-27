@@ -178,6 +178,12 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 		double width = gc.getCanvas().getWidth();
 		double height = gc.getCanvas().getHeight();
 		gc.clearRect(0, 0, width, height);
+		
+		gc.setFill(Color.BEIGE);
+		gc.fillRect(0, 0, width, height);
+		
+		gc.setFill(Color.RED);
+		
 		gc.setStroke(Color.BLUE);
 		
 		for (Node aNode : selectables.keySet()) {	
