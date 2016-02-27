@@ -1,8 +1,6 @@
 package graph.ui;
 
-import edu.ohio.ent.cs5500.Graph;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -10,9 +8,6 @@ import javafx.stage.Stage;
 
 public class GraphViewerFXML extends Application {
 
-	@FXML
-	private Graph myGraph  = new Graph();
-	
 	public GraphViewerFXML() {
 		// TODO Auto-generated constructor stub
 	}
@@ -23,6 +18,7 @@ public class GraphViewerFXML extends Application {
             primaryStage.setTitle("GraphViewerFXML");
             
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("GraphViewerFXML.fxml"));
+			loader.setBuilderFactory(new GraphBuilderFactory());
 			BorderPane myPane = loader.<BorderPane>load();
             
             Scene myScene = new Scene(myPane);
