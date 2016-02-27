@@ -20,10 +20,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -188,7 +195,103 @@ public class MainViewController implements GraphListener {
 
 			@Override
 			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
 
+				try {
+
+//					Node node1 = fromNodeList.getSelectionModel().getSelectedItem();
+//					Node node2 = toNodeList.getSelectionModel().getSelectedItem();
+//
+//					if (node1==null || node2==null) throw new Exception("Select nodes to create arc.");
+//					if (node1.equals(node2)) throw new Exception("Cannot create arc within the same node");
+
+					Stage window = new Stage();
+
+					Stage parentWindow = (Stage)((Button)event.getSource()).getScene().getWindow();
+
+					window.setTitle("New Arc");
+
+					GridPane grid = new GridPane();
+					grid.setAlignment(Pos.CENTER);
+					grid.setHgap(10);
+					grid.setVgap(10);
+					grid.setPadding(new Insets(25, 25, 25, 25));
+					
+					ChoiceBox<Node> fromNodeChoice = new ChoiceBox<>(nodeListView.getItems());
+					ChoiceBox<Node> toNodeChoice = new ChoiceBox<>(nodeListView.getItems());
+					
+					Label fromNodeLbl = new Label("From Node:");
+					grid.add(fromNodeLbl, 0, 0);
+					
+					grid.add(fromNodeChoice, 1, 0);
+					
+					Label toNodeLbl = new Label("To Node:");
+					grid.add(toNodeLbl, 0,1);
+
+					grid.add(toNodeChoice, 1, 1);
+					
+					Label arcNameLbl = new Label("Arc Name:");
+					grid.add(arcNameLbl, 0, 2);
+
+					TextField arcNameValue = new TextField();
+					grid.add(arcNameValue, 1, 2);
+
+					Label relationLbl = new Label("Arc Type:");
+					grid.add(relationLbl, 0, 3);
+
+					ChoiceBox<String> arcType = new ChoiceBox<>();
+					arcType.getItems().add("Directed");
+					arcType.getItems().add("Undirected");
+					//Set a default value
+					arcType.setValue("Directed");
+					grid.add(arcType, 1, 3);
+
+					Button button = new Button("Ok");
+					grid.add(button, 0, 4);
+
+					button.setOnAction(new EventHandler<ActionEvent>() {
+
+						@Override
+						public void handle(ActionEvent event) {
+
+							try {
+								
+								Node node1 = fromNodeChoice.getSelectionModel().getSelectedItem();
+								Node node2 = toNodeChoice.getSelectionModel().getSelectedItem();
+
+								if (arcNameValue.getText()=="") throw new Exception("Choose arc name.");
+
+								if (arcType.getValue()=="Undirected") {					
+									myGraph.addBiArc(node1, node2, arcNameValue.getText());
+								} else {
+									myGraph.addDiArc(node1, node2, arcNameValue.getText());
+								}
+							} catch (Exception e) {
+								GraphDialog.error(e.getMessage());
+							} finally {
+								window.close();
+							}
+
+
+						}
+					});
+
+					Scene scene = new Scene(grid, 300, 200);
+					window.setScene(scene);
+
+					window.setX 
+					(parentWindow.getX() 
+							+ parentWindow.getWidth() / 2
+							- scene.getWidth()/2);
+					window.setY
+					(parentWindow.getY() 
+							+ parentWindow.getHeight() / 2
+							- scene.getHeight()/2);
+
+					window.show();
+				}catch(Exception e){
+					GraphDialog.error(e.getMessage());
+				}
 			}
 		});
 
