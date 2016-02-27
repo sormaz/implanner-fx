@@ -25,6 +25,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -217,8 +218,11 @@ public class MainViewController implements GraphListener {
 					grid.setVgap(10);
 					grid.setPadding(new Insets(25, 25, 25, 25));
 					
-					ChoiceBox<Node> fromNodeChoice = new ChoiceBox<>(nodeListView.getItems());
-					ChoiceBox<Node> toNodeChoice = new ChoiceBox<>(nodeListView.getItems());
+					ComboBox<Node> fromNodeChoice = new ComboBox<>(nodeListView.getItems());
+					ComboBox<Node> toNodeChoice = new ComboBox<>(nodeListView.getItems());
+					
+					fromNodeChoice.setVisibleRowCount(6);
+					toNodeChoice.setVisibleRowCount(6);
 					
 					Label fromNodeLbl = new Label("From Node:");
 					grid.add(fromNodeLbl, 0, 0);
