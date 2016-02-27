@@ -335,7 +335,7 @@ public class GraphViewerFX extends Application implements GraphListener  {
 
 							try {
 
-								if (arcNameValue.getText()=="") throw new Exception("Choose arc name.");
+								if (arcNameValue.getText().equals(""))  throw new Exception("Choose arc name.");
 
 								if (arcType.getValue()=="Undirected") {					
 									myGraph.addBiArc(node1, node2, arcNameValue.getText());
