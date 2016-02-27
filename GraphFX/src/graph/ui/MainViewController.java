@@ -7,29 +7,24 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 
+import graph.ui.DrawPanelFX;
+
 import edu.ohio.ent.cs5500.Arc;
 import edu.ohio.ent.cs5500.DirectedArc;
 import edu.ohio.ent.cs5500.Graph;
 import edu.ohio.ent.cs5500.GraphListener;
+import edu.ohio.ent.cs5500.Layouter;
 import edu.ohio.ent.cs5500.Node;
 import edu.ohio.ent.cs5500.UndirectedArc;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -37,30 +32,17 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class MainViewController implements GraphListener {
 
 	@FXML
-	private Button openFileBtn;
+	private Button openFileBtn,saveFileBtn,addNodeBtn,addArcBtn,
+				deleteNodeBtn,deleteArcBtn,clearGraphBtn,redrawGraphBtn;
 	
 	@FXML
-	private Button saveFileBtn;
+	private Graph myGraph;
 	
 	@FXML
-	private Button addNodeBtn;
+	private Layouter graphCanvas;
 	
 	@FXML
-	private Button addArcBtn;
-	
-	@FXML
-	private Button deleteNodeBtn;
-	
-	@FXML
-	private Button deleteArcBtn;
-	
-	@FXML
-	private Button clearGraphBtn;
-	
-	@FXML
-	private Button redrawGraphBtn;
-	
-	private Graph myGraph = new Graph();
+	private StackPane graphPane;
 	
 	/**
 	 * Listmodel for nodes.
@@ -88,6 +70,14 @@ public class MainViewController implements GraphListener {
 	private void initialize() {
 		nodes = nodeListView.getItems();
 		arcs = arcListView.getItems();
+		
+//		((DrawPanelFX)graphCanvas).heightProperty().set(400);
+//		((DrawPanelFX)graphCanvas).widthProperty().set(400);
+		
+		((DrawPanelFX)graphCanvas).widthProperty().bind(
+				graphPane.widthProperty());
+		((DrawPanelFX)graphCanvas).heightProperty().bind(
+				graphPane.heightProperty());
 		
 		initializeToolbar();
 		myGraph.addListener(this);
