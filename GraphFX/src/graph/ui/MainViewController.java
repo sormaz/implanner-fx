@@ -130,13 +130,13 @@ public class MainViewController implements GraphListener {
 
 				try {
 
-					if(!selectedFile.exists()){
+//					if(!selectedFile.exists()){
 
 						selectedFile.createNewFile();
 						PrintWriter output = new PrintWriter(selectedFile);
 						output.write(myGraph.getGraphCommands());
 						output.close();
-					}
+//					}
 
 				}catch(Exception e){
 
