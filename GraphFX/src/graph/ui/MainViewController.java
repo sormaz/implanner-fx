@@ -241,7 +241,7 @@ public class MainViewController implements GraphListener {
 			}
 		});
 
-//		redrawGraphBtn.setOnAction(e -> myGraphCanvas.makeLayout());
+		redrawGraphBtn.setOnAction(e -> graphCanvas.makeLayout());
 
 		clearGraphBtn.setOnAction(e -> myGraph.clearGraph());
 
