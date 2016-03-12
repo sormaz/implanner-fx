@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<?import graph.ui.DrawPanelFX?>
+<?import graph.ui.DrawPanelTx?>
 <?import edu.ohio.ent.cs5500.Graph?>
 
 <BorderPane prefHeight="498.0" prefWidth="673.0"
@@ -71,7 +71,7 @@
 					<center>
 						<StackPane fx:id="graphPane" prefHeight="400.0"
 							prefWidth="400.0" BorderPane.alignment="CENTER">
-							<DrawPanelFX graph="$myGraph" fx:id="graphCanvas" />
+							<DrawPanelTx graph="$myGraph" fx:id="graphCanvas" />
 
 						</StackPane>
 					</center>
