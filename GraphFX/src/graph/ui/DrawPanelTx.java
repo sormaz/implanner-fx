@@ -1,18 +1,18 @@
 package graph.ui;
 
-
-import java.awt.Shape;
-import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
 import edu.ohio.ent.cs5500.Arc;
 import edu.ohio.ent.cs5500.Graph;
 import edu.ohio.ent.cs5500.LayoutChangeListener;
-import edu.ohio.ent.cs5500.Layouter;
 import edu.ohio.ent.cs5500.Node;
-import javafx.event.Event;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,7 +20,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
-import javafx.util.Builder;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.NonInvertibleTransformException;
+import javafx.scene.transform.Translate;
 
 /**
  * This class defines the canvas where the nodes are drawn.
@@ -54,11 +57,24 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 	private Node current;
 	
 	/**
+	 * X and Y coordinates of previous mouse press event
+	 */
+	private double oldX, oldY;
+	
+	/**
+	 * Keeps record of the number of rotations
+	 */
+	private double rotationCounter = 0;
+	
+	private double margin = 0.2;
+	
+	private Affine viewTransform = new Affine();
+	
+	/**
 	 * Constructor for graph canvas. Listeners are added and mouse behaviour is set. 
 	 * @param g
 	 */
 	public DrawPanelTx(Graph g) {
-		// TODO Auto-generated constructor stub
 
 		myGraph = g;
 		myGraph.addListener(this);
@@ -69,7 +85,6 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
         heightProperty().addListener(evt -> makeLayout());	
      
         setOnMousePressed((MouseEvent me) -> {
-        	double oldX, oldY;
 			oldX = me.getX();
 			oldY = me.getY();	
 			current = find(new Point2D(oldX, oldY));			
@@ -85,7 +100,12 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 				Point2D p = new Point2D(x, y);	
 				
 				if (!(x < 0 || x > getWidth() || y < 0 || y > getHeight())){
-					selectables.replace(current, selectables.get(current), p);	
+					try {
+						selectables.replace(current, selectables.get(current), viewTransform.inverseTransform(p));
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
 				}
 			}
 			
@@ -125,7 +145,7 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 		// TODO Auto-generated method stub
 				
 		selectables.put(aNode, getRandCoord(aNode));
-		draw();
+		layoutChanged();
 	}
 
 	@Override
@@ -137,33 +157,34 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 		}catch (Exception e) {
 			GraphDialog.error(e.getMessage());
 		}
-		
-		draw();
+		layoutChanged();
 	}
 
 	@Override
 	public void arcAdded(Arc anArc) {
 		// TODO Auto-generated method stub
-		draw();
+		layoutChanged();
 	}
 
 	@Override
 	public void arcDeleted(Arc anArc) {
 		// TODO Auto-generated method stub
-		draw();
+		layoutChanged();
 	}
 
 	@Override
 	public void graphErased() {
 		// TODO Auto-generated method stub
 		selectables.clear();
-		draw();
+		layoutChanged();
 	}
 
 	@Override
 	public void layoutChanged() {
 		// TODO Auto-generated method stub
-		makeLayout();
+
+		resetGraph();
+		draw();
 	}
 	
 	@Override
@@ -176,7 +197,7 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 			selectables.put
 			(aNode, getRandCoord(aNode));
 		}
-		
+		resetGraph();
 		draw();
 
 	}
@@ -186,9 +207,12 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 	 */
 	private void draw() {
 		GraphicsContext gc = getGraphicsContext2D();
-		double width = gc.getCanvas().getWidth();
-		double height = gc.getCanvas().getHeight();
+		gc.setTransform(new Affine());
+		
+		double width = getWidth();
+		double height = getHeight();
 		gc.clearRect(0, 0, width, height);
+		gc.setTransform(viewTransform);
 		
 		gc.setFill(Color.BEIGE);
 		gc.fillRect(0, 0, width, height);
@@ -248,18 +272,19 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 	public Point2D getRandCoord(Node aNode) {
 		// TODO Auto-generated method stub
 		
-		GraphicsContext gc = getGraphicsContext2D();
+//		GraphicsContext gc = getGraphicsContext2D();
 		Random randNumber = new Random();
 		int xCoordinate, yCoordinate; 
 
-		int marginPercent = 10;
-		int minX = (int) gc.getCanvas().getWidth() * (marginPercent) / 100;
-		int minY = (int) gc.getCanvas().getHeight()* (marginPercent) / 100;
-		int maxX = (int) gc.getCanvas().getWidth() * (100 - marginPercent) / 100;
-		int maxY = (int) gc.getCanvas().getHeight()* (100 - marginPercent) / 100;
+		int minX = 0; //(int) gc.getCanvas().getWidth() * (marginPercent) / 100;
+		int minY = 0; //(int) gc.getCanvas().getHeight()* (marginPercent) / 100;
+		int maxX = (int) getWidth(); // gc.getCanvas().getWidth() * (100 - marginPercent) / 100;
+		int maxY = (int) getHeight(); //gc.getCanvas().getHeight()* (100 - marginPercent) / 100;
 
 		xCoordinate = minX + randNumber.nextInt(maxX - minX);
 		yCoordinate = minY + randNumber.nextInt(maxY - minY);
+		
+		System.out.println(aNode.getName() + ": " + "(" + xCoordinate + "," + yCoordinate + ")"  );
 		
 		return new Point2D(xCoordinate,yCoordinate);
 	}
@@ -299,21 +324,271 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 		for (Node aNode : selectables.keySet())
 		{			
 			Circle c = getCircle(selectables.get(aNode));
-			if (c.contains(p)) return aNode;
+			try {
+				if (c.contains(viewTransform.inverseTransform(p))) return aNode;
+			} catch (NonInvertibleTransformException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
+	
+	
+	public double getMinimumX() {
+
+//		if (selectables.size() == 0) {
+//			return 0;
+//		}
+		
+		ArrayList<Double> x = new ArrayList<>();
+		
+		for (Point2D p: selectables.values()) {
+			x.add(p.getX());
+		}
+		
+		return Collections.min(x);
+	}
+	
+	public double getMinimumY() {
+		
+//		if (selectables.size() == 0) {
+//			return 0;
+//		}
+
+		ArrayList<Double> y = new ArrayList<>();
+		
+		for (Point2D p: selectables.values()) {
+			y.add(p.getY());
+		}
+		
+		return Collections.min(y);
+	}
+	
+	public double getMaximumX() {
+		
+//		if (selectables.size() == 0) {
+//			return getWidth();
+//		}
+
+		ArrayList<Double> x = new ArrayList<>();
+		
+		for (Point2D p: selectables.values()) {
+			x.add(p.getX());
+		}
+		
+		return Collections.max(x);
+	}
+	
+	public double getMaximumY() {
+		
+//		if (selectables.size() == 0) {
+//			return getHeight();
+//		}
+
+		ArrayList<Double> y = new ArrayList<>();
+		
+		for (Point2D p: selectables.values()) {
+			y.add(p.getY());
+		}
+		
+		return Collections.max(y);
+	}
+	
+	public Rectangle2D getTransformedRect(Rectangle2D rect) {
+		
+		double minX = rect.getMinX();
+		double minY = rect.getMinY();
+		double width = rect.getWidth();
+		double height = rect.getHeight();
+		
+		Rectangle temp = new Rectangle(minX, minY, width, height);
+
+		temp.getTransforms().add(viewTransform);
+		Bounds bounds = temp.getBoundsInParent();
+		
+		return new Rectangle2D(bounds.getMinX(), bounds.getMinY(),
+						bounds.getWidth(), bounds.getHeight());
+		
+	}
+	
+	public Rectangle2D getBoundingBox() {
+		
+		if (selectables.size() < 2) {
+			return new Rectangle2D(0, 0, getWidth(), getHeight());
+		} else {
+			
+			double minX = getMinimumX();
+			double minY = getMinimumY();
+			double maxX = getMaximumX();
+			double maxY = getMaximumY();
+			double width = maxX - minX;
+			double height = maxY - minY;
+			
+			if (width < 1 || height < 1) {
+				width = getWidth();
+				height = getHeight();
+			}
+			
+			Rectangle2D bounds = new Rectangle2D(minX, minY, width, height);
+			System.out.println(bounds.toString());
+			
+			return bounds;
+		}
+		
+		
+	}
+	
+	
+	/**
+	 * Rescale graph as well as reset orientation
+	 */
+	public void resetGraph() {
+		
+		double scaleX, scaleY;
+		
+//		worldMinX = getMinimumX();
+//		worldMinY = getMinimumY();
+//		worldMaxX = getMaximumX();
+//		worldMaxY = getMaximumY();
+//
+//		System.out.println("Minimum :" + "(" + worldMinX + "," + worldMinY + ")");
+//		System.out.println("Maximum :" + "(" + worldMaxX + "," + worldMaxY + ")");
+		
+//		if (selectables.size() < 2) {
+//			scaleX = (getWidth() * (1 - margin)) / (getBoundingBox().getWidth());
+//			scaleY = (getHeight() * (1 - margin)) / (getBoundingBox().getHeight());
+//		} else {
+			scaleX = (1 - margin);
+			scaleY = (1 - margin);
+//		}
+		
+		Affine mirror 
+			= new Affine(1, 0, 0, -1, 0, getHeight());
+		
+		viewTransform = new Affine();
+		viewTransform.createConcatenation(mirror);
+		viewTransform.appendTranslation((margin / 2) * getWidth(), (margin / 2) * getHeight());
+		viewTransform.appendScale(scaleX, scaleY);
+//		if (selectables.size() > 1) {
+//			viewTransform.appendTranslation(- getMinimumX(), - getMinimumY());
+//		}
+		
+		rotationCounter = 0;
+		
+	}
+	
+	/**
+	 * Zooms in/out from center of graph/canvas
+	 */
+	public void zoomFromCenter(double zoomRatioX, double zoomRatioY) {
+
+		Affine oldTransform = viewTransform;
+
+		Bounds canvasFrame = getLayoutBounds();			
+
+		try {
+			double rotation = rotationCounter;
+			rotateGraphFromCenter(- rotation);
+			
+			Affine invViewTransform = viewTransform.createInverse();
+
+			Bounds worldFrame = invViewTransform.transform(canvasFrame);
+//			= invViewTransform.createTransformedShape(canvasFrame).getBounds2D();
+
+			double worldCenterX = worldFrame.getMinX() + worldFrame.getWidth() / 2;
+			double worldCenterY = worldFrame.getMinY() + worldFrame.getHeight() / 2;
+
+			double scaleX = viewTransform.getMxx() * zoomRatioX;
+			double scaleY = viewTransform.getMyy() * zoomRatioY;
+
+			viewTransform = new Affine();
+			viewTransform.appendTranslation(getWidth() / 2, getHeight() / 2);					
+			viewTransform.appendScale(scaleX, scaleY);
+			viewTransform.appendTranslation(- worldCenterX, - worldCenterY);
+
+			rotateGraphFromCenter(rotation);
+			
+		} catch (NonInvertibleTransformException exp) {
+			// TODO Auto-generated catch block
+
+			viewTransform = oldTransform;
+			GraphDialog.error(exp.getMessage());
+			System.out.println(exp.getMessage());
+			exp.printStackTrace();
+		}				
+
+	}
+	
+	/**
+	 * Scales graph to fit x or y axis or both
+	 */
+	public void fitGraph(boolean fitXAxis, boolean fitYAxis) {
+				
+		Affine oldTransform = viewTransform;
+		Rectangle2D bounds = getBoundingBox();
+		Rectangle2D dataInCanvas = getTransformedRect(bounds);
+			
+		double zoomRatioX = 1; 
+		double zoomRatioY = 1;
+		double transX = 0;
+		double transY = 0;
+		
+		if (fitXAxis) {
+			zoomRatioX = (getWidth() * (1 - margin)) / dataInCanvas.getWidth();
+			transX = getWidth() / 2 - (dataInCanvas.getWidth()/2 + dataInCanvas.getMinX());
+		}
+		
+		if (fitYAxis) {
+			zoomRatioY = (getHeight() * (1 - margin)) / dataInCanvas.getHeight();
+			transY = getHeight() / 2 - (dataInCanvas.getHeight()/2 + dataInCanvas.getMinY());
+		}
+		
+		viewTransform = new Affine();
+		viewTransform.appendTranslation(transX, transY);
+		viewTransform.createConcatenation(oldTransform);
+		zoomFromCenter(zoomRatioX, zoomRatioY);
+				
+	}
+	
+	/**
+	 * Rotate graph from center of canvas
+	 */
+	public void rotateGraphFromCenter(double count) {
+		
+		Point2D canvasCenter = new Point2D(getWidth() / 2, getHeight() / 2) ;
+		Point2D worldCenter = new Point2D(0,0);
+		
+		Affine old = viewTransform;
+		
+		try {
+			worldCenter = viewTransform.inverseTransform(canvasCenter);
+			viewTransform.appendRotation(count * 90, worldCenter.getX(), worldCenter.getY());
+		} catch (NonInvertibleTransformException e1) {
+			// TODO Auto-generated catch block
+			viewTransform = old;
+			System.out.println(e1.getMessage());
+			e1.printStackTrace();
+		}
+	
+		rotationCounter += count;
+		rotationCounter = rotationCounter % 4;		
+		
+	}
+	
+	
 
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
-		
+		resetGraph();
+		draw();
 	}
 
 	@Override
 	public void scaleToFit() {
-		// TODO Auto-generated method stub
-		
+		fitGraph(true, true);
+		draw();
 	}
 
 	@Override
@@ -324,56 +599,96 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 
 	@Override
 	public void fitHorizontal() {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	@Override
 	public void zoomIn() {
-		// TODO Auto-generated method stub
+		
+		double zoomRatio = 1.20;
+		zoomFromCenter(zoomRatio, zoomRatio);
+		draw();
 		
 	}
 
 	@Override
 	public void zoomOut() {
-		// TODO Auto-generated method stub
+		
+		double zoomRatio = 0.80;
+		zoomFromCenter(zoomRatio, zoomRatio);
+		draw();
 		
 	}
 
 	@Override
 	public void panLeft() {
-		// TODO Auto-generated method stub
+				
+		double oldRotation = rotationCounter;
+		rotateGraphFromCenter(-oldRotation);
 		
+		//shiftX is given as a fraction of the canvas width
+		double shiftX = getWidth() * 0.2;	
+		viewTransform.appendTranslation(-shiftX, 0);	
+		
+		rotateGraphFromCenter(oldRotation);
+		
+		draw();
 	}
 
 	@Override
 	public void panRight() {
-		// TODO Auto-generated method stub
 		
+		double oldRotation = rotationCounter;
+		rotateGraphFromCenter(-oldRotation);
+		
+		//shiftX is given as a fraction of the canvas width
+		double shiftX = getWidth() * 0.2;	
+		viewTransform.appendTranslation(shiftX, 0);	
+		
+		rotateGraphFromCenter(oldRotation);
+		
+		draw();
 	}
 
 	@Override
 	public void panUp() {
-		// TODO Auto-generated method stub
 		
+		double oldRotation = rotationCounter;
+		rotateGraphFromCenter(-oldRotation);
+		
+		double shiftY = getHeight() * 0.2;
+		viewTransform.appendTranslation(0, -shiftY);
+		
+		rotateGraphFromCenter(oldRotation);
+		
+		draw();
 	}
 
 	@Override
 	public void panDown() {
-		// TODO Auto-generated method stub
 		
+		double oldRotation = rotationCounter;
+		rotateGraphFromCenter(-oldRotation);
+		
+		double shiftY = getHeight() * 0.2;
+		viewTransform.appendTranslation(0, shiftY);
+		
+		rotateGraphFromCenter(oldRotation);
+		
+		draw();
 	}
 
 	@Override
 	public void rotateCW() {
-		// TODO Auto-generated method stub
-		
+		rotateGraphFromCenter(1);
+		draw();
 	}
 
 	@Override
 	public void rotateCCW() {
-		// TODO Auto-generated method stub
-		
+		rotateGraphFromCenter(-1);
+		draw();
 	}
 
 }
