@@ -34,7 +34,7 @@
 		</ToolBar>
 	</bottom>
 	<center>
-		<SplitPane dividerPositions="0.30" prefHeight="160.0"
+		<SplitPane dividerPositions="0.3" prefHeight="160.0"
 			prefWidth="200.0" BorderPane.alignment="CENTER">
 			<items>
 				<Accordion prefHeight="458.0" prefWidth="243.0">
@@ -92,117 +92,119 @@
 									prefWidth="100.0" />
 							</columnConstraints>
 							<rowConstraints>
-								<RowConstraints minHeight="10.0" prefHeight="30.0"
+								<RowConstraints minHeight="10.0" prefHeight="48.0"
 									vgrow="SOMETIMES" />
-								<RowConstraints minHeight="10.0" prefHeight="30.0"
+								<RowConstraints minHeight="10.0" prefHeight="48.0"
 									vgrow="SOMETIMES" />
 							</rowConstraints>
 							<children>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0">
 									<children>
-										<Button mnemonicParsing="false" prefHeight="30.0"
-											prefWidth="72.0" text="Button" AnchorPane.bottomAnchor="0.0"
-											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-											AnchorPane.topAnchor="0.0" />
+										<Button fx:id="refreshBtn" mnemonicParsing="false"
+											prefHeight="36.0" prefWidth="72.0" text="Refresh"
+											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0"
 									GridPane.columnIndex="1">
 									<children>
-										<Button layoutY="3.0" mnemonicParsing="false"
-											prefHeight="30.0" prefWidth="72.0" text="Button"
-											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+										<Button fx:id="scaleToFitBtn" layoutY="3.0"
+											mnemonicParsing="false" prefHeight="36.0" prefWidth="72.0"
+											text="Scale To Fit" AnchorPane.bottomAnchor="0.0"
+											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+											AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0"
 									GridPane.columnIndex="2">
 									<children>
-										<Button layoutY="2.0" mnemonicParsing="false"
-											prefHeight="30.0" prefWidth="72.0" text="Button"
-											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+										<Button fx:id="fitVerticalBtn" layoutY="2.0"
+											mnemonicParsing="false" prefHeight="36.0" prefWidth="72.0"
+											text="Fit Vertical" AnchorPane.bottomAnchor="0.0"
+											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+											AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0"
 									GridPane.columnIndex="3">
 									<children>
-										<Button mnemonicParsing="false" prefHeight="30.0"
-											prefWidth="72.0" text="Button" AnchorPane.bottomAnchor="0.0"
-											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-											AnchorPane.topAnchor="0.0" />
+										<Button fx:id="fitHorizontalBtn" mnemonicParsing="false"
+											prefHeight="36.0" prefWidth="72.0" text="Fit Horizontal"
+											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0"
 									GridPane.columnIndex="4">
 									<children>
-										<Button mnemonicParsing="false" prefHeight="30.0"
-											prefWidth="72.0" text="Button" AnchorPane.bottomAnchor="0.0"
-											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-											AnchorPane.topAnchor="0.0" />
+										<Button fx:id="zoomInBtn" mnemonicParsing="false"
+											prefHeight="36.0" prefWidth="72.0" text="Zoom In"
+											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0"
 									GridPane.columnIndex="5">
 									<children>
-										<Button mnemonicParsing="false" prefHeight="30.0"
-											prefWidth="73.0" text="Button" AnchorPane.bottomAnchor="0.0"
-											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-											AnchorPane.topAnchor="0.0" />
+										<Button fx:id="zoomOutBtn" mnemonicParsing="false"
+											prefHeight="36.0" prefWidth="72.0" text="Zoom Out"
+											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0"
 									GridPane.rowIndex="1">
 									<children>
-										<Button mnemonicParsing="false" prefHeight="30.0"
-											prefWidth="72.0" text="Button" AnchorPane.bottomAnchor="0.0"
-											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-											AnchorPane.topAnchor="0.0" />
+										<Button fx:id="panLeftBtn" mnemonicParsing="false"
+											prefHeight="36.0" prefWidth="72.0" text="Pan Left"
+											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0"
 									GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<children>
-										<Button mnemonicParsing="false" prefHeight="30.0"
-											prefWidth="72.0" text="Button" AnchorPane.bottomAnchor="0.0"
-											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-											AnchorPane.topAnchor="0.0" />
+										<Button fx:id="panRightBtn" mnemonicParsing="false"
+											prefHeight="36.0" prefWidth="72.0" text="Pan Right"
+											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0"
 									GridPane.columnIndex="2" GridPane.rowIndex="1">
 									<children>
-										<Button mnemonicParsing="false" prefHeight="30.0"
-											prefWidth="72.0" text="Button" AnchorPane.bottomAnchor="0.0"
-											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-											AnchorPane.topAnchor="0.0" />
+										<Button fx:id="panUpBtn" mnemonicParsing="false"
+											prefHeight="36.0" prefWidth="72.0" text="Pan Up"
+											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0"
 									GridPane.columnIndex="3" GridPane.rowIndex="1">
 									<children>
-										<Button mnemonicParsing="false" prefHeight="30.0"
-											prefWidth="72.0" text="Button" AnchorPane.bottomAnchor="0.0"
-											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-											AnchorPane.topAnchor="0.0" />
+										<Button fx:id="panDownBtn" mnemonicParsing="false"
+											prefHeight="36.0" prefWidth="72.0" text="Pan Down"
+											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0"
 									GridPane.columnIndex="4" GridPane.rowIndex="1">
 									<children>
-										<Button mnemonicParsing="false" prefHeight="30.0"
-											prefWidth="72.0" text="Button" AnchorPane.bottomAnchor="0.0"
-											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-											AnchorPane.topAnchor="0.0" />
+										<Button fx:id="rotateCWBtn" mnemonicParsing="false"
+											prefHeight="36.0" prefWidth="72.0" text="Rotate CW"
+											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0"
 									GridPane.columnIndex="5" GridPane.rowIndex="1">
 									<children>
-										<Button mnemonicParsing="false" prefHeight="30.0"
-											prefWidth="73.0" text="Button" AnchorPane.bottomAnchor="0.0"
-											AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-											AnchorPane.topAnchor="0.0" />
+										<Button fx:id="rotateCCWBtn" mnemonicParsing="false"
+											prefHeight="36.0" prefWidth="73.0" text="Rotate CCW"
+											AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+											AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 									</children>
 								</AnchorPane>
 							</children>

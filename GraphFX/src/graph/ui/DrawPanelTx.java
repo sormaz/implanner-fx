@@ -1,6 +1,8 @@
 package graph.ui;
 
 
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -24,7 +26,7 @@ import javafx.util.Builder;
  * This class defines the canvas where the nodes are drawn.
  * @author Arif
  */
-public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layouter {
+public class DrawPanelTx extends Canvas implements LayoutChangeListener, LayouterTx {
 
 	/**
 	 * Graph model.
@@ -82,7 +84,7 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 				int y = (int)me.getY();
 				Point2D p = new Point2D(x, y);	
 				
-				if (!(x < 0 || x > getWidth() || y < 0 || y > getWidth())){
+				if (!(x < 0 || x > getWidth() || y < 0 || y > getHeight())){
 					selectables.replace(current, selectables.get(current), p);	
 				}
 			}
@@ -190,6 +192,10 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 		
 		gc.setFill(Color.BEIGE);
 		gc.fillRect(0, 0, width, height);
+
+		gc.setStroke(Color.BLACK);
+		gc.setLineWidth(2);
+		gc.strokeRect(0, 0, width, height);
 		
 		gc.setFill(Color.RED);
 		
@@ -296,6 +302,78 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 			if (c.contains(p)) return aNode;
 		}
 		return null;
+	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void scaleToFit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void fitVertical() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void fitHorizontal() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void zoomIn() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void zoomOut() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void panLeft() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void panRight() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void panUp() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void panDown() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rotateCW() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rotateCCW() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

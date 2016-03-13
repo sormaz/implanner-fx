@@ -16,6 +16,7 @@ import edu.ohio.ent.cs5500.GraphListener;
 import edu.ohio.ent.cs5500.Layouter;
 import edu.ohio.ent.cs5500.Node;
 import edu.ohio.ent.cs5500.UndirectedArc;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,6 +32,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
@@ -44,10 +47,14 @@ public class MainViewController implements GraphListener {
 				deleteNodeBtn,deleteArcBtn,clearGraphBtn,redrawGraphBtn;
 	
 	@FXML
+	private Button refreshBtn, scaleToFitBtn, fitVerticalBtn, fitHorizontalBtn, zoomInBtn, zoomOutBtn, 
+				panLeftBtn, panRightBtn, panUpBtn, panDownBtn, rotateCWBtn, rotateCCWBtn;
+	
+	@FXML
 	private Graph myGraph;
 	
 	@FXML
-	private Layouter graphCanvas;
+	private LayouterTx graphCanvas;
 	
 	@FXML
 	private StackPane graphPane;
@@ -55,12 +62,11 @@ public class MainViewController implements GraphListener {
 	/**
 	 * Listmodel for nodes.
 	 */
-	private ObservableList<Node> nodes;
-	
+	private ObservableList<Node> nodes = FXCollections.observableArrayList();
 	/**
 	 * Listmodel for arcs.
 	 */
-	private ObservableList<Arc> arcs;
+	private ObservableList<Arc> arcs = FXCollections.observableArrayList();
 
 	/**
 	 * Listview of "nodes".
@@ -76,11 +82,11 @@ public class MainViewController implements GraphListener {
 	
 	@FXML
 	private void initialize() {
-		nodes = nodeListView.getItems();
-		arcs = arcListView.getItems();
 		
-//		((DrawPanelFX)graphCanvas).heightProperty().set(400);
-//		((DrawPanelFX)graphCanvas).widthProperty().set(400);
+		nodeListView.setItems(nodes);
+		arcListView.setItems(arcs);
+//		nodes = nodeListView.getItems();
+//		arcs = arcListView.getItems();
 		
 		((DrawPanelTx)graphCanvas).widthProperty().bind(
 				graphPane.widthProperty());
@@ -88,6 +94,7 @@ public class MainViewController implements GraphListener {
 				graphPane.heightProperty());
 		
 		initializeToolbar();
+		initializeGraphControls();
 		myGraph.addListener(this);
 	}
 	
@@ -207,6 +214,8 @@ public class MainViewController implements GraphListener {
 //					if (node1.equals(node2)) throw new Exception("Cannot create arc within the same node");
 
 					Stage window = new Stage();
+					window.setMinHeight(250);
+					window.setMinWidth(300);
 
 					Stage parentWindow = (Stage)((Button)event.getSource()).getScene().getWindow();
 
@@ -371,6 +380,85 @@ public class MainViewController implements GraphListener {
 
 	}
 	
+	private void initializeGraphControls() {
+		
+		refreshBtn.setOnAction(e -> graphCanvas.refresh());
+		scaleToFitBtn.setOnAction(e -> graphCanvas.scaleToFit());
+		fitVerticalBtn.setOnAction(e -> graphCanvas.fitVertical());
+		fitHorizontalBtn.setOnAction(e -> graphCanvas.fitVertical());
+		zoomInBtn.setOnAction(e -> graphCanvas.zoomIn());
+		zoomOutBtn.setOnAction(e -> graphCanvas.zoomOut());
+		panLeftBtn.setOnAction(e -> graphCanvas.panLeft());
+		panRightBtn.setOnAction(e -> graphCanvas.panRight());
+		panUpBtn.setOnAction(e -> graphCanvas.panUp());
+		panDownBtn.setOnAction(e -> graphCanvas.panDown());
+		rotateCWBtn.setOnAction(e -> graphCanvas.rotateCW());
+		rotateCCWBtn.setOnAction(e -> graphCanvas.rotateCCW());
+		
+		Image i = new Image(getClass().getResourceAsStream("icons/Refresh.png"));
+		refreshBtn.setGraphic(new ImageView(i));
+		i = new Image(getClass().getResourceAsStream("icons/FullScreen.png"));
+		scaleToFitBtn.setGraphic(new ImageView(i));
+		i = new Image(getClass().getResourceAsStream("icons/FitVertical.png"));
+		fitVerticalBtn.setGraphic(new ImageView(i));
+		i = new Image(getClass().getResourceAsStream("icons/FitHorizontal.png"));
+		fitHorizontalBtn.setGraphic(new ImageView(i));
+		i = new Image(getClass().getResourceAsStream("icons/ZoomIn.png"));
+		zoomInBtn.setGraphic(new ImageView(i));
+		i = new Image(getClass().getResourceAsStream("icons/ZoomOut.png"));
+		zoomOutBtn.setGraphic(new ImageView(i));
+		i = new Image(getClass().getResourceAsStream("icons/Arrow2Left.png"));
+		panLeftBtn.setGraphic(new ImageView(i));
+		i = new Image(getClass().getResourceAsStream("icons/Arrow2Right.png"));
+		panRightBtn.setGraphic(new ImageView(i));
+		i = new Image(getClass().getResourceAsStream("icons/Arrow2Up.png"));
+		panUpBtn.setGraphic(new ImageView(i));
+		i = new Image(getClass().getResourceAsStream("icons/Arrow2Down.png"));
+		panDownBtn.setGraphic(new ImageView(i));
+		i = new Image(getClass().getResourceAsStream("icons/ArrowCW.png"));
+		rotateCWBtn.setGraphic(new ImageView(i));
+		i = new Image(getClass().getResourceAsStream("icons/ArrowCCW.png"));
+		rotateCCWBtn.setGraphic(new ImageView(i));
+				
+		refreshBtn.setText("");
+		scaleToFitBtn.setText("");
+		fitVerticalBtn.setText("");
+		fitHorizontalBtn.setText("");
+		zoomInBtn.setText("");
+		zoomOutBtn.setText("");
+		panLeftBtn.setText("");
+		panRightBtn.setText("");
+		panUpBtn.setText("");
+		panDownBtn.setText("");
+		rotateCWBtn.setText("");
+		rotateCCWBtn.setText("");
+		
+		Tooltip.install
+		(refreshBtn, new Tooltip("Refresh"));
+		Tooltip.install
+		(scaleToFitBtn, new Tooltip("Scale To Fit"));
+		Tooltip.install
+		(fitVerticalBtn, new Tooltip("Fit Vertical"));
+		Tooltip.install
+		(fitHorizontalBtn, new Tooltip("Fit Horizontal"));
+		Tooltip.install
+		(zoomInBtn, new Tooltip("Zoom In"));
+		Tooltip.install
+		(zoomOutBtn, new Tooltip("Zoom Out"));
+		Tooltip.install
+		(panLeftBtn, new Tooltip("Pan Left"));
+		Tooltip.install
+		(panRightBtn, new Tooltip("Pan Right"));
+		Tooltip.install
+		(panUpBtn, new Tooltip("Pan Up"));
+		Tooltip.install
+		(panDownBtn, new Tooltip("Pan Down"));
+		Tooltip.install
+		(rotateCWBtn, new Tooltip("Rotate Clockwise"));
+		Tooltip.install
+		(rotateCCWBtn, new Tooltip("Rotate Counter-Clockwise"));		
+	}
+
 	@Override
 	public void nodeAdded(Node aNode) {
 		// TODO Auto-generated method stub
