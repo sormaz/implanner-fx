@@ -73,7 +73,7 @@ public class DrawPanelFX extends Canvas implements LayoutChangeListener, Layoute
 				int y = (int)me.getY();
 				Point2D p = new Point2D(x, y);	
 				
-				if (!(x < 0 || x > getWidth() || y < 0 || y > getWidth())){
+				if (!(x < 0 || x > getWidth() || y < 0 || y > getHeight())){
 					selectables.replace(current, selectables.get(current), p);	
 				}
 			}
