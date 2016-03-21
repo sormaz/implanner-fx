@@ -20,9 +20,12 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 
 public class DrawPanel3D extends Group implements LayouterTx {
 	
@@ -178,11 +181,20 @@ public class DrawPanel3D extends Group implements LayouterTx {
         nodeSphere.setId(aNode.getName());
         
         Point3D location = getRandCoord(aNode);
-        nodeSphere.setTranslateX(location.getX());
-        nodeSphere.setTranslateY(location.getY());
-        nodeSphere.setTranslateZ(location.getZ());
+//        nodeSphere.setTranslateX(location.getX());
+//        nodeSphere.setTranslateY(location.getY());
+//        nodeSphere.setTranslateZ(location.getZ());
         
-        selectables.getChildren().add(nodeSphere);
+        Text text = new Text(aNode.getName());
+        text.setId(aNode.getName());
+//        text.setBoundsType(TextBoundsType.VISUAL); 
+        Group nodeObject = new Group();
+        nodeObject.setId(aNode.getName());
+        nodeObject.getChildren().addAll(nodeSphere, text);
+        nodeObject.setTranslateX(location.getX());
+        nodeObject.setTranslateY(location.getY());
+        nodeObject.setTranslateZ(location.getZ());
+        selectables.getChildren().add(nodeObject);
         
 //        nodeSphere.setOnMouseClicked(event-> {
 //			oldX = event.getX();
@@ -206,7 +218,7 @@ public class DrawPanel3D extends Group implements LayouterTx {
 	@Override
 	public void nodeDeleted(Node aNode) {
 		// TODO Auto-generated method stub
-		selectables.getChildren().remove(selectables.lookup("#" + aNode.getName()));		
+		selectables.getChildren().removeAll(selectables.lookupAll("#" + aNode.getName()));		
 	}
 
 	@Override
