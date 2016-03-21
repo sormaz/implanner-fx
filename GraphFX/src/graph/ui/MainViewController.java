@@ -88,10 +88,15 @@ public class MainViewController implements GraphListener {
 //		nodes = nodeListView.getItems();
 //		arcs = arcListView.getItems();
 		
-		((DrawPanelTx)graphCanvas).widthProperty().bind(
-				graphPane.widthProperty());
-		((DrawPanelTx)graphCanvas).heightProperty().bind(
-				graphPane.heightProperty());
+//		((DrawPanelTx)graphCanvas).widthProperty().bind(
+//				graphPane.widthProperty());
+//		((DrawPanelTx)graphCanvas).heightProperty().bind(
+//				graphPane.heightProperty());
+		
+		((DrawPanel3D)graphCanvas).widthProperty().bind(
+		graphPane.widthProperty());
+		((DrawPanel3D)graphCanvas).heightProperty().bind(
+		graphPane.heightProperty());
 		
 		initializeToolbar();
 		initializeGraphControls();

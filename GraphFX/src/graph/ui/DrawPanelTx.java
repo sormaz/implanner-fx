@@ -1,6 +1,5 @@
 package graph.ui;
 
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -179,7 +178,7 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 		layoutChanged();
 	}
 
-	@Override
+	@Override 
 	public void layoutChanged() {
 		// TODO Auto-generated method stub
 
@@ -229,7 +228,11 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 			Point2D d = selectables.get(aNode);
 			gc.strokeOval(d.getX()-NODE_RADIUS, d.getY()-NODE_RADIUS, 
 							NODE_RADIUS*2, NODE_RADIUS*2);
-			gc.fillText(aNode.getName(), d.getX(), d.getY());
+			
+			Point2D p = viewTransform.transform(d);
+			gc.setTransform(new Affine());
+			gc.fillText(aNode.getName() + ": (" + (int)d.getX() + ", " + (int)d.getY() + ")" , p.getX(), p.getY());
+			gc.setTransform(viewTransform);
 		}
 		
 		for (Arc anArc : myGraph.getUndirectedArcs()){
@@ -406,6 +409,7 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 
 		temp.getTransforms().add(viewTransform);
 		Bounds bounds = temp.getBoundsInParent();
+
 		
 		return new Rectangle2D(bounds.getMinX(), bounds.getMinY(),
 						bounds.getWidth(), bounds.getHeight());
@@ -464,12 +468,12 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 //		}
 		
 		Affine mirror 
-			= new Affine(1, 0, 0, -1, 0, getHeight());
+			= new Affine(1, 0, 0, 0, -1, getHeight());
 		
 		viewTransform = new Affine();
-		viewTransform.createConcatenation(mirror);
 		viewTransform.appendTranslation((margin / 2) * getWidth(), (margin / 2) * getHeight());
 		viewTransform.appendScale(scaleX, scaleY);
+		viewTransform.append(mirror);
 //		if (selectables.size() > 1) {
 //			viewTransform.appendTranslation(- getMinimumX(), - getMinimumY());
 //		}
@@ -484,6 +488,7 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 	public void zoomFromCenter(double zoomRatioX, double zoomRatioY) {
 
 		Affine oldTransform = viewTransform;
+		double oldRotation = rotationCounter;
 
 		Bounds canvasFrame = getLayoutBounds();			
 
@@ -494,7 +499,6 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 			Affine invViewTransform = viewTransform.createInverse();
 
 			Bounds worldFrame = invViewTransform.transform(canvasFrame);
-//			= invViewTransform.createTransformedShape(canvasFrame).getBounds2D();
 
 			double worldCenterX = worldFrame.getMinX() + worldFrame.getWidth() / 2;
 			double worldCenterY = worldFrame.getMinY() + worldFrame.getHeight() / 2;
@@ -513,7 +517,8 @@ public class DrawPanelTx extends Canvas implements LayoutChangeListener, Layoute
 			// TODO Auto-generated catch block
 
 			viewTransform = oldTransform;
-			GraphDialog.error(exp.getMessage());
+			rotationCounter = oldRotation;
+
 			System.out.println(exp.getMessage());
 			exp.printStackTrace();
 		}				
