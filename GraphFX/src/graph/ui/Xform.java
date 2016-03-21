@@ -145,125 +145,124 @@ public class Xform extends Group {
 //		        }
 		
 		        if (event.getClickCount() == 2) {
-				Stage window = new Stage();
-				window.setMinHeight(250);
-				window.setMinWidth(300);
+					Stage window = new Stage();
+					window.setMinHeight(250);
+					window.setMinWidth(300);
 
-//				GridPane grid = new GridPane();
-//				grid.setAlignment(Pos.CENTER);
-//				grid.setHgap(10);
-//				grid.setVgap(10);
-//				grid.setPadding(new Insets(25, 25, 25, 25));
-				
-				double tRange = 500;
-				double aRange = 180;
-				double sRange = 3;
-						
-				Slider s11 = new Slider(t.xProperty().get()-tRange,t.xProperty().get()+tRange,t.xProperty().get());
-				s11.setShowTickLabels(true);
-				t.xProperty().bind(s11.valueProperty());
-				Slider s12 = new Slider(t.yProperty().get()-tRange,t.yProperty().get()+tRange,t.yProperty().get());
-				s12.setShowTickLabels(true);
-				t.yProperty().bind(s12.valueProperty());
-				Slider s13 = new Slider(t.zProperty().get()-tRange,t.zProperty().get()+tRange,t.zProperty().get());
-				s13.setShowTickLabels(true);
-				t.zProperty().bind(s13.valueProperty());				
-				HBox hbox = new HBox();
-				hbox.setAlignment(Pos.CENTER);
-//				hbox.setPadding(new Insets(25, 25, 25, 25));	
-				hbox.getChildren().addAll(s11,s12,s13);
+//					GridPane grid = new GridPane();
+//					grid.setAlignment(Pos.CENTER);
+//					grid.setHgap(10);
+//					grid.setVgap(10);
+//					grid.setPadding(new Insets(25, 25, 25, 25));
+					
+					double tRange = 500;
+					double aRange = 180;
+					double sRange = 3;
 							
-				Slider s21 = new Slider(p.xProperty().get()-tRange,p.xProperty().get()+tRange,p.xProperty().get());
-				s21.setShowTickLabels(true);
-				p.xProperty().bind(s21.valueProperty());
-				Slider s22 = new Slider(p.yProperty().get()-tRange,p.yProperty().get()+tRange,p.yProperty().get());
-				s22.setShowTickLabels(true);
-				p.yProperty().bind(s22.valueProperty());
-				Slider s23 = new Slider(p.zProperty().get()-tRange,p.zProperty().get()+tRange,p.zProperty().get());
-				s23.setShowTickLabels(true);
-				p.zProperty().bind(s23.valueProperty());				
-				HBox hbox2 = new HBox();
-				hbox2.setAlignment(Pos.CENTER);
-//				hbox2.setPadding(new Insets(25, 25, 25, 25));	
-				hbox2.getChildren().addAll(s21,s22,s23);
-				
-				Slider s30 = new Slider(rx.angleProperty().get()-aRange,
-						rx.angleProperty().get()+aRange,rx.angleProperty().get());
-				s30.setShowTickLabels(true);
-				rx.angleProperty().bind(s30.valueProperty());	
-				HBox hbox3 = new HBox();
-				hbox3.setAlignment(Pos.CENTER);
-//				hbox3.setPadding(new Insets(25, 25, 25, 25));				
-				hbox3.getChildren().addAll(s30);
-				
-				Slider s40 = new Slider(ry.angleProperty().get()-aRange,
-						ry.angleProperty().get()+aRange,ry.angleProperty().get());
-				s40.setShowTickLabels(true);
-				ry.angleProperty().bind(s40.valueProperty());
-				HBox hbox4 = new HBox();
-				hbox4.setAlignment(Pos.CENTER);
-//				hbox4.setPadding(new Insets(25, 25, 25, 25));	
-				hbox4.getChildren().addAll(s40);
-				
-				Slider s50 = new Slider(rz.angleProperty().get()-aRange,
-						rz.angleProperty().get()+aRange,rz.angleProperty().get());
-				s50.setShowTickLabels(true);
-				rz.angleProperty().bind(s50.valueProperty());
-				HBox hbox5 = new HBox();
-				hbox5.setAlignment(Pos.CENTER);
-//				hbox5.setPadding(new Insets(25, 25, 25, 25));	
-				hbox5.getChildren().addAll(s50);
-				
-				Slider s61 = new Slider(s.xProperty().get()-sRange,s.xProperty().get()+sRange,s.xProperty().get());
-				s61.setShowTickLabels(true);
-				s.xProperty().bind(s61.valueProperty());
-				Slider s62 = new Slider(s.yProperty().get()-sRange,s.yProperty().get()+sRange,s.yProperty().get());
-				s62.setShowTickLabels(true);
-				s.yProperty().bind(s62.valueProperty());
-				Slider s63 = new Slider(s.zProperty().get()-sRange,s.zProperty().get()+sRange,s.zProperty().get());
-				s63.setShowTickLabels(true);
-				s.zProperty().bind(s63.valueProperty());				
-				HBox hbox6 = new HBox();
-				hbox6.setAlignment(Pos.CENTER);
-//				hbox.setPadding(new Insets(25, 25, 25, 25));
-				hbox6.getChildren().addAll(s61,s62,s63);
-				
-							
-				Slider s71 = new Slider(ip.xProperty().get()-tRange,ip.xProperty().get()+tRange,ip.xProperty().get());
-				s71.setShowTickLabels(true);
-				ip.xProperty().bind(s71.valueProperty());
-				Slider s72 = new Slider(ip.yProperty().get()-tRange,ip.yProperty().get()+tRange,ip.yProperty().get());
-				s72.setShowTickLabels(true);
-				ip.yProperty().bind(s72.valueProperty());
-				Slider s73 = new Slider(ip.zProperty().get()-tRange,ip.zProperty().get()+tRange,ip.zProperty().get());
-				s73.setShowTickLabels(true);
-				ip.zProperty().bind(s73.valueProperty());				
-				HBox hbox7 = new HBox();
-				hbox7.setAlignment(Pos.CENTER);
-//				hbox.setPadding(new Insets(25, 25, 25, 25));
-				hbox7.getChildren().addAll(s71,s72,s73);
-				
-				FlowPane flow = new FlowPane(Orientation.VERTICAL); 
-				flow.setAlignment(Pos.CENTER);
-				flow.setPadding(new Insets(25, 25, 25, 25));	
-				flow.setVgap(2);
-				flow.setHgap(2);
-				flow.getChildren().addAll(hbox, hbox2, hbox3, hbox4, hbox5, hbox6, hbox7);
-				
-				Scene scene = new Scene(flow, 
-									500, 
-									400);
-				window.setScene(scene);
+					Slider tx = new Slider(t.xProperty().get()-tRange,t.xProperty().get()+tRange,t.xProperty().get());
+					tx.setShowTickLabels(true);
+					t.xProperty().bind(tx.valueProperty());
+					Slider ty = new Slider(t.yProperty().get()-tRange,t.yProperty().get()+tRange,t.yProperty().get());
+					ty.setShowTickLabels(true);
+					t.yProperty().bind(ty.valueProperty());
+					Slider tz = new Slider(t.zProperty().get()-tRange,t.zProperty().get()+tRange,t.zProperty().get());
+					tz.setShowTickLabels(true);
+					t.zProperty().bind(tz.valueProperty());				
+					HBox initTranslate = new HBox();
+					initTranslate.setAlignment(Pos.CENTER);
+//					hbox.setPadding(new Insets(25, 25, 25, 25));	
+					initTranslate.getChildren().addAll(tx,ty,tz);
+								
+					Slider px = new Slider(p.xProperty().get()-tRange,p.xProperty().get()+tRange,p.xProperty().get());
+					px.setShowTickLabels(true);
+					p.xProperty().bind(px.valueProperty());
+					Slider py = new Slider(p.yProperty().get()-tRange,p.yProperty().get()+tRange,p.yProperty().get());
+					py.setShowTickLabels(true);
+					p.yProperty().bind(py.valueProperty());
+					Slider pz = new Slider(p.zProperty().get()-tRange,p.zProperty().get()+tRange,p.zProperty().get());
+					pz.setShowTickLabels(true);
+					p.zProperty().bind(pz.valueProperty());				
+					HBox pivot = new HBox();
+					pivot.setAlignment(Pos.CENTER);
+//					hbox2.setPadding(new Insets(25, 25, 25, 25));	
+					pivot.getChildren().addAll(px,py,pz);
+					
+					Slider rxSlider = new Slider(rx.angleProperty().get()-aRange,
+							rx.angleProperty().get()+aRange,rx.angleProperty().get());
+					rxSlider.setShowTickLabels(true);
+					rx.angleProperty().bind(rxSlider.valueProperty());	
+					HBox rotateX = new HBox();
+					rotateX.setAlignment(Pos.CENTER);
+//					hbox3.setPadding(new Insets(25, 25, 25, 25));				
+					rotateX.getChildren().addAll(rxSlider);
+					
+					Slider rySlider = new Slider(ry.angleProperty().get()-aRange,
+							ry.angleProperty().get()+aRange,ry.angleProperty().get());
+					rySlider.setShowTickLabels(true);
+					ry.angleProperty().bind(rySlider.valueProperty());
+					HBox rotateY = new HBox();
+					rotateY.setAlignment(Pos.CENTER);
+//					hbox4.setPadding(new Insets(25, 25, 25, 25));	
+					rotateY.getChildren().addAll(rySlider);
+					
+					Slider rzSlider = new Slider(rz.angleProperty().get()-aRange,
+							rz.angleProperty().get()+aRange,rz.angleProperty().get());
+					rzSlider.setShowTickLabels(true);
+					rz.angleProperty().bind(rzSlider.valueProperty());
+					HBox rotateZ = new HBox();
+					rotateZ.setAlignment(Pos.CENTER);
+//					hbox5.setPadding(new Insets(25, 25, 25, 25));	
+					rotateZ.getChildren().addAll(rzSlider);
+					
+					Slider sx = new Slider(s.xProperty().get()-sRange,s.xProperty().get()+sRange,s.xProperty().get());
+					sx.setShowTickLabels(true);
+					s.xProperty().bind(sx.valueProperty());
+					Slider sy = new Slider(s.yProperty().get()-sRange,s.yProperty().get()+sRange,s.yProperty().get());
+					sy.setShowTickLabels(true);
+					s.yProperty().bind(sy.valueProperty());
+					Slider sz = new Slider(s.zProperty().get()-sRange,s.zProperty().get()+sRange,s.zProperty().get());
+					sz.setShowTickLabels(true);
+					s.zProperty().bind(sz.valueProperty());				
+					HBox scale = new HBox();
+					scale.setAlignment(Pos.CENTER);
+//					hbox.setPadding(new Insets(25, 25, 25, 25));
+					scale.getChildren().addAll(sx,sy,sz);
+					
+								
+					Slider ipx = new Slider(ip.xProperty().get()-tRange,ip.xProperty().get()+tRange,ip.xProperty().get());
+					ipx.setShowTickLabels(true);
+					ip.xProperty().bind(ipx.valueProperty());
+					Slider ipy = new Slider(ip.yProperty().get()-tRange,ip.yProperty().get()+tRange,ip.yProperty().get());
+					ipy.setShowTickLabels(true);
+					ip.yProperty().bind(ipy.valueProperty());
+					Slider ipz = new Slider(ip.zProperty().get()-tRange,ip.zProperty().get()+tRange,ip.zProperty().get());
+					ipz.setShowTickLabels(true);
+					ip.zProperty().bind(ipz.valueProperty());				
+					HBox inversePivot = new HBox();
+					inversePivot.setAlignment(Pos.CENTER);
+//					hbox.setPadding(new Insets(25, 25, 25, 25));
+					inversePivot.getChildren().addAll(ipx,ipy,ipz);
+					
+					FlowPane flow = new FlowPane(Orientation.VERTICAL); 
+					flow.setAlignment(Pos.CENTER);
+					flow.setPadding(new Insets(25, 25, 25, 25));	
+					flow.setVgap(2);
+					flow.setHgap(2);
+					flow.getChildren().addAll(initTranslate, pivot, rotateX, rotateY, rotateZ, scale, inversePivot);
+					
+					Scene scene = new Scene(flow, 
+										500, 
+										400);
+					window.setScene(scene);
 
-				window.setX 
-					(event.getSceneX());
+					window.setX 
+						(event.getSceneX());
 
-				window.setY
-					(event.getSceneY());
+					window.setY
+						(event.getSceneY());
 
-				window.setTitle(((Xform)event.getSource()).name);
-				window.show();
-		        }
+					window.setTitle(name);
+					window.show();		        }
 		    }
 		});
 	}
