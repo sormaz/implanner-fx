@@ -186,6 +186,10 @@ public class DrawPanel3D extends Group implements LayouterTx {
 //        nodeSphere.setTranslateZ(location.getZ());
         
         Text text = new Text(aNode.getName());
+//        Text text = new Text(aNode.getName() + "\n" + 
+//        					"(" + location.getX() + "," +
+//        					location.getY() + "," +
+//        					location.getZ() + ")");
         text.setId(aNode.getName());
 //        text.setBoundsType(TextBoundsType.VISUAL); 
         Group nodeObject = new Group();

@@ -38,10 +38,12 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
@@ -168,10 +170,11 @@ public class Xform extends Group {
 					Slider tz = new Slider(t.zProperty().get()-tRange,t.zProperty().get()+tRange,t.zProperty().get());
 					tz.setShowTickLabels(true);
 					t.zProperty().bind(tz.valueProperty());				
-					HBox initTranslate = new HBox();
+					VBox initTranslate = new VBox();
 					initTranslate.setAlignment(Pos.CENTER);
 //					hbox.setPadding(new Insets(25, 25, 25, 25));	
-					initTranslate.getChildren().addAll(tx,ty,tz);
+					Label initTranLbl = new Label("Translation");
+					initTranslate.getChildren().addAll(initTranLbl,tx,ty,tz);
 								
 					Slider px = new Slider(p.xProperty().get()-tRange,p.xProperty().get()+tRange,p.xProperty().get());
 					px.setShowTickLabels(true);
@@ -182,37 +185,43 @@ public class Xform extends Group {
 					Slider pz = new Slider(p.zProperty().get()-tRange,p.zProperty().get()+tRange,p.zProperty().get());
 					pz.setShowTickLabels(true);
 					p.zProperty().bind(pz.valueProperty());				
-					HBox pivot = new HBox();
+					VBox pivot = new VBox();
 					pivot.setAlignment(Pos.CENTER);
-//					hbox2.setPadding(new Insets(25, 25, 25, 25));	
-					pivot.getChildren().addAll(px,py,pz);
+//					hbox2.setPadding(new Insets(25, 25, 25, 25));
+					Label pivotLbl = new Label("Pivot");
+					pivot.getChildren().addAll(pivotLbl,px,py,pz);
 					
 					Slider rxSlider = new Slider(rx.angleProperty().get()-aRange,
 							rx.angleProperty().get()+aRange,rx.angleProperty().get());
 					rxSlider.setShowTickLabels(true);
 					rx.angleProperty().bind(rxSlider.valueProperty());	
-					HBox rotateX = new HBox();
-					rotateX.setAlignment(Pos.CENTER);
+//					HBox rotateX = new HBox();
+//					rotateX.setAlignment(Pos.CENTER);
 //					hbox3.setPadding(new Insets(25, 25, 25, 25));				
-					rotateX.getChildren().addAll(rxSlider);
+//					rotateX.getChildren().addAll(rxSlider);
 					
 					Slider rySlider = new Slider(ry.angleProperty().get()-aRange,
 							ry.angleProperty().get()+aRange,ry.angleProperty().get());
 					rySlider.setShowTickLabels(true);
 					ry.angleProperty().bind(rySlider.valueProperty());
-					HBox rotateY = new HBox();
-					rotateY.setAlignment(Pos.CENTER);
+//					HBox rotateY = new HBox();
+//					rotateY.setAlignment(Pos.CENTER);
 //					hbox4.setPadding(new Insets(25, 25, 25, 25));	
-					rotateY.getChildren().addAll(rySlider);
+//					rotateY.getChildren().addAll(rySlider);
 					
 					Slider rzSlider = new Slider(rz.angleProperty().get()-aRange,
 							rz.angleProperty().get()+aRange,rz.angleProperty().get());
 					rzSlider.setShowTickLabels(true);
 					rz.angleProperty().bind(rzSlider.valueProperty());
-					HBox rotateZ = new HBox();
-					rotateZ.setAlignment(Pos.CENTER);
+//					HBox rotateZ = new HBox();
+//					rotateZ.setAlignment(Pos.CENTER);
 //					hbox5.setPadding(new Insets(25, 25, 25, 25));	
-					rotateZ.getChildren().addAll(rzSlider);
+//					rotateZ.getChildren().addAll(rzSlider);
+					
+					VBox rotate = new VBox();
+					rotate.setAlignment(Pos.CENTER);
+					Label rotateLbl = new Label("Rotation");
+					rotate.getChildren().addAll(rotateLbl,rxSlider,rySlider,rzSlider);
 					
 					Slider sx = new Slider(s.xProperty().get()-sRange,s.xProperty().get()+sRange,s.xProperty().get());
 					sx.setShowTickLabels(true);
@@ -223,10 +232,11 @@ public class Xform extends Group {
 					Slider sz = new Slider(s.zProperty().get()-sRange,s.zProperty().get()+sRange,s.zProperty().get());
 					sz.setShowTickLabels(true);
 					s.zProperty().bind(sz.valueProperty());				
-					HBox scale = new HBox();
+					VBox scale = new VBox();
 					scale.setAlignment(Pos.CENTER);
 //					hbox.setPadding(new Insets(25, 25, 25, 25));
-					scale.getChildren().addAll(sx,sy,sz);
+					Label scaleLbl = new Label("Scaling");
+					scale.getChildren().addAll(scaleLbl,sx,sy,sz);
 					
 								
 					Slider ipx = new Slider(ip.xProperty().get()-tRange,ip.xProperty().get()+tRange,ip.xProperty().get());
@@ -238,17 +248,18 @@ public class Xform extends Group {
 					Slider ipz = new Slider(ip.zProperty().get()-tRange,ip.zProperty().get()+tRange,ip.zProperty().get());
 					ipz.setShowTickLabels(true);
 					ip.zProperty().bind(ipz.valueProperty());				
-					HBox inversePivot = new HBox();
+					VBox inversePivot = new VBox();
 					inversePivot.setAlignment(Pos.CENTER);
 //					hbox.setPadding(new Insets(25, 25, 25, 25));
-					inversePivot.getChildren().addAll(ipx,ipy,ipz);
+					Label invPivotLbl = new Label("Inverse Pivot");
+					inversePivot.getChildren().addAll(invPivotLbl,ipx,ipy,ipz);
 					
-					FlowPane flow = new FlowPane(Orientation.VERTICAL); 
+					FlowPane flow = new FlowPane(Orientation.HORIZONTAL); 
 					flow.setAlignment(Pos.CENTER);
 					flow.setPadding(new Insets(25, 25, 25, 25));	
 					flow.setVgap(2);
 					flow.setHgap(2);
-					flow.getChildren().addAll(initTranslate, pivot, rotateX, rotateY, rotateZ, scale, inversePivot);
+					flow.getChildren().addAll(initTranslate, pivot, rotate, scale, inversePivot);
 					
 					Scene scene = new Scene(flow, 
 										500, 
