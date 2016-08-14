@@ -23,6 +23,7 @@ import edu.ohiou.mfgresearch.labimp.basis.ViewObject.ViewPanel;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
+import edu.ohiou.mfgresearch.labimp.gtk3d.Ellipse;
 import edu.ohiou.mfgresearch.labimp.gtk3d.LineSegment;
 
 public class Globe extends ImpObject {
