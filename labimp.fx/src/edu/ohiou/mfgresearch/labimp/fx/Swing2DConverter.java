@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import edu.ohiou.mfgresearch.labimp.basis.DrawString;
 import edu.ohiou.mfgresearch.labimp.basis.ViewObject;
+import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
@@ -13,17 +14,30 @@ public class Swing2DConverter extends SwingConverter {
 
 	ViewObject swingTarget;
 	
+	@Override
+	public ViewObject getSwingTarget() {
+		// TODO Auto-generated method stub
+		return swingTarget;
+	}
+
+	public Swing2DConverter(ViewObject swingTarget) {
+		this(null, swingTarget);
+	}
+	
 	public Swing2DConverter(DrawFXCanvas parentContainer, 
 										ViewObject swingTarget) {
-		super(parentContainer);
+		super(parentContainer, DimensionSize.twoD);
 		this.swingTarget = swingTarget;
 	}
 	
 	public LinkedList<Shape> getFXShapes() {
 		Path swingPath = getFXShapes(swingTarget.getDrawList());
 		
-		LinkedList<Shape> fxShapes = new LinkedList<>();
+		LinkedList<Shape> fxShapes = new LinkedList();
 		fxShapes.add(swingPath);
+//		
+//		fxShapes.setScale(parentContainer.getScale());
+		
 		return fxShapes;
 	}
 	
@@ -45,9 +59,12 @@ public class Swing2DConverter extends SwingConverter {
 			fxText.setText(ds.getContent());
 			fxText.setX(ds.gettPosition().getX());
 			fxText.setY(ds.gettPosition().getY());
-			fxText.setScaleX(ds.getSize());
-			fxText.setScaleY(ds.getSize());
 			
+			if(!Double.isNaN(ds.getSize())) {
+				fxText.setScaleX(ds.getSize());
+				fxText.setScaleY(ds.getSize());
+				System.out.println(ds.getSize());
+			}	
 			fxStrings.add(fxText);
 			
 		}

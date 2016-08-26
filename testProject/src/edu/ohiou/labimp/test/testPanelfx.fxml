@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="411.0" prefWidth="553.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Canvas height="386.0" layoutX="14.0" layoutY="13.0" width="534.0" />
+      <Path fill="DODGERBLUE" layoutX="76.0" layoutY="65.0" stroke="BLACK" strokeType="INSIDE">
+          <elements>
+              <MoveTo x="100.0" y="100" />
+              <LineTo x="150.0" y="50.0" />
+              <ArcTo radiusX="30.0" radiusY="25" x="200.0" y="100.0" />
+              <QuadCurveTo controlX="300.0" controlY="300.0" y="150.0" />
+              <ClosePath />
+          </elements>
+      </Path>
+   </children>
+</AnchorPane>

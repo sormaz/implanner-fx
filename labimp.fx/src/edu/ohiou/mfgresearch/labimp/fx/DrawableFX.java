@@ -8,7 +8,7 @@ import javafx.scene.text.Text;
 
 public interface DrawableFX {
 	
-	LinkedList<Shape> getFXShapes();
+	LinkedList getFXShapes();
 	
 	LinkedList<Shape> getFXFillShapes();
 	

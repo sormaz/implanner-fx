@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="400.0" prefWidth="646.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"> 
+   <bottom>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button fx:id="openFileBtn" mnemonicParsing="false" text="Open File" />
+            <Button fx:id="saveFileBtn" mnemonicParsing="false" text="Save File" />
+            <Button fx:id="addNodeBtn" mnemonicParsing="false" text="Add Node" />
+            <Button fx:id="addArcBtn" mnemonicParsing="false" text="Add Arc" />
+            <Button fx:id="deleteNodeBtn" mnemonicParsing="false" text="Delete Node" />
+            <Button fx:id="deleteArcBtn" mnemonicParsing="false" text="Delete Arc" />
+            <Button fx:id="clearGraphBtn" mnemonicParsing="false" text="Clear Graph" />
+            <Button fx:id="redrawGraphBtn" mnemonicParsing="false" text="Redraw Graph" />
+        </items>
+      </ToolBar>
+   </bottom>
+   <center>
+      <SplitPane dividerPositions="0.3307453416149068" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <items>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <TabPane layoutX="-14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <tabs>
+                      <Tab text="Untitled Tab 1">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                      <Tab text="Untitled Tab 2">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </children></AnchorPane>
+            <AnchorPane prefHeight="358.0" prefWidth="441.0" />
+         </items>
+      </SplitPane>
+   </center>
+</BorderPane>

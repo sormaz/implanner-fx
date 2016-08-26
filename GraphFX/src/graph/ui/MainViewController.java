@@ -93,9 +93,9 @@ public class MainViewController implements GraphListener {
 //		((DrawPanelTx)graphCanvas).heightProperty().bind(
 //				graphPane.heightProperty());
 		
-		((DrawPanel3D)graphCanvas).widthProperty().bind(
+		((DrawPanelTx)graphCanvas).widthProperty().bind(
 		graphPane.widthProperty());
-		((DrawPanel3D)graphCanvas).heightProperty().bind(
+		((DrawPanelTx)graphCanvas).heightProperty().bind(
 		graphPane.heightProperty());
 		
 		initializeToolbar();

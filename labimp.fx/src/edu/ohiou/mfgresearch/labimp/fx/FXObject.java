@@ -3,23 +3,11 @@
  */
 package edu.ohiou.mfgresearch.labimp.fx;
 
-import java.awt.geom.PathIterator;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
-import edu.ohiou.labimp.test.Globe;
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.ClosePath;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 /**
  * @author Arif
@@ -46,13 +34,10 @@ public class FXObject implements DrawableFX, ViewableFX {
 
 	@Override
 	public void display() {
-		// TODO Auto-generated method stub
-		
-//		ApplicationLauncher app = new ApplicationLauncher();
-//		app.setTarget(this);
-//		
-//		app.launch(this);		
-		
+		// TODO Auto-generated method stub	
+		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
+		app.setTarget(this);
+		app.launch(this);		
 	}
 
 	@Override

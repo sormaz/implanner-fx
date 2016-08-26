@@ -1,7 +1,11 @@
 package graph.ui;
 
+import java.net.URL;
 import java.util.Collection;
 import java.util.Random;
+
+import com.interactivemesh.jfx.importer.ImportException;
+import com.interactivemesh.jfx.importer.stl.StlMeshImporter;
 
 import edu.ohio.ent.cs5500.Arc;
 import edu.ohio.ent.cs5500.Graph;
@@ -23,7 +27,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.CullFace;
+import javafx.scene.shape.DrawMode;
+import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Sphere;
+import javafx.scene.shape.TriangleMesh;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
 
@@ -51,12 +59,13 @@ public class DrawPanel3D extends Group implements LayouterTx {
         camera.setNearClip(0.1);
         camera.setFarClip(10000.0);
         camera.setTranslateZ(-1000);
-        scene.setCamera(camera);	
+        scene.setCamera(camera);
         getChildren().add(scene);
         
         widthProperty().addListener(evt -> makeLayout());
         heightProperty().addListener(evt -> makeLayout());
-		
+        
+        	
 //        scene.setOnMouseClicked(event-> {
 //			oldX = event.getX();
 //			oldY = event.getY();	
@@ -176,28 +185,54 @@ public class DrawPanel3D extends Group implements LayouterTx {
         greyMaterial.setDiffuseColor(getRandomColor());
         greyMaterial.setSpecularColor(Color.GREY);
 		
-        Sphere nodeSphere = new Sphere(40.0);
+//        Sphere nodeSphere = new Sphere(40.0);
+//        nodeSphere.setMaterial(greyMaterial);
+//        nodeSphere.setId(aNode.getName());
+        
+        
+        StlMeshImporter stlImporter = new StlMeshImporter();
+        try {
+            URL modelUrl = this.getClass().getResource("anc101-body-length50mm.stl");
+            stlImporter.read(modelUrl);            
+        }
+        catch (ImportException e) {
+            // handle exception
+        }
+        TriangleMesh stlMesh = stlImporter.getImport();
+        MeshView nodeSphere = new MeshView(stlMesh);
         nodeSphere.setMaterial(greyMaterial);
+        nodeSphere.setCullFace(CullFace.BACK);
+//        nodeSphere.setDrawMode(DrawMode.LINE);
         nodeSphere.setId(aNode.getName());
+        nodeSphere.setScaleX(5);
+        nodeSphere.setScaleY(5);
+        nodeSphere.setScaleZ(5);
+        
+//        selectables.getChildren().add(meshView);
+        
+        
+        
         
         Point3D location = getRandCoord(aNode);
-//        nodeSphere.setTranslateX(location.getX());
-//        nodeSphere.setTranslateY(location.getY());
-//        nodeSphere.setTranslateZ(location.getZ());
         
-        Text text = new Text(aNode.getName());
-//        Text text = new Text(aNode.getName() + "\n" + 
-//        					"(" + location.getX() + "," +
-//        					location.getY() + "," +
-//        					location.getZ() + ")");
-        text.setId(aNode.getName());
+        nodeSphere.setTranslateX(location.getX());
+        nodeSphere.setTranslateY(location.getY());
+        nodeSphere.setTranslateZ(location.getZ());
+        
+//        Text text = new Text(aNode.getName());
+//        text.setId(aNode.getName());
+//      Text text = new Text(aNode.getName() + "\n" + 
+//		"(" + location.getX() + "," +
+//		location.getY() + "," +
+//		location.getZ() + ")");
 //        text.setBoundsType(TextBoundsType.VISUAL); 
         Group nodeObject = new Group();
         nodeObject.setId(aNode.getName());
-        nodeObject.getChildren().addAll(nodeSphere, text);
-        nodeObject.setTranslateX(location.getX());
-        nodeObject.setTranslateY(location.getY());
-        nodeObject.setTranslateZ(location.getZ());
+        nodeObject.getChildren().addAll(nodeSphere);
+//        nodeObject.getChildren().addAll(text);
+//        nodeObject.setTranslateX(location.getX());
+//        nodeObject.setTranslateY(location.getY());
+//        nodeObject.setTranslateZ(location.getZ());
         selectables.getChildren().add(nodeObject);
         
 //        nodeSphere.setOnMouseClicked(event-> {

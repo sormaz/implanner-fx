@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <interface id="1" language="java" name="graph.ui.LayouterTx" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/LayouterTx.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="279" width="114" x="1576" y="860"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="2" language="java" name="graph.ui.GraphDialog" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/GraphDialog.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="109" x="269" y="-125"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="graph.ui.DrawPanelTx" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/DrawPanelTx.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="945" width="258" x="1278" y="-125"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="graph.ui.GraphBuilderFactory.DrawPanel3DBuilder" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/GraphBuilderFactory.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="141" x="872" y="860"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="graph.ui.GraphBuilderFactory.DrawPanelTxBuilder" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/GraphBuilderFactory.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="140" x="1053" y="860"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="graph.ui.GraphBuilderFactory" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/GraphBuilderFactory.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="185" x="1053" y="-125"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="graph.ui.GraphViewerFXML" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/GraphViewerFXML.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="129" x="418" y="-125"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="graph.ui.MainViewController" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/MainViewController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="693" width="179" x="1576" y="-125"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="graph.ui.Xform" project="GraphFX" file="/GraphFX/src/graph/ui/Xform.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="675" width="219" x="2016" y="-125"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="graph.ui.DrawPanel3D" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/DrawPanel3D.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="657" width="181" x="1795" y="-125"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="graph.ui.DrawPanelFX" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/DrawPanelFX.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="423" width="210" x="587" y="-125"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="graph.ui.GraphBuilderFactory.DrawPanelFXBuilder" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/GraphBuilderFactory.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="140" x="1233" y="860"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="13" language="java" name="graph.ui.Xform.RotateOrder" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/Xform.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="119" x="2016" y="860"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="14" language="java" name="graph.ui.GraphViewerFX" project="GraphFX" 
+    file="/GraphFX/src/graph/ui/GraphViewerFX.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="387" width="176" x="837" y="-125"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="15">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="16" name="graphCanvas"/>      
+      <multiplicity id="17" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="18">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="13"/>  
+  </nesting>  
+  <realization id="19">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <realization id="20">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <nesting id="21">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="4"/>  
+  </nesting>  
+  <nesting id="22">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="12"/>  
+  </nesting>  
+  <nesting id="23">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="5"/>  
+  </nesting>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

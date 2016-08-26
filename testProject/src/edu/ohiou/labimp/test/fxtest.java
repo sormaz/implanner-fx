@@ -1,71 +1,161 @@
 package edu.ohiou.labimp.test;
 
-
+import java.awt.Dimension;
 import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
+import javax.vecmath.Point3d;
+
+import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
+import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
+import edu.ohiou.mfgresearch.labimp.gtk3d.Polygon3d;
+import edu.ohiou.mfgresearch.labimp.gtk3d.Torus;
 import javafx.application.Application;
-import javafx.application.ConditionalFeature;
-import javafx.application.Platform;
-import javafx.scene.DepthTest;
+import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
-import javafx.scene.control.Slider;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.QuadCurveTo;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
-public class fxtest extends Application {
 
-	@SuppressWarnings("unused")
+public class fxtest extends Application {
+	
+	private ImpObject target;
+	private DrawWFPanel dp;
+	Group rotationGroup;
+	
+	double windowWidth = 800;
+	double windowHeight = 600;
+	
+	public fxtest() {
+				
+		target = new Globe();
+//		target = new Torus (20,1);
+		
+//		Point3d p1 = new Point3d(0, 0, 0);
+//		Point3d p2 = new Point3d(1, 0, 0);
+//		Point3d p3 = new Point3d(1, 1, 0);
+//		Point3d p4 = new Point3d(0, 1, 0);
+//		Point3d p5 = new Point3d(0, 0, 1);
+//		Point3d p6 = new Point3d(1, 0, 1);
+//		Point3d p7 = new Point3d(1, 1, 1);
+//		Point3d p8 = new Point3d(0, 1, 1);
+//		target = new Polygon3d();
+//		((Polygon3d)target).addPoint(p1).addPoint(p5).addPoint(p6).addPoint(p2);
+		
+		DrawWFApplet da = new DrawWFApplet(target);
+		dp = new DrawWFPanel(target, da);
+		dp.getDrawPanel().setSize(new Dimension((int)windowWidth, (int)windowHeight));
+	}
+
+	@SuppressWarnings({ "unused", "unchecked", "rawtypes" })
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
 
-		//		Group rotationGroup = new Group(red, green, blue);
+//		dp.setView(50, 0, 15, 20);
+//		dp.setView(5, 0, 0, 20);
+		dp.setView(50, 0, 0, 20);
 		
-		Group rotationGroup = new Group();
-		rotationGroup.setTranslateX(125);
-		rotationGroup.setTranslateY(125);
+		Path sfx = getFXShape(target.getShapeList(dp));
+
+		rotationGroup = new Group(sfx);
 		rotationGroup.setRotationAxis(Rotate.Y_AXIS);
-		
 
-		
-//		Point2D p1 = new Point2D.Double (100,100);
-//		Point2D p2 = new Point2D.Double (500,100);
-//		Point2D p3 = new Point2D.Double (200,200);
-//		Point2D p4 = new Point2D.Double (100,200);
-//		Point2D [] pts = {p1, p2, p3, p4};
-//		Profile2DIMPlanner target = new Profile2DIMPlanner (pts);
-		
-//		CubicCurveIMPlanner target  = new CubicCurveIMPlanner(
-//					new Point2D.Double(50,500), 
-//					new Point2D.Double(150,200), 
-//					new Point2D.Double(300,200), 
-//					new Point2D.Double(500,500));
+//		Pane root = new Pane(rotationGroup);
 
-		Globe target = new Globe(10);
+		//		//Create scene without a depth buffer
+		//		Scene scene = new Scene(root, 600, 600);
 
-//		for(Object s: target.getDrawList()) {		
-		for(Object s: target.getShapeList(new DrawWFPanel(target))) {
+		//Create scene with a depth buffer
+		Scene scene = new Scene(rotationGroup, windowWidth,
+				windowHeight, true);
+
+		//		//Disable depth test from this node and its children
+		//		rotationGroup.setDepthTest(DepthTest.DISABLE);
+
+		scene.setCamera(new PerspectiveCamera());
+		stage.setScene(scene);
+		stage.show();
+
+		rotationGroup.getScene().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("fx: Mouse Clicked " + e.getX() + ", " + e.getY());
+				((DrawWFPanel)dp.gettCanvas()).
+				mouseClicked((int)e.getX(), (int)e.getY());
+				updateView();
+			}
+		});
+
+		rotationGroup.getScene().setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("fx: Mouse Pressed " + e.getX() + ", " + e.getY());
+				((DrawWFPanel)dp.gettCanvas()).
+				mousePressed((int)e.getX(), (int)e.getY());	
+				updateView();
+			}
+		});
+
+		rotationGroup.getScene().setOnMouseMoved(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("fx: Mouse Moved " + e.getX() + ", " + e.getY());
+				((DrawWFPanel)dp.gettCanvas()).
+				mouseMoved((int)e.getX(), (int)e.getY());	
+				
+				if (((DrawWFPanel)dp.gettCanvas()).mouseMode == DrawWFPanel.MODIFY_TARGET) {
+					rotationGroup.getScene().setCursor(Cursor.CROSSHAIR);
+				} else {
+					rotationGroup.getScene().setCursor(Cursor.DEFAULT);
+				}
+				
+//				updateView();
+			}
+		});
+
+		rotationGroup.getScene().setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("fx: Mouse Dragged " + e.getX() + ", " + e.getY());
+				((DrawWFPanel)dp.gettCanvas()).
+				mouseDragged((int)e.getX(), (int)e.getY());	
+				updateView();
+			}
+		});
+
+	}
+	
+	public void updateView() {
+		Path sfx = getFXShape(target.getShapeList(dp));
+		rotationGroup.getChildren().clear();
+		rotationGroup.getChildren().add(sfx);
+	}
+	
+	public static Path getFXShape(LinkedList swingShapeList) {
+		
+		Path sfx = new Path();
+		
+		for(Object s: swingShapeList) {
 			java.awt.Shape ss = (java.awt.Shape)s;
 			if (ss instanceof java.awt.Shape) {
-//				java.awt.geom.Path2D sp = (java.awt.geom.Path2D)ss;
-				Path sfx = new Path();
-
 				double[] coords = new double[6];
 				ArrayList<double[]> areaPoints = new ArrayList<double[]>();
 
@@ -79,109 +169,39 @@ public class fxtest extends Application {
 
 				for(double[] d: areaPoints) {
 					if(d[0] == PathIterator.SEG_MOVETO) {
-						double x, y;
-
-						x = d[1];
-						y = d[2];
 
 						MoveTo moveTo = new MoveTo();
-						moveTo.setX(x);
-						moveTo.setY(y);  
-
+						moveTo.setX(d[1]);
+						moveTo.setY(d[2]);  
 						sfx.getElements().add(moveTo);
 
 					} else if (d[0] == PathIterator.SEG_LINETO) {
-						double x, y;
-
-						x = d[1];
-						y = d[2];
 
 						LineTo lineTo = new LineTo();
-						lineTo.setX(x);
-						lineTo.setY(y);  
-
+						lineTo.setX(d[1]);
+						lineTo.setY(d[2]);  
 						sfx.getElements().add(lineTo);
+
 					} else if (d[0] == PathIterator.SEG_CUBICTO) {
-						double x1, y1, x2, y2, x3, y3;
 
-						x1 = d[1];
-						y1 = d[2];
-						x2 = d[3];
-						y2 = d[4];
-						x3 = d[5];
-						y3 = d[6];
-
-						CubicCurveTo ccTo = new CubicCurveTo(x1, y1, x2, y2, x3, y3); 
-
+						CubicCurveTo ccTo = new CubicCurveTo(d[1], d[2], d[3], d[4], d[5], d[6]); 
 						sfx.getElements().add(ccTo);
+
 					} else if (d[0] == PathIterator.SEG_QUADTO) {
-						double x1, y1, x2, y2;
 
-						x1 = d[1];
-						y1 = d[2];
-						x2 = d[3];
-						y2 = d[4];
-
-						QuadCurveTo qcTo = new QuadCurveTo(x1, y1, x2, y2);
-
+						QuadCurveTo qcTo = new QuadCurveTo(d[1], d[2], d[3], d[4]);
 						sfx.getElements().add(qcTo);
+
 					} else if (d[0] == PathIterator.SEG_CLOSE) {
+
 						ClosePath cp = new ClosePath();
 						sfx.getElements().add(cp);
+
 					}
 				}
-						
-				Text t0 = new Text();
-				t0.setText("0, 0");
-				
-				Text t1 = new Text();
-				t1.setTranslateX(100);
-				t1.setTranslateY(100);
-				t1.setText("100, 100");
-				
-				Text t2 = new Text();
-				t2.setTranslateX(500);
-				t2.setTranslateY(100);
-				t2.setText("500, 100");
-				
-				Text t3 = new Text();
-				t3.setTranslateX(200);
-				t3.setTranslateY(200);
-				t3.setText("200, 200");
-				
-				Text t4 = new Text();
-				t4.setTranslateX(100);
-				t4.setTranslateY(200);
-				t4.setText("100, 200");
-				
-				rotationGroup.getChildren().addAll(sfx, t0, t1, t2, t3, t4);
 			}
 		}
-
-		Slider s1 = new Slider(0,360,0);
-		s1.setBlockIncrement(1);
-		s1.setTranslateX(225);
-		s1.setTranslateY(575);
-		rotationGroup.rotateProperty().bind(s1.valueProperty());
-
-		Group root = new Group(rotationGroup, s1);
-
-
-
-		//		//Create scene without a depth buffer
-		//		Scene scene = new Scene(root, 600, 600);
-
-		//Create scene with a depth buffer
-		Scene scene = new Scene(root, 800, 800, true);
-
-		//		//Disable depth test from this node and its children
-		//		rotationGroup.setDepthTest(DepthTest.DISABLE);
-
-		scene.setCamera(new PerspectiveCamera());
-		stage.setScene(scene);
-		stage.show();
-
-
+		return sfx;
 	}
 
 	public static void main(String[] args) {

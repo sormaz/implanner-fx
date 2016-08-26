@@ -6,12 +6,9 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class ApplicationLauncher extends Application {
+public class ApplicationLauncherExternal extends Application {
 
-	FXObject target;
-	
-	public ApplicationLauncher(){
-	}
+	static FXObject target;
 	
 	public void setTarget(FXObject target) {
 		// TODO Auto-generated constructor stub

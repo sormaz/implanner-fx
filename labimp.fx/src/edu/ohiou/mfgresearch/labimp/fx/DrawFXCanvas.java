@@ -5,12 +5,14 @@ import java.util.LinkedList;
 
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
+import edu.ohiou.mfgresearch.labimp.draw.DrawableWF;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -24,6 +26,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Scale;
 
 public class DrawFXCanvas extends VBox {	
 
@@ -32,7 +35,10 @@ public class DrawFXCanvas extends VBox {
 	private Point3D viewpoint;
 	private double scale;
 	private boolean showWCS;
-	private Xform targetGroup = new Xform(); 
+	private Group targetGroup = new Group(); 
+	private Group swing2DGroup = new Group(); 
+	private Group swing3DGroup = new Group(); 
+	private Group fxGroup = new Group(); 
 	private Pane canvas = new Pane(targetGroup);
 	private DrawWFPanel virtualPanel = new DrawWFPanel();;
 	static double defaultWidth = 500;
@@ -45,9 +51,7 @@ public class DrawFXCanvas extends VBox {
 	public void setTargetList(LinkedList<DrawableFX> targetList) {
 		this.targetList = targetList;
 		for(DrawableFX target: targetList) {
-			if(target instanceof Swing3DConverter) {
-				((Swing3DConverter)target).setParentContainer(this);
-			}
+			((FXObject)target).setParentContainer(this);
 		}
 	}
 
@@ -56,7 +60,10 @@ public class DrawFXCanvas extends VBox {
 	}
 
 	public void setActiveTarget(DrawableFX activeTarget) {
-		this.activeTarget = activeTarget;
+		
+		if(targetList.contains(activeTarget)) {
+			this.activeTarget = activeTarget;
+		}
 	}
 
 	public Point3D getViewpoint() {
@@ -98,6 +105,17 @@ public class DrawFXCanvas extends VBox {
 		this.scale = scale;
 		this.showWCS = showWCS;
 		init();	
+		
+//        canvas.widthProperty().addListener(evt -> {
+//        	virtualPanel.setSize((int)canvas.getWidth(), virtualPanel.getHeight());
+//        	virtualPanel.repaint();
+//        	updateView();
+//        });
+//        canvas.heightProperty().addListener(evt -> {
+//        	virtualPanel.setSize(virtualPanel.getWidth(), (int)canvas.getHeight());
+//        	virtualPanel.repaint();
+//        	updateView();
+//        });
 	}
 
 	private void init() {
@@ -123,9 +141,16 @@ public class DrawFXCanvas extends VBox {
 			public void handle(MouseEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("fx: Mouse Clicked " + e.getX() + ", " + e.getY());
+				
+				if(activeTarget instanceof Swing3DConverter) {
+					virtualPanel.setTarget
+					((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
+				}
+					
 				((DrawWFPanel)virtualPanel.gettCanvas()).
 				mouseClicked((int)e.getX(), (int)e.getY());
 				updateView();
+
 			}
 		});
 
@@ -134,9 +159,16 @@ public class DrawFXCanvas extends VBox {
 			public void handle(MouseEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("fx: Mouse Pressed " + e.getX() + ", " + e.getY());
+				
+				if(activeTarget instanceof Swing3DConverter) {
+					virtualPanel.setTarget
+							((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
+				}	
+				
 				((DrawWFPanel)virtualPanel.gettCanvas()).
 				mousePressed((int)e.getX(), (int)e.getY());	
 				updateView();
+
 			}
 		});
 
@@ -145,14 +177,25 @@ public class DrawFXCanvas extends VBox {
 			public void handle(MouseEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("fx: Mouse Moved " + e.getX() + ", " + e.getY());
-				((DrawWFPanel)virtualPanel.gettCanvas()).
-				mouseMoved((int)e.getX(), (int)e.getY());	
+				
+				if(activeTarget instanceof Swing3DConverter) {
+					virtualPanel.setTarget
+					((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
+					
+					((DrawWFPanel)virtualPanel.gettCanvas()).
+					mouseMoved((int)e.getX(), (int)e.getY());
 
-				if (((DrawWFPanel)virtualPanel.gettCanvas()).mouseMode == DrawWFPanel.MODIFY_TARGET) {
-					getScene().setCursor(Cursor.CROSSHAIR);
+					if (((DrawWFPanel)virtualPanel.gettCanvas()).mouseMode 
+										== DrawWFPanel.MODIFY_TARGET) {
+						getScene().setCursor(Cursor.CROSSHAIR);
+					} else {
+						getScene().setCursor(Cursor.DEFAULT);
+					}		
+					
 				} else {
-					getScene().setCursor(Cursor.DEFAULT);
-				}
+					
+				}		
+				
 			}
 		});
 
@@ -161,9 +204,15 @@ public class DrawFXCanvas extends VBox {
 			public void handle(MouseEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("fx: Mouse Dragged " + e.getX() + ", " + e.getY());
+				
+				if(activeTarget instanceof Swing3DConverter) {
+					virtualPanel.setTarget
+					((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
+				}
+				
 				((DrawWFPanel)virtualPanel.gettCanvas()).
 				mouseDragged((int)e.getX(), (int)e.getY());	
-				updateView();
+				updateView();				
 			}
 		});
 
@@ -173,15 +222,50 @@ public class DrawFXCanvas extends VBox {
 	public void updateView() {
 
 		targetGroup.getChildren().clear();
+		swing2DGroup.getChildren().clear();
+		swing3DGroup.getChildren().clear();
+		fxGroup.getChildren().clear();
 		
-		if(targetList.getFirst() == null) {
-			return;
+//		targetGroup.getTransforms().clear();
+		swing2DGroup.getTransforms().clear();
+//		swing3DGroup.getTransforms().clear();
+//		fxGroup.getTransforms().clear();
+		
+		for(DrawableFX target: targetList) {
+			
+			if(target instanceof Swing2DConverter) {
+				
+				for (Object o: target.getFXShapes()) {
+					Shape s = (Shape)o;
+					s.setStrokeWidth(1/scale);
+					
+					System.out.println(s.toString());
+					System.out.println(swing2DGroup.getChildren().toString());
+					
+					swing2DGroup.getChildren().add(s);
+				}							
+			}else if (target instanceof Swing3DConverter) {
+				
+				for (Object o: target.getFXShapes()) {
+					Shape s = (Shape)o;
+					swing3DGroup.getChildren().add(s);
+				}
+				
+			} else {
+				fxGroup.getChildren().addAll(target.getFXShapes());
+			}
 		}
 		
-		for(DrawableFX d: targetList) {
-			if(d.getFXShapes().size() > 0) {
-				targetGroup.getChildren().addAll(d.getFXShapes());
-			}
+		Scale s = new Scale(scale, scale);
+		swing2DGroup.getTransforms().add(s);
+		
+		targetGroup.getChildren().add(swing2DGroup);
+		targetGroup.getChildren().add(swing3DGroup);
+		targetGroup.getChildren().add(fxGroup);
+		
+		if(activeTarget instanceof Swing3DConverter) {
+			virtualPanel.setTarget
+			((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
 		}
 
 	}

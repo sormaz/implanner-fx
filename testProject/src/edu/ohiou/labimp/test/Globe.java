@@ -1,30 +1,21 @@
 package edu.ohiou.labimp.test;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.LinkedList;
 
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
-import edu.ohiou.mfgresearch.labimp.basis.ViewObject.ViewPanel;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
 import edu.ohiou.mfgresearch.labimp.gtk3d.Ellipse;
-import edu.ohiou.mfgresearch.labimp.gtk3d.LineSegment;
 
 public class Globe extends ImpObject {
 	
@@ -80,20 +71,20 @@ public class Globe extends ImpObject {
 		for(int i=0; i <= linesOfLatitude / 2; i++){
 			
 			deviationAngle = i * Math.PI/ linesOfLatitude;
-			Point3d c = new Point3d(center.getX(),
-									center.getY() + 
+			Point3d c = new Point3d(center.x,
+									center.y + 
 									radius * Math.sin(deviationAngle),
-									center.getZ());
+									center.z);
 			double r = radius * Math.cos(deviationAngle);
 			
 			Ellipse e1 = new Ellipse(r, r, c, new Vector3d(1,0,0), 
 					new Vector3d(0,0,1), startAngle, endAngle);
 			ellipses.add(e1);
 			
-			c = new Point3d(center.getX(),
-							center.getY() + 
+			c = new Point3d(center.x,
+							center.y + 
 							radius * Math.sin(-deviationAngle),
-							center.getZ());
+							center.z);
 			
 			Ellipse e2 = new Ellipse(r, r, c, new Vector3d(1,0,0), 
 					new Vector3d(0,0,1), startAngle, endAngle);

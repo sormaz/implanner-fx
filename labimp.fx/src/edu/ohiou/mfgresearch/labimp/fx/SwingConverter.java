@@ -4,23 +4,39 @@ import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import edu.ohiou.mfgresearch.labimp.basis.ViewObject;
+import javafx.geometry.Point2D;
 import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.QuadCurveTo;
+import javafx.scene.transform.Scale;
 
-public class SwingConverter extends FXObject {
+public abstract class SwingConverter extends FXObject {
 
-	public SwingConverter(DrawFXCanvas parentContainer) {
-		super(parentContainer);
-		// TODO Auto-generated constructor stub
+	public final DimensionSize dimensionSize;
+	
+	public enum DimensionSize {
+		twoD, threeD
 	}
+	
+	public SwingConverter(DrawFXCanvas parentContainer, DimensionSize dimensionSize) {
+		super(parentContainer);
+		this.dimensionSize = dimensionSize;
+	}
+	
+	public abstract ViewObject getSwingTarget();
 
-	public static Path getFXShapes(LinkedList swingShapes) {
+	public Path getFXShapes(LinkedList swingShapes) {
 		// TODO Auto-generated method stub
 		Path sfx = new Path();
+		
+//		if(dimensionSize == DimensionSize.twoD) {
+//			double scale = parentContainer.getScale();
+//			sfx.setStrokeWidth(1/scale);
+//		}
 		
 		for(Object s: swingShapes) {
 			java.awt.Shape ss = (java.awt.Shape)s;
@@ -38,27 +54,115 @@ public class SwingConverter extends FXObject {
 
 				for(double[] d: areaPoints) {
 					if(d[0] == PathIterator.SEG_MOVETO) {
+						
+						double x, y;
+						
+//						if(dimensionSize==DimensionSize.threeD) {
+							x = d[1];
+							y = d[2];
+//						} else {
+//							Point2D p = new Point2D(d[1], d[2]);
+//							Scale scale = Scale.scale(parentContainer.getScale(), 
+//									parentContainer.getScale());	
+//							
+//							p = scale.deltaTransform(p);
+//							
+//							x = p.getX();
+//							y = p.getY();
+//						}
 
 						MoveTo moveTo = new MoveTo();
-						moveTo.setX(d[1]);
-						moveTo.setY(d[2]);  
+						moveTo.setX(x);
+						moveTo.setY(y);  
 						sfx.getElements().add(moveTo);
 
 					} else if (d[0] == PathIterator.SEG_LINETO) {
+						
+						double x, y;
+						
+//						if(dimensionSize==DimensionSize.threeD) {
+							x = d[1];
+							y = d[2];
+//						} else {
+//							Point2D p = new Point2D(d[1], d[2]);
+//							Scale scale = Scale.scale(parentContainer.getScale(), 
+//									parentContainer.getScale());	
+//							
+//							p = scale.deltaTransform(p);
+//							
+//							x = p.getX();
+//							y = p.getY();
+//						}
 
 						LineTo lineTo = new LineTo();
-						lineTo.setX(d[1]);
-						lineTo.setY(d[2]);  
+						lineTo.setX(x);
+						lineTo.setY(y);  
 						sfx.getElements().add(lineTo);
 
 					} else if (d[0] == PathIterator.SEG_CUBICTO) {
+						
+						double x1, y1, x2, y2, x3, y3;
+						
+//						if(dimensionSize==DimensionSize.threeD) {
+							x1 = d[1];
+							y1 = d[2];
+							x2 = d[3];
+							y2 = d[4];
+							x3 = d[5];
+							y3 = d[6];
+//						} else {
+//							Scale scale = Scale.scale(parentContainer.getScale(), 
+//									parentContainer.getScale());	
+//							
+//							Point2D p = new Point2D(d[1], d[2]);
+//							p = scale.deltaTransform(p);
+//							
+//							x1 = p.getX();
+//							y1 = p.getY();
+//							
+//							p = new Point2D(d[3], d[4]);					
+//							p = scale.deltaTransform(p);
+//							
+//							x2 = p.getX();
+//							y2 = p.getY();
+//							
+//							p = new Point2D(d[5], d[6]);						
+//							p = scale.deltaTransform(p);
+//							
+//							x3 = p.getX();
+//							y3 = p.getY();
+//						}
 
-						CubicCurveTo ccTo = new CubicCurveTo(d[1], d[2], d[3], d[4], d[5], d[6]); 
+						CubicCurveTo ccTo = new CubicCurveTo(x1, y1, x2, y2, x3, y3); 
 						sfx.getElements().add(ccTo);
 
 					} else if (d[0] == PathIterator.SEG_QUADTO) {
+						
+						double x1, y1, x2, y2;
+						
+//						if(dimensionSize==DimensionSize.threeD) {
+							x1 = d[1];
+							y1 = d[2];
+							x2 = d[3];
+							y2 = d[4];
+//						} else {
+//							Scale scale = Scale.scale(parentContainer.getScale(), 
+//									parentContainer.getScale());	
+//							
+//							Point2D p = new Point2D(d[1], d[2]);
+//							p = scale.deltaTransform(p);
+//							
+//							x1 = p.getX();
+//							y1 = p.getY();
+//							
+//							p = new Point2D(d[3], d[4]);					
+//							p = scale.deltaTransform(p);
+//							
+//							x2 = p.getX();
+//							y2 = p.getY();							
+//						}
 
-						QuadCurveTo qcTo = new QuadCurveTo(d[1], d[2], d[3], d[4]);
+						QuadCurveTo qcTo = new QuadCurveTo(x1, y1, x2, y2);
 						sfx.getElements().add(qcTo);
 
 					} else if (d[0] == PathIterator.SEG_CLOSE) {

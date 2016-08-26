@@ -3,8 +3,10 @@ package edu.ohiou.mfgresearch.labimp.fx;
 import java.util.LinkedList;
 
 import edu.ohiou.mfgresearch.labimp.basis.DrawString;
+import edu.ohiou.mfgresearch.labimp.basis.ViewObject;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
+import edu.ohiou.mfgresearch.labimp.fx.SwingConverter.DimensionSize;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
@@ -13,6 +15,12 @@ import javafx.scene.text.Text;
 public class Swing3DConverter extends SwingConverter {
 	
 	protected ImpObject swingTarget;
+	
+	@Override
+	public ViewObject getSwingTarget() {
+		// TODO Auto-generated method stub
+		return swingTarget;
+	}
 
 	public Swing3DConverter(ImpObject swingTarget) {
 		this(null, swingTarget);
@@ -20,7 +28,7 @@ public class Swing3DConverter extends SwingConverter {
 	
 	public Swing3DConverter(DrawFXCanvas parentContainer, 
 					ImpObject swingTarget) {
-		super(parentContainer);
+		super(parentContainer, DimensionSize.threeD);
 		this.swingTarget = swingTarget;
 	}
 	
@@ -29,7 +37,7 @@ public class Swing3DConverter extends SwingConverter {
 		virtualPanel.setTarget(swingTarget);
 		Path swingPath = getFXShapes(swingTarget.getShapeList(virtualPanel));
 		
-		LinkedList<Shape> fxShapes = new LinkedList<>();
+		LinkedList<Shape> fxShapes = new LinkedList();
 		fxShapes.add(swingPath);
 		return fxShapes;
 	}
