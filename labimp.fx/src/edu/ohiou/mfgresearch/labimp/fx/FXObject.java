@@ -7,13 +7,14 @@ import java.util.LinkedList;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
+import javafx.scene.shape.Shape3D;
 import javafx.scene.text.Text;
 
 /**
  * @author Arif
  *
  */
-public class FXObject implements DrawableFX, ViewableFX {
+public abstract class FXObject implements DrawableFX, ViewableFX {
 	
 	protected Pane viewPanel;
 	protected DrawFXCanvas parentContainer;
@@ -23,7 +24,8 @@ public class FXObject implements DrawableFX, ViewableFX {
 	}
 
 	public FXObject(DrawFXCanvas parentContainer) {
-		this.parentContainer = parentContainer;
+		setParentContainer(parentContainer);
+		init();
 	}
 
 	@Override
@@ -54,6 +56,12 @@ public class FXObject implements DrawableFX, ViewableFX {
 
 	@Override
 	public LinkedList<Shape> getFXShapes() {
+		// TODO Auto-generated method stub
+		return new LinkedList<>();
+	}
+	
+	@Override
+	public LinkedList<Shape3D> getFX3DShapes() {
 		// TODO Auto-generated method stub
 		return new LinkedList<>();
 	}

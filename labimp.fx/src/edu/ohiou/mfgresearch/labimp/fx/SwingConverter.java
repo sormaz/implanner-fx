@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import edu.ohiou.mfgresearch.labimp.basis.ViewObject;
+import javafx.embed.swing.SwingNode;
 import javafx.geometry.Point2D;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
@@ -28,6 +30,22 @@ public abstract class SwingConverter extends FXObject {
 	}
 	
 	public abstract ViewObject getSwingTarget();
+	
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+
+		try {
+			getSwingTarget().init();
+			SwingNode swingPanel = new SwingNode();
+			swingPanel.setContent(getSwingTarget().gettPanel());
+			viewPanel = new Pane(swingPanel);
+		} catch (Exception e) {
+			super.init();
+		}
+		
+
+	}
 
 	public Path getFXShapes(LinkedList swingShapes) {
 		// TODO Auto-generated method stub

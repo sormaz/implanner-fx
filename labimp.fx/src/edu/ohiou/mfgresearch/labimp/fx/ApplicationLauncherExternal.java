@@ -12,7 +12,7 @@ public class ApplicationLauncherExternal extends Application {
 	
 	public void setTarget(FXObject target) {
 		// TODO Auto-generated constructor stub
-		this.target = target;
+		ApplicationLauncherExternal.target = target;
 	}
 
 	@Override

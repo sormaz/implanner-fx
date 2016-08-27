@@ -28,6 +28,7 @@ public class Swing2DConverter extends SwingConverter {
 										ViewObject swingTarget) {
 		super(parentContainer, DimensionSize.twoD);
 		this.swingTarget = swingTarget;
+		init();
 	}
 	
 	public LinkedList<Shape> getFXShapes() {
@@ -35,8 +36,6 @@ public class Swing2DConverter extends SwingConverter {
 		
 		LinkedList<Shape> fxShapes = new LinkedList();
 		fxShapes.add(swingPath);
-//		
-//		fxShapes.setScale(parentContainer.getScale());
 		
 		return fxShapes;
 	}

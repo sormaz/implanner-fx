@@ -3,6 +3,7 @@ package edu.ohiou.mfgresearch.labimp.fx;
 import java.awt.Dimension;
 import java.util.LinkedList;
 
+import edu.ohiou.labimp.test.Globe;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.DrawableWF;
@@ -41,8 +42,8 @@ public class DrawFXCanvas extends VBox {
 	private Group fxGroup = new Group(); 
 	private Pane canvas = new Pane(targetGroup);
 	private DrawWFPanel virtualPanel = new DrawWFPanel();;
-	static double defaultWidth = 500;
-	static double defaultHeight = 400;
+	static double defaultWidth = 650;
+	static double defaultHeight = 550;
 
 	public LinkedList<DrawableFX> getTargetList() {
 		return targetList;
@@ -229,7 +230,7 @@ public class DrawFXCanvas extends VBox {
 //		targetGroup.getTransforms().clear();
 		swing2DGroup.getTransforms().clear();
 //		swing3DGroup.getTransforms().clear();
-//		fxGroup.getTransforms().clear();
+		fxGroup.getTransforms().clear();
 		
 		for(DrawableFX target: targetList) {
 			
@@ -253,12 +254,16 @@ public class DrawFXCanvas extends VBox {
 				
 			} else {
 				fxGroup.getChildren().addAll(target.getFXShapes());
+				fxGroup.getChildren().addAll(target.getFX3DShapes());
 			}
 		}
 		
 		Scale s = new Scale(scale, scale);
 		swing2DGroup.getTransforms().add(s);
 		
+		Scale s2 = new Scale(scale, scale, scale);
+		fxGroup.getTransforms().add(s);
+			
 		targetGroup.getChildren().add(swing2DGroup);
 		targetGroup.getChildren().add(swing3DGroup);
 		targetGroup.getChildren().add(fxGroup);

@@ -1,34 +1,51 @@
 package edu.ohiou.mfgresearch.labimp.fx;
 
-import javafx.application.Application;
+import java.io.IOException;
+import java.net.URL;
+
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 
-public class DrawFXPanel extends Application{
+public class DrawFXPanel extends BorderPane{
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-    	try {
-            primaryStage.setTitle("DrawPanelFX");
-            
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("FXPanelView.fxml"));
-			loader.setBuilderFactory(new IMPlannerFXBuilderFactory());
-			BorderPane myPane = loader.<BorderPane>load();
-            
-            Scene myScene = new Scene(myPane);
-            primaryStage.setScene(myScene);
-            primaryStage.show();
-    	} catch (Exception e) {
+	@FXML
+	private DrawFXCanvas canvas;
+	@FXML
+	TableView<DrawableFX> targetView;
+	@FXML
+	TableColumn<DrawableFX, String> targetCol; 
+	@FXML
+	private TableColumn<DrawableFX, DrawableFX> showCol;
+	@FXML
+	private TableColumn<DrawableFX, DrawableFX> hideCol;
+	@FXML
+	private TableColumn<DrawableFX, DrawableFX> setActiveCol;
 
-    	}
-    
-    }
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		launch(args);
+//	
+//	private ObservableList<DrawableFX> targetList = 
+//			FXCollections.observableArrayList(canvas.getTargetList());
+	
+	public DrawFXPanel() {
+		URL fxmlURL = this.getClass().getResource("FXPanelView.fxml");
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(fxmlURL);
+		loader.setRoot(this);
+		loader.setController(this);
+		try {
+			loader.load();
+		} catch (IOException exception) {
+			System.out.println(exception.getMessage());
+			System.out.println(exception.getStackTrace());
+		}
+		
+	}
+	
+	@FXML
+	private void initialize() {
+		
 	}
 	
 	

@@ -30,6 +30,7 @@ public class Swing3DConverter extends SwingConverter {
 					ImpObject swingTarget) {
 		super(parentContainer, DimensionSize.threeD);
 		this.swingTarget = swingTarget;
+		init();
 	}
 	
 	public LinkedList<Shape> getFXShapes() {

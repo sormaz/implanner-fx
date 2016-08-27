@@ -12,6 +12,8 @@ import edu.ohiou.mfgresearch.labimp.gtk3d.Polygon3d;
 import edu.ohiou.mfgresearch.labimp.gtk3d.Torus;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class testApplication extends Application {
@@ -26,7 +28,7 @@ public class testApplication extends Application {
 
         primaryStage.setTitle("DrawCanvasFX");
         
-        TetraHedron th = new TetraHedron(null);
+        TetraHedron th = new TetraHedron();
               
         Globe globe = new Globe(3, 0, 0, 0);
         Swing3DConverter globeFX = new Swing3DConverter(globe);
@@ -62,7 +64,7 @@ public class testApplication extends Application {
         targetList.add(globeFX);
         targetList.add(torusFX);
         targetList.add(polygonFX);
-//        targetList.add(th);
+        targetList.add(th);
         targetList.add(profileFX);        
         targetList.add(ccFX);
         DrawFXCanvas canvas = new DrawFXCanvas(targetList);
@@ -87,9 +89,14 @@ public class testApplication extends Application {
 //		LinkedList<DrawableFX> targetList = new LinkedList<>();
 //		targetList.add(profileFX);
 //		targetList.add(ccFX);
-//		DrawFXCanvas canvas = new DrawFXCanvas(targetList);
+//		DrawFXCanvas canvas = new DrawFXCanvas(targetList);\
         
-        Scene myScene = new Scene(canvas);
+        VBox vbox = new VBox();
+        Pane p = new Pane();
+        
+        vbox.getChildren().addAll(canvas, p);
+        
+        Scene myScene = new Scene(vbox);
         primaryStage.setScene(myScene);
         primaryStage.show();
 		
