@@ -6,7 +6,6 @@ import edu.ohiou.mfgresearch.labimp.basis.DrawString;
 import edu.ohiou.mfgresearch.labimp.basis.ViewObject;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
-import edu.ohiou.mfgresearch.labimp.fx.SwingConverter.DimensionSize;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
@@ -28,9 +27,9 @@ public class Swing3DConverter extends SwingConverter {
 	
 	public Swing3DConverter(DrawFXCanvas parentContainer, 
 					ImpObject swingTarget) {
-		super(parentContainer, DimensionSize.threeD);
+		super(parentContainer);
 		this.swingTarget = swingTarget;
-		init();
+//		init();
 	}
 	
 	public LinkedList<Shape> getFXShapes() {

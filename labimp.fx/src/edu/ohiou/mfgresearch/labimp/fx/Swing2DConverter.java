@@ -26,9 +26,9 @@ public class Swing2DConverter extends SwingConverter {
 	
 	public Swing2DConverter(DrawFXCanvas parentContainer, 
 										ViewObject swingTarget) {
-		super(parentContainer, DimensionSize.twoD);
+		super(parentContainer);
 		this.swingTarget = swingTarget;
-		init();
+//		init();
 	}
 	
 	public LinkedList<Shape> getFXShapes() {
@@ -62,7 +62,7 @@ public class Swing2DConverter extends SwingConverter {
 			if(!Double.isNaN(ds.getSize())) {
 				fxText.setScaleX(ds.getSize());
 				fxText.setScaleY(ds.getSize());
-				System.out.println(ds.getSize());
+//				System.out.println(ds.getSize());
 			}	
 			fxStrings.add(fxText);
 			

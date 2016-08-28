@@ -5,7 +5,17 @@ package edu.ohiou.mfgresearch.labimp.fx;
 
 import java.util.LinkedList;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.text.Text;
@@ -15,24 +25,37 @@ import javafx.scene.text.Text;
  *
  */
 public abstract class FXObject implements DrawableFX, ViewableFX {
-	
-	protected Pane viewPanel;
+
+	private boolean isVisible = true;
 	protected DrawFXCanvas parentContainer;
+	
+	public FXObject(DrawFXCanvas parentContainer) {
+		setParentContainer(parentContainer);
+	}
 	
 	public void setParentContainer(DrawFXCanvas parentContainer) {
 		this.parentContainer = parentContainer;
 	}
-
-	public FXObject(DrawFXCanvas parentContainer) {
-		setParentContainer(parentContainer);
-		init();
+	
+	public StringProperty name() {
+		return new SimpleStringProperty(getClass().getSimpleName().toString());
 	}
-
+	
+	public Boolean IsVisible() {
+		return isVisible;
+	}
+	
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		viewPanel = new Pane();
+	public void changeVisibility() {
+		isVisible = !isVisible;
+		parentContainer.updateView();
 	}
+
+//	@Override
+//	public void init() {
+//		// TODO Auto-generated method stub
+//		viewPanel = new Pane();
+//	}
 
 	@Override
 	public void display() {
@@ -45,13 +68,13 @@ public abstract class FXObject implements DrawableFX, ViewableFX {
 	@Override
 	public Pane getPanel() {
 		// TODO Auto-generated method stub
-		return null;
+		return new Pane();
 	}
 
 	@Override
-	public LinkedList<DrawableFX> getTargetList() {
+	public ObservableList<DrawableFX> getTargetList() {
 		// TODO Auto-generated method stub
-		return new LinkedList<>();
+		return FXCollections.observableArrayList();
 	}
 
 	@Override

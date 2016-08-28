@@ -4,10 +4,16 @@ import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import edu.ohiou.mfgresearch.labimp.basis.ViewObject;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.embed.swing.SwingNode;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
@@ -18,33 +24,50 @@ import javafx.scene.transform.Scale;
 
 public abstract class SwingConverter extends FXObject {
 
-	public final DimensionSize dimensionSize;
-	
-	public enum DimensionSize {
-		twoD, threeD
-	}
-	
-	public SwingConverter(DrawFXCanvas parentContainer, DimensionSize dimensionSize) {
+	public SwingConverter(DrawFXCanvas parentContainer) {
 		super(parentContainer);
-		this.dimensionSize = dimensionSize;
 	}
 	
 	public abstract ViewObject getSwingTarget();
 	
+	public StringProperty name() {
+		return new SimpleStringProperty
+				(getSwingTarget().getClass().getSimpleName().toString());
+	}
+	
+//	@Override
+//	public void init() {
+//		// TODO Auto-generated method stub
+//
+//		try {
+//			getSwingTarget().init();
+//			SwingNode swingPanel = new SwingNode();
+//			swingPanel.setContent(getSwingTarget().gettPanel());
+//			viewPanel = new Pane(swingPanel);
+//		} catch (Exception e) {
+//			super.init();
+//		}
+//		
+//
+//	}
+//	
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-
-		try {
-			getSwingTarget().init();
-			SwingNode swingPanel = new SwingNode();
-			swingPanel.setContent(getSwingTarget().gettPanel());
-			viewPanel = new Pane(swingPanel);
-		} catch (Exception e) {
-			super.init();
-		}
+	public Pane getPanel() {
 		
+		StackPane viewPanel = new StackPane();
+		
+		if(getSwingTarget().gettPanel() == null) {
+			getSwingTarget().init();
+		}
 
+		JPanel jp = getSwingTarget().gettPanel();
+		SwingNode n = new SwingNode();
+		n.setContent(jp);
+
+		viewPanel.getChildren().add(new StackPane(n));
+		
+		return viewPanel;
+		
 	}
 
 	public Path getFXShapes(LinkedList swingShapes) {

@@ -2,6 +2,9 @@ package edu.ohiou.mfgresearch.labimp.fx;
 
 import java.util.LinkedList;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Shape3D;
@@ -19,5 +22,13 @@ public interface DrawableFX {
 	
 	@SuppressWarnings("rawtypes")
 	LinkedList getFXSelectables();
+	
+	Pane getPanel();
+	
+	public StringProperty name();
+	
+	public Boolean IsVisible();
+	
+	public void changeVisibility();
 	
 }

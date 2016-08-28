@@ -3,6 +3,8 @@ package edu.ohiou.mfgresearch.labimp.fx;
 import java.util.LinkedList;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -19,35 +21,24 @@ public class ApplicationLauncherExternal extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 
-        primaryStage.setTitle("DrawCanvasFX");
+        primaryStage.setTitle(target.name().get());
         
-        LinkedList<DrawableFX> targetList = new LinkedList<>();
-        targetList.add(target);
-        DrawFXCanvas canvas = new DrawFXCanvas(targetList);
         
-        Scene myScene = new Scene(canvas);
+        DrawFXPanel panel = new DrawFXPanel();
+        panel.addTarget(target);
+        
+        Scene myScene = new Scene(panel);
         primaryStage.setScene(myScene);
         primaryStage.show();				
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		launch(args);
 	}
 
 	public void launch(FXObject target) {
 		setTarget(target);
-		launch("");
-		
-//		Stage primaryStage = new Stage();
-//        LinkedList<DrawableFX> targetList = new LinkedList<>();
-//        targetList.add(target);
-//        DrawFXCanvas canvas = new DrawFXCanvas(targetList);
-//        
-//        Scene myScene = new Scene(canvas);
-//        primaryStage.setScene(myScene);
-//        primaryStage.show();	
-		
+		launch("");		
 	}
 
 }

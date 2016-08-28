@@ -11,6 +11,8 @@ import edu.ohiou.labimp.test.Profile2DIMPlanner;
 import edu.ohiou.mfgresearch.labimp.gtk3d.Polygon3d;
 import edu.ohiou.mfgresearch.labimp.gtk3d.Torus;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -60,7 +62,7 @@ public class testApplication extends Application {
 		CubicCurveIMPlanner cc = new CubicCurveIMPlanner();
 		Swing2DConverter ccFX = new Swing2DConverter(cc);
 		
-        LinkedList<DrawableFX> targetList = new LinkedList<>();
+		ObservableList<DrawableFX> targetList = FXCollections.observableArrayList();
         targetList.add(globeFX);
         targetList.add(torusFX);
         targetList.add(polygonFX);
