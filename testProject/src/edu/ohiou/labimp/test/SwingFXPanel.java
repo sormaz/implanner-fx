@@ -4,6 +4,7 @@
 package edu.ohiou.labimp.test;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Shape;
@@ -19,7 +20,13 @@ import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.DrawableWF;
 import javafx.application.Application;
 import javafx.embed.swing.SwingNode;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -28,6 +35,11 @@ import javafx.stage.Stage;
  *
  */
 public class SwingFXPanel extends Application {
+
+	Globe t1 = new Globe(1);
+	Globe t2 = new Globe(2);
+	DrawWFApplet da1 = new DrawWFApplet(t1);
+	DrawWFApplet da2 = new DrawWFApplet(t2);
 
 	/**
 	 * 
@@ -42,16 +54,55 @@ public class SwingFXPanel extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-        final SwingNode swingNode = new SwingNode();
+		final SwingNode swingNode1 = new SwingNode();
+		final SwingNode swingNode2 = new SwingNode();
+		final SwingNode swingNode3 = new SwingNode();
+		final SwingNode swingNode4 = new SwingNode();
 
-        createSwingContent(swingNode);
+		da1.init();
+		da2.init();
 
-        StackPane pane = new StackPane();
-        pane.getChildren().add(swingNode);
+//		da1.gettCanvas().setOpaque(false);
+//		da1.gettCanvas().setBackground(new Color(0, 0, 0, 0));
 
-        stage.setTitle("Swing in JavaFX");
-        stage.setScene(new Scene(pane, 800,600));
-        stage.show();
+//		da2.gettCanvas().setOpaque(false);
+//		da2.gettCanvas().setBackground(new Color(0, 0, 0, 0));
+
+		createSwingContent(swingNode1, swingNode2);
+		createSwingContent2(swingNode3, swingNode4);
+
+		BorderPane pane = new BorderPane();
+		StackPane a1 = new StackPane();
+		a1.getChildren().addAll(swingNode1, swingNode3);
+		StackPane a2 = new StackPane(swingNode2);
+		pane.setCenter(a1);
+		pane.setBottom(a2);
+
+		stage.setTitle("Swing in JavaFX");
+		Scene scene = new Scene(pane, 800,600);
+		stage.setScene(scene);
+		stage.show();
+
+//		swingNode1.setOnMouseDragged(event -> {
+//					
+//		});
+//		
+//		swingNode2.setOnMouseDragged(event -> {
+//	
+//		});
+		
+		pane.widthProperty().addListener(evt -> {
+			//        	swingNode1.resize(a1.getWidth(), a1.getHeight());
+			//        	swingNode2.resize(a2.getWidth(), a2.getHeight());
+			createSwingContent(swingNode1, swingNode2);
+			createSwingContent2(swingNode3, swingNode4);
+		});
+		pane.heightProperty().addListener(evt -> {
+			//        	swingNode1.resize(a1.getWidth(), a1.getHeight());
+			//        	swingNode2.resize(a2.getWidth(), a2.getHeight());
+			createSwingContent(swingNode1, swingNode2);
+			createSwingContent2(swingNode3, swingNode4);
+		});
 	}
 
 	/**
@@ -61,21 +112,27 @@ public class SwingFXPanel extends Application {
 		// TODO Auto-generated method stub
 		launch(args);
 	}
-	
-    private void createSwingContent(final SwingNode swingNode) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-        		Globe t = new Globe();
-        		t.init();
-        		DrawWFApplet da = new DrawWFApplet(t);
-        		da.init();		
-        		JPanel j = new JPanel(new BorderLayout());
-        		j.add(da.gettCanvas(),BorderLayout.CENTER);
-        		j.add(t.gettPanel(), BorderLayout.SOUTH);
-            	swingNode.setContent(j);
-            }
-        });
-    }
+
+	private void createSwingContent(final SwingNode swingNode1, 
+			final SwingNode swingNode2) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				swingNode1.setContent(da1.gettCanvas());
+				swingNode2.setContent(t1.gettPanel());
+			}
+		});
+	}
+
+	private void createSwingContent2(final SwingNode swingNode1, 
+			final SwingNode swingNode2) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				swingNode1.setContent(da2.gettCanvas());
+				swingNode2.setContent(t2.gettPanel());
+			}
+		});
+	}
 
 }
