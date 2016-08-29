@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.DrawableWF;
+import edu.ohiou.mfgresearch.labimp.fx.Globe;
 import javafx.application.Application;
 import javafx.embed.swing.SwingNode;
 import javafx.scene.Parent;

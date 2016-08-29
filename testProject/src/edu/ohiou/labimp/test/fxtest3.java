@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import edu.ohiou.mfgresearch.labimp.basis.ViewObject;
-
+import edu.ohiou.mfgresearch.labimp.fx.CubicCurveIMPlanner;
+import edu.ohiou.mfgresearch.labimp.fx.Profile2DIMPlanner;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;

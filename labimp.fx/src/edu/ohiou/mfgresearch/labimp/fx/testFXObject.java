@@ -2,9 +2,6 @@ package edu.ohiou.mfgresearch.labimp.fx;
 
 import java.awt.geom.Point2D;
 
-import edu.ohiou.labimp.test.CubicCurveIMPlanner;
-import edu.ohiou.labimp.test.Globe;
-import edu.ohiou.labimp.test.Profile2DIMPlanner;
 import edu.ohiou.mfgresearch.labimp.basis.Draw2DApplet;
 import edu.ohiou.mfgresearch.labimp.basis.Draw2DPanel;
 import edu.ohiou.mfgresearch.labimp.basis.GUIApplet;

@@ -10,6 +10,7 @@ import javax.vecmath.Point3d;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
+import edu.ohiou.mfgresearch.labimp.fx.Globe;
 import edu.ohiou.mfgresearch.labimp.gtk3d.Polygon3d;
 import edu.ohiou.mfgresearch.labimp.gtk3d.Torus;
 import javafx.application.Application;
