@@ -10,7 +10,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/implanner"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/labimp.basis"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/labimp.extend"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/testProject"/>
 	<classpathentry kind="lib" path="/java-library/java3d/j3daudio.jar"/>
 	<classpathentry kind="lib" path="/java-library/java3d/j3dcore.jar"/>
 	<classpathentry kind="lib" path="/java-library/java3d/j3dutils.jar"/>

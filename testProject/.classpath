@@ -5,11 +5,11 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/labimp.basis"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/implanner"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/labimp.extend"/>
-	<classpathentry kind="lib" path="C:/Users/Arif/Desktop/java-library/java3d/vecmath.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Arif/Desktop/java-library/java3d/j3daudio.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Arif/Desktop/java-library/java3d/j3dcore.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Arif/Desktop/java-library/java3d/j3dutils.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Arif/Desktop/java-library/Other/cv97r140.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/labimp.fx"/>
+	<classpathentry kind="lib" path="/java-library/java3d/j3daudio.jar"/>
+	<classpathentry kind="lib" path="/java-library/java3d/j3dcore.jar"/>
+	<classpathentry kind="lib" path="/java-library/java3d/j3dutils.jar"/>
+	<classpathentry kind="lib" path="/java-library/java3d/vecmath.jar" sourcepath="/java-library/java3d/vecmath-1_5_2-src.zip"/>
+	<classpathentry kind="lib" path="/java-library/Other/cv97r140.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
