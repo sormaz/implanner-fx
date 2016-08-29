@@ -3,7 +3,6 @@ package edu.ohiou.mfgresearch.labimp.fx;
 import java.awt.Dimension;
 import java.util.LinkedList;
 
-import edu.ohiou.labimp.test.Globe;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.DrawableWF;

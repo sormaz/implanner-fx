@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/Users/Arif/Desktop/java-library/java3d/j3dcore.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Arif/Desktop/java-library/java3d/j3dutils.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Arif/Desktop/java-library/Other/cv97r140.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/labimp.fx"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
