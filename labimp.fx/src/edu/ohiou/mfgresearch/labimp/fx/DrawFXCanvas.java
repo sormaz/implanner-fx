@@ -77,18 +77,6 @@ public class DrawFXCanvas extends VBox {
 		this.showWCS = showWCS;
 		init();	
 		
-        canvas.widthProperty().addListener(evt -> {
-//        	virtualPanel.setSize((int)canvas.getWidth(), virtualPanel.getHeight());
-//        	virtualPanel.repaint();
-
-//        	updateView();
-        });
-        canvas.heightProperty().addListener(evt -> {
-//        	virtualPanel.setSize(virtualPanel.getWidth(), (int)canvas.getHeight());
-//        	virtualPanel.repaint();
-        	
-//        	updateView();
-        });
 	}
 	
 	public ObservableList<DrawableFX> getTargetList() {
@@ -183,16 +171,24 @@ public class DrawFXCanvas extends VBox {
 		virtualPanel.getDrawPanel().setSize
 		(new Dimension((int)DEFAULT_WIDTH, (int)DEFAULT_HEIGHT));
 
-		//		System.out.println(DEFAULT_WIDTH + " " + DEFAULT_HEIGHT);
-		//		System.out.println(getWidth() + " " + getHeight());
-
 		virtualPanel.setView(scale, viewpoint.getX(), 
 				viewpoint.getY(), viewpoint.getZ());
+		
+        canvas.widthProperty().addListener(evt -> {
+        	virtualPanel.getDrawPanel()
+        		.setSize((int)canvas.getWidth(), (int)canvas.getHeight());
+        	updateView();
+        });
+        canvas.heightProperty().addListener(evt -> {
+        	virtualPanel.getDrawPanel()
+        		.setSize((int)canvas.getWidth(), (int)canvas.getHeight());   	
+        	updateView();
+        });
+		
 
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				// TODO Auto-generated method stub
 //				System.out.println("fx: Mouse Clicked " + e.getX() + ", " + e.getY());
 				
 				if(activeTarget instanceof Swing3DConverter) {
@@ -210,7 +206,6 @@ public class DrawFXCanvas extends VBox {
 		setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				// TODO Auto-generated method stub
 //				System.out.println("fx: Mouse Pressed " + e.getX() + ", " + e.getY());
 				
 				if(activeTarget instanceof Swing3DConverter) {
@@ -228,7 +223,6 @@ public class DrawFXCanvas extends VBox {
 		setOnMouseMoved(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				// TODO Auto-generated method stub
 //				System.out.println("fx: Mouse Moved " + e.getX() + ", " + e.getY());
 				
 				if(activeTarget instanceof Swing3DConverter) {
@@ -255,7 +249,6 @@ public class DrawFXCanvas extends VBox {
 		setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				// TODO Auto-generated method stub
 //				System.out.println("fx: Mouse Dragged " + e.getX() + ", " + e.getY());
 				
 				if(activeTarget instanceof Swing3DConverter) {
@@ -297,7 +290,6 @@ public class DrawFXCanvas extends VBox {
 		
 //		targetGroup.getTransforms().clear();
 		swing2DGroup.getTransforms().clear();
-//		swing3DGroup.getTransforms().clear();
 		fx2DGroup.getTransforms().clear();
 		fx3DGroup.getTransforms().clear();
 		
