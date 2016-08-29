@@ -10,6 +10,7 @@ import edu.ohiou.mfgresearch.labimp.draw.DrawableWF;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -25,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -266,6 +268,21 @@ public class DrawFXCanvas extends VBox {
 				updateView();				
 			}
 		});
+		
+	    setOnScroll((e) -> {
+	
+	    	double zoomRatio = 1;
+	    	if(e.getDeltaY() > 0) {
+	    		zoomRatio = 1.05;
+	    	} else {
+	    		zoomRatio = 0.95;
+	    	}
+	    	
+	    	scale = scale * zoomRatio;	    	
+	    	virtualPanel.setView(scale);
+	    	updateView();
+	    	
+	    });
 
 		updateView();
 	}

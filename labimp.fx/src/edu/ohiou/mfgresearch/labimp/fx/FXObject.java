@@ -24,7 +24,7 @@ import javafx.scene.text.Text;
  * @author Arif
  *
  */
-public abstract class FXObject implements DrawableFX, ViewableFX {
+public abstract class FXObject implements DrawableFX {
 
 	private boolean isVisible = true;
 	protected DrawFXCanvas parentContainer;
@@ -50,12 +50,6 @@ public abstract class FXObject implements DrawableFX, ViewableFX {
 		isVisible = !isVisible;
 		parentContainer.updateView();
 	}
-
-//	@Override
-//	public void init() {
-//		// TODO Auto-generated method stub
-//		viewPanel = new Pane();
-//	}
 
 	@Override
 	public void display() {
