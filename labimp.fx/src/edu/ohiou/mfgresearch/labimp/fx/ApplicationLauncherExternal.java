@@ -22,8 +22,7 @@ public class ApplicationLauncherExternal extends Application {
 		// TODO Auto-generated method stub
 
         primaryStage.setTitle(target.name().get());
-        
-        
+                
         DrawFXPanel panel = new DrawFXPanel();
         panel.addTarget(target);
         

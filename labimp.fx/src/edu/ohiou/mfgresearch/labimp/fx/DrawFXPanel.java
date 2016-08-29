@@ -133,6 +133,7 @@ public class DrawFXPanel extends BorderPane{
 		
 		
 		targetView.setItems(canvas.getTargetList());
+
 	}
 	
 	public ObservableList<DrawableFX> getTargetList() {
@@ -156,24 +157,10 @@ public class DrawFXPanel extends BorderPane{
 		canvas.setActiveTarget(activeTarget);
 		
 		try {	
-//			if(activeTarget instanceof SwingConverter) {
-////				((SwingConverter)activeTarget).getSwingTarget().init();
-////				JPanel jp = ((SwingConverter)activeTarget).getSwingTarget().gettPanel();
-////				SwingNode n = new SwingNode();
-////				n.setContent(jp);
-////				
-////				viewPanel.getChildren().clear();
-////				viewPanel.getChildren().add(new StackPane(n));
-////				
-////				JFrame j = new JFrame();
-////				j.add(jp);
-////				j.pack();
-////				j.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-////				j.setVisible(true);
-//			} else {
+
 				viewPanel.getChildren().clear();
 				viewPanel.getChildren().add(activeTarget.getPanel());
-//			}
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			System.out.println(e.getStackTrace());

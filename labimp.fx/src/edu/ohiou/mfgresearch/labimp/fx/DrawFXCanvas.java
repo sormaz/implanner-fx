@@ -19,6 +19,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
+import javafx.scene.PointLight;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -35,6 +36,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -75,8 +77,7 @@ public class DrawFXCanvas extends VBox {
 		this.viewpoint = viewpoint;
 		setScale(scale);
 		this.showWCS = showWCS;
-		init();	
-		
+		init();			
 	}
 	
 	public ObservableList<DrawableFX> getTargetList() {
@@ -279,7 +280,7 @@ public class DrawFXCanvas extends VBox {
 
 		updateView();
 	}
-
+	
 	public void updateView() {
 
 		targetGroup.getChildren().clear();
@@ -355,6 +356,7 @@ public class DrawFXCanvas extends VBox {
 		wcsCheck.setPadding(new Insets(4, 4, 4, 4));
 		Button redisplayBtn = new Button("ReDisplay");
 		redisplayBtn.setPrefWidth(Double.MAX_VALUE);
+		redisplayBtn.setOnAction((e) -> updateView());
 
 		canvasControls.add(viewLbl, 0, 0, 2, 1);
 		canvasControls.add(xTxt, 2, 0, 1, 1);

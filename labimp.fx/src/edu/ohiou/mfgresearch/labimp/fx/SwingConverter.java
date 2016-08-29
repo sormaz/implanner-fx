@@ -68,6 +68,16 @@ public abstract class SwingConverter extends FXObject {
 
 		viewPanel.getChildren().add(new StackPane(n));
 		
+		viewPanel.widthProperty().addListener(evt -> {
+			viewPanel.getChildren().clear();
+			viewPanel.getChildren().add(new StackPane(n));
+		});
+		
+		viewPanel.heightProperty().addListener(evt -> {
+			viewPanel.getChildren().clear();
+			viewPanel.getChildren().add(new StackPane(n));
+		});
+		
 		return viewPanel;
 		
 	}
