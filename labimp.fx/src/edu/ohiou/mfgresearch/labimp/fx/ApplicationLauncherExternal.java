@@ -31,10 +31,6 @@ public class ApplicationLauncherExternal extends Application {
         primaryStage.show();				
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
-
 	public void launch(FXObject target) {
 		setTarget(target);
 		launch("");		
