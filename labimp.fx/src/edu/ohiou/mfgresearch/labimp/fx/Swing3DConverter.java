@@ -17,7 +17,6 @@ public class Swing3DConverter extends SwingConverter {
 	
 	@Override
 	public ViewObject getSwingTarget() {
-		// TODO Auto-generated method stub
 		return swingTarget;
 	}
 
@@ -29,7 +28,6 @@ public class Swing3DConverter extends SwingConverter {
 					ImpObject swingTarget) {
 		super(parentContainer);
 		this.swingTarget = swingTarget;
-//		init();
 	}
 	
 	public LinkedList<Shape> getFXShapes() {
@@ -41,30 +39,10 @@ public class Swing3DConverter extends SwingConverter {
 		fxShapes.add(swingPath);
 		return fxShapes;
 	}
-	
-	public LinkedList<Text> getFXStringList() {
-		LinkedList<DrawString> swingStrings = swingTarget.getStringList();
-
-		LinkedList<Text> fxStrings = new LinkedList<>();
 		
-		for(DrawString ds: swingStrings) {
-			Text fxText = new Text();
-			fxText.setText(ds.getContent());
-			fxText.setX(ds.gettPosition().getX());
-			fxText.setY(ds.gettPosition().getY());
-			fxText.setScaleX(ds.getSize());
-			fxText.setScaleY(ds.getSize());
-			
-			fxStrings.add(fxText);
-			
-		}
-		return fxStrings;
-	}
-	
-	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public LinkedList getFXSelectables() {
-		LinkedList swingSelectables = (LinkedList)swingTarget.giveSelectables();	
+		LinkedList swingSelectables = (LinkedList)swingTarget.getPointSet();	
 		LinkedList selectables = new LinkedList<>();
 		
 		for(Object o: swingSelectables) {

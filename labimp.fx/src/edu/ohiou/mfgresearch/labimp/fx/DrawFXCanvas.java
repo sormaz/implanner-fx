@@ -17,6 +17,7 @@ import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -52,7 +53,9 @@ public class DrawFXCanvas extends VBox {
 	private Group targetGroup = new Group(); 
 	private Group swing2DGroup = new Group(); 
 	private Group swing3DGroup = new Group(); 
-	private Group fxGroup = new Group(); 
+	private Group fx2DGroup = new Group(); 
+	private Group fx3DGroup = new Group();
+	private SubScene fx3DScene = new SubScene(fx3DGroup, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	private Pane canvas = new Pane(targetGroup);
 	private DrawWFPanel virtualPanel = new DrawWFPanel();
 
@@ -72,16 +75,18 @@ public class DrawFXCanvas extends VBox {
 		this.showWCS = showWCS;
 		init();	
 		
-//        canvas.widthProperty().addListener(evt -> {
+        canvas.widthProperty().addListener(evt -> {
 //        	virtualPanel.setSize((int)canvas.getWidth(), virtualPanel.getHeight());
 //        	virtualPanel.repaint();
+
 //        	updateView();
-//        });
-//        canvas.heightProperty().addListener(evt -> {
+        });
+        canvas.heightProperty().addListener(evt -> {
 //        	virtualPanel.setSize(virtualPanel.getWidth(), (int)canvas.getHeight());
 //        	virtualPanel.repaint();
+        	
 //        	updateView();
-//        });
+        });
 	}
 	
 	public ObservableList<DrawableFX> getTargetList() {
@@ -151,6 +156,7 @@ public class DrawFXCanvas extends VBox {
 	}
 
 	private void init() {
+		
 		canvas.setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		Rectangle clipRect = new Rectangle(canvas.getWidth(), canvas.getHeight());
 		canvas.setClip(clipRect);
@@ -161,9 +167,9 @@ public class DrawFXCanvas extends VBox {
 		Pane canvasControls = getToolbar();
 		canvasControls.setPrefWidth(DEFAULT_WIDTH);
 		
-		canvas.setStyle("-fx-border-width: 1; "
-				+ "-fx-border-style: solid;"
-				+ "-fx-border-color:black;");
+//		canvas.setStyle("-fx-border-width: 1; "
+//				+ "-fx-border-style: solid;"
+//				+ "-fx-border-color:black;");
 		
 //		canvasControls.setStyle("-fx-border-width: 1; "
 //								+ "-fx-border-style: solid;"
@@ -269,12 +275,14 @@ public class DrawFXCanvas extends VBox {
 		targetGroup.getChildren().clear();
 		swing2DGroup.getChildren().clear();
 		swing3DGroup.getChildren().clear();
-		fxGroup.getChildren().clear();
+		fx2DGroup.getChildren().clear();
+		fx3DGroup.getChildren().clear();
 		
 //		targetGroup.getTransforms().clear();
 		swing2DGroup.getTransforms().clear();
 //		swing3DGroup.getTransforms().clear();
-		fxGroup.getTransforms().clear();
+		fx2DGroup.getTransforms().clear();
+		fx3DGroup.getTransforms().clear();
 		
 		targetList.stream()
 				.filter((t) -> t.IsVisible()) 
@@ -296,21 +304,22 @@ public class DrawFXCanvas extends VBox {
 				}
 				
 			} else {
-				fxGroup.getChildren().addAll(target.getFXShapes());	
-				fxGroup.getChildren().addAll(target.getFX3DShapes());
-			
+				fx2DGroup.getChildren().addAll(target.getFXShapes());	
+				fx3DGroup.getChildren().addAll(target.getFX3DShapes());		
 			} 
 		});
 		
-		Scale s = new Scale(scale, scale);
-		swing2DGroup.getTransforms().add(s);
+		Scale scale2D = new Scale(scale, scale);
+		Scale scale3D = new Scale(scale, scale, scale);
 		
-//		Scale s2 = new Scale(scale, scale, scale);
-		fxGroup.getTransforms().add(s);
+		swing2DGroup.getTransforms().add(scale2D);
+		fx2DGroup.getTransforms().add(scale2D);
+		fx3DGroup.getTransforms().add(scale3D);
 			
 		targetGroup.getChildren().add(swing2DGroup);
 		targetGroup.getChildren().add(swing3DGroup);
-		targetGroup.getChildren().add(fxGroup);
+		targetGroup.getChildren().add(fx2DGroup);
+		targetGroup.getChildren().add(fx3DScene);
 		
 		if(activeTarget instanceof Swing3DConverter) {
 			virtualPanel.setTarget

@@ -1,6 +1,7 @@
 package edu.ohiou.mfgresearch.labimp.fx;
 
 import java.awt.geom.Point2D;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import javax.vecmath.Point3d;
@@ -84,7 +85,7 @@ public class IMPlannerFXApp extends Application{
             
     	} catch (Exception e) {
     		System.out.println(e.getMessage());
-    		System.out.println(e.getStackTrace());
+    		System.out.println(Arrays.toString(e.getStackTrace()));
     	}
     
     }

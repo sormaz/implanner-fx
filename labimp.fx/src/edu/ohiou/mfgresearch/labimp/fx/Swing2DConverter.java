@@ -28,7 +28,6 @@ public class Swing2DConverter extends SwingConverter {
 										ViewObject swingTarget) {
 		super(parentContainer);
 		this.swingTarget = swingTarget;
-//		init();
 	}
 	
 	public LinkedList<Shape> getFXShapes() {
@@ -46,30 +45,7 @@ public class Swing2DConverter extends SwingConverter {
 		LinkedList<Shape> fxShapes = new LinkedList<>();
 		fxShapes.add(swingPath);
 		return fxShapes;
-	}
-	
-	public LinkedList<Text> getFXStringList() {
-		LinkedList<DrawString> swingStrings = swingTarget.getStringList();
-
-		LinkedList<Text> fxStrings = new LinkedList<>();
-		
-		for(DrawString ds: swingStrings) {
-			Text fxText = new Text();
-			fxText.setText(ds.getContent());
-			fxText.setX(ds.gettPosition().getX());
-			fxText.setY(ds.gettPosition().getY());
-			
-			if(!Double.isNaN(ds.getSize())) {
-				fxText.setScaleX(ds.getSize());
-				fxText.setScaleY(ds.getSize());
-//				System.out.println(ds.getSize());
-			}	
-			fxStrings.add(fxText);
-			
-		}
-		return fxStrings;
-	}
-	
+	}	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public LinkedList getFXSelectables() {
