@@ -107,7 +107,7 @@ public class DrawFXCanvas extends VBox {
 			this.activeTarget = activeTarget;
 		}
 		
-		if(!activeTarget.IsVisible()) 
+		if(!activeTarget.getVisible().get()) 
 			activeTarget.changeVisibility();
 		
 		if(activeTarget instanceof Swing3DConverter) {
@@ -294,7 +294,7 @@ public class DrawFXCanvas extends VBox {
 		fx3DGroup.getTransforms().clear();
 		
 		targetList.stream()
-				.filter((t) -> t.IsVisible()) 
+				.filter((t) -> t.getVisible().get()) 
 				.forEach((target) -> { 
 			
 			if(target instanceof Swing2DConverter) {

@@ -32,7 +32,7 @@ public interface DrawableFX {
 
 	public StringProperty name();
 	
-	public Boolean IsVisible();
+	public BooleanProperty getVisible();
 	
 	public void changeVisibility();
 	

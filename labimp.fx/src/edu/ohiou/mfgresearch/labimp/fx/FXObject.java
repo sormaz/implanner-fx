@@ -26,7 +26,7 @@ import javafx.scene.text.Text;
  */
 public abstract class FXObject implements DrawableFX {
 
-	private boolean isVisible = true;
+	private BooleanProperty IsVisible = new SimpleBooleanProperty(true);
 	protected DrawFXCanvas parentContainer;
 	
 	public FXObject(DrawFXCanvas parentContainer) {
@@ -41,13 +41,13 @@ public abstract class FXObject implements DrawableFX {
 		return new SimpleStringProperty(getClass().getSimpleName().toString());
 	}
 	
-	public Boolean IsVisible() {
-		return isVisible;
+	public BooleanProperty getVisible() {
+		return IsVisible;
 	}
 	
 	@Override
 	public void changeVisibility() {
-		isVisible = !isVisible;
+		IsVisible.set(!IsVisible.get());
 		parentContainer.updateView();
 	}
 
