@@ -109,8 +109,8 @@ public abstract class SwingConverter extends FXObject {
 		Path sfx = new Path();
 		
 		for(Object s: swingShapes) {
-			java.awt.Shape ss = (java.awt.Shape)s;
-			if (ss instanceof java.awt.Shape) {
+			if (s instanceof java.awt.Shape) {
+				java.awt.Shape ss = (java.awt.Shape)s;
 				double[] coords = new double[6];
 				ArrayList<double[]> areaPoints = new ArrayList<double[]>();
 
@@ -177,6 +177,9 @@ public abstract class SwingConverter extends FXObject {
 						sfx.getElements().add(cp);
 					}
 				}
+			} else {
+				System.out.println("Unable to draw shape.");
+				System.out.println("Object missed: " + s.toString());
 			}
 		}
 		return sfx;
