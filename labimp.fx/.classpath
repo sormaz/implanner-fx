@@ -15,5 +15,14 @@
 	<classpathentry kind="lib" path="/java-library/java3d/j3dutils.jar"/>
 	<classpathentry kind="lib" path="/java-library/java3d/vecmath.jar" sourcepath="/java-library/java3d/vecmath-1_5_2-src.zip"/>
 	<classpathentry kind="lib" path="/java-library/Other/cv97r140.jar"/>
+	<classpathentry kind="lib" path="/java-library/NX/NXOpen.jar"/>
+	<classpathentry kind="lib" path="/java-library/NX/NXOpenRemote.jar"/>
+	<classpathentry kind="lib" path="/java-library/NX/NXOpenRun.jar"/>
+	<classpathentry kind="lib" path="/java-library/NX/NXOpenUF.jar"/>
+	<classpathentry kind="lib" path="/java-library/NX/NXOpenUFRemote.jar"/>
+	<classpathentry kind="lib" path="/java-library/NX/NXOpenUFRun.jar"/>
+	<classpathentry kind="lib" path="/java-library/NX/NXOpenUI.jar"/>
+	<classpathentry kind="lib" path="/java-library/NX/NXOpenUIRemote.jar"/>
+	<classpathentry kind="lib" path="/java-library/NX/NXOpenUIRun.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

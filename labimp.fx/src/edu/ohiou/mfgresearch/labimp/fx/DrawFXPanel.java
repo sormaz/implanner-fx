@@ -24,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -82,6 +83,8 @@ public class DrawFXPanel extends BorderPane{
 	@FXML
 	private void initialize() {
 		
+		targetView.setSelectionModel(null);
+		
 		targetCol.setCellValueFactory(cellData -> cellData.getValue().name());
 		
 		visiblityCol.setCellValueFactory(
@@ -96,22 +99,22 @@ public class DrawFXPanel extends BorderPane{
 			private final Button visibilityBtn = new Button();
 
 			@Override
-			protected void updateItem(DrawableFX t, boolean empty) {
-				super.updateItem(t, empty);
+			protected void updateItem(DrawableFX target, boolean empty) {
+				super.updateItem(target, empty);
 
-				if(t == null) {
+				if(target == null) {
 					setGraphic(null);
 					return;
 				}
 				
-				if(t.getVisible().get()) {
+				if(target.getVisible().get()) {
 					visibilityBtn.setText("Hide");
 				} else {
 					visibilityBtn.setText("Show");
 				}
 
-				t.getVisible().addListener((e) -> {
-					if(t.getVisible().get()) {
+				target.getVisible().addListener((e) -> {
+					if(target.getVisible().get()) {
 						visibilityBtn.setText("Hide");
 					} else {
 						visibilityBtn.setText("Show");
@@ -122,7 +125,7 @@ public class DrawFXPanel extends BorderPane{
 				setGraphic(visibilityBtn);
 				visibilityBtn.setOnAction(
 						event -> {
-							t.changeVisibility();
+							target.changeVisibility();
 						}
 				);
 			}
@@ -132,27 +135,27 @@ public class DrawFXPanel extends BorderPane{
 			private final RadioButton setActiveBtn = new RadioButton("");
 
 			@Override
-			protected void updateItem(DrawableFX t, boolean empty) {
-				super.updateItem(t, empty);
+			protected void updateItem(DrawableFX target, boolean empty) {
+				super.updateItem(target, empty);
 				
-				if (t == null) {
+				if (target == null) {
 					setGraphic(null);
 					return;
 				}
 
 				setActiveBtn.setToggleGroup(showActiveToggleGroup);		
-				setActiveBtn.setSelected(getActiveTarget() == t);
+				setActiveBtn.setSelected(getActiveTarget() == target);
 
 				setAlignment(Pos.CENTER);
 				setGraphic(setActiveBtn);
 				setActiveBtn.setOnAction(
-						event -> setActiveTarget(t)
+						event -> setActiveTarget(target)
 				);
 			}
 		});
 				
 		targetView.setItems(getTargetList());
-		
+	
 	}
 	
 	public ObservableList<DrawableFX> getTargetList() {

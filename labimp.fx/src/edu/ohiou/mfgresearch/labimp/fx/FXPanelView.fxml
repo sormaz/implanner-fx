@@ -16,19 +16,19 @@
 				<Menu mnemonicParsing="false" text="File">
 					<items>
 						<MenuItem fx:id="openFileMI" onAction="#handleOpenFileAction"
-												mnemonicParsing="false" text="Open File" />
+							mnemonicParsing="false" text="Open File" />
 						<MenuItem fx:id="exitMI" onAction="#handleExitAction"
-													mnemonicParsing="false" text="Exit" />
+							mnemonicParsing="false" text="Exit" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Edit">
 					<items>
 						<MenuItem fx:id="clearAllMI" onAction="#handleClearAllAction"
-												mnemonicParsing="false" text="Clear All" />
+							mnemonicParsing="false" text="Clear All" />
 						<MenuItem fx:id="showAllMI" onAction="#handleShowAllAction"
-												mnemonicParsing="false" text="Show All" />
+							mnemonicParsing="false" text="Show All" />
 						<MenuItem fx:id="hideAllMI" onAction="#handleHideAllAction"
-												mnemonicParsing="false" text="Hide All" />
+							mnemonicParsing="false" text="Hide All" />
 					</items>
 				</Menu>
 			</menus>
@@ -40,8 +40,8 @@
 			<columns>
 				<TableColumn fx:id="targetCol" maxWidth="5000.0"
 					minWidth="10.0" prefWidth="100.0" text="Target" />
-				<TableColumn fx:id="visiblityCol" maxWidth="5000.0" minWidth="10.0"
-					prefWidth="60.0" text="Visibility" />
+				<TableColumn fx:id="visiblityCol" maxWidth="5000.0"
+					minWidth="10.0" prefWidth="60.0" text="Visibility" />
 				<TableColumn fx:id="setActiveCol" prefWidth="60.0" text="Set Active" />
 			</columns>
 			<columnResizePolicy>
@@ -52,9 +52,14 @@
 	<center>
 		<SplitPane dividerPositions="0.70" orientation="VERTICAL"
 			prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
-			<items>		
+			<items>
 				<DrawFXCanvas fx:id="canvas" />
-				<StackPane fx:id="viewPanel" prefHeight="200.0" prefWidth="200.0" />
+				<TitledPane>
+					<content>
+						<StackPane fx:id="viewPanel" prefHeight="200.0"
+							prefWidth="200.0" minHeight="200.0"/>
+					</content>
+				</TitledPane>
 			</items>
 		</SplitPane>
 	</center>
