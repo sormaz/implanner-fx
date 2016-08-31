@@ -7,6 +7,7 @@ import edu.ohiou.mfgresearch.labimp.basis.ViewObject;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
@@ -49,6 +50,11 @@ public class Swing3DConverter extends SwingConverter {
 			if (o instanceof java.awt.geom.Point2D) {
 				selectables.add(new Point2D(((java.awt.geom.Point2D) o).getX(), 
 											((java.awt.geom.Point2D) o).getY()));
+			}
+			if (o instanceof javax.vecmath.Point3d) {
+				selectables.add(new Point3D(((javax.vecmath.Point3d) o).getX(), 
+											((javax.vecmath.Point3d) o).getY(),
+											((javax.vecmath.Point3d) o).getZ()));
 			}
 		}
 		return selectables;
