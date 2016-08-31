@@ -28,17 +28,19 @@ public class TetraHedron extends FXObject {
 
 	public TetraHedron(DrawFXCanvas parentContainer, float height, float hypotenuse) {
 		super(parentContainer);
+		this.height = height;
+		this.hypotenuse = hypotenuse;
 	}
 	
 	@Override
 	public LinkedList<Shape3D> getFX3DShapes() {
 		// TODO Auto-generated method stub
 		LinkedList<Shape3D> fxShape = new LinkedList();
-		fxShape.add(buildPyramid(10,20));
+		fxShape.add(buildPyramid());
 		return fxShape;
 	}
 	
-    private MeshView buildPyramid(float height, float hypotenuse) {
+    private MeshView buildPyramid() {
         final TriangleMesh mesh = new TriangleMesh(); 
 
         mesh.getPoints().addAll(
