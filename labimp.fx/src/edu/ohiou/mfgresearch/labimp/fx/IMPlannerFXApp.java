@@ -23,13 +23,15 @@ public class IMPlannerFXApp extends Application{
 		
 		ObservableList<DrawableFX> targetList = FXCollections.observableArrayList();
 		
-        TetraHedron th = new TetraHedron();
+        TetraHedron th = new TetraHedron(2,4);
         
         Globe globe = new Globe(3, 0, 0, 0);
         Swing3DConverter globeFX = new Swing3DConverter(globe);
         
         Torus torus = new Torus(5,1);
         Swing3DConverter torusFX = new Swing3DConverter(torus);
+        
+        SphereFX spFX = new SphereFX(3);
         
 		Point3d p1 = new Point3d(0, 0, 0);
 		Point3d p2 = new Point3d(1, 0, 0);
@@ -42,10 +44,10 @@ public class IMPlannerFXApp extends Application{
 		Polygon3d polygon = new Polygon3d().addPoint(p1).addPoint(p5).addPoint(p6).addPoint(p2);
         Swing3DConverter polygonFX = new Swing3DConverter(polygon);
         
-    	Point2D p11 = new Point2D.Double (0,0);
-    	Point2D p21 = new Point2D.Double (2,0);
+    	Point2D p11 = new Point2D.Double (-2,-2);
+    	Point2D p21 = new Point2D.Double (2,-2);
     	Point2D p31 = new Point2D.Double (2,2);
-    	Point2D p41 = new Point2D.Double (0,2);
+    	Point2D p41 = new Point2D.Double (-2,2);
 		
 		Point2D [] pts = {p11, p21, p31, p41};
 
@@ -59,6 +61,7 @@ public class IMPlannerFXApp extends Application{
         targetList.add(torusFX);
         targetList.add(polygonFX);
         targetList.add(th);
+        targetList.add(spFX);
         targetList.add(profileFX);        
         targetList.add(ccFX);
         

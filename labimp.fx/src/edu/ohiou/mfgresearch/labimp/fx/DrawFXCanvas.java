@@ -36,12 +36,15 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
+import javafx.scene.transform.Affine;
 import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
 
 public class DrawFXCanvas extends VBox {	
 
@@ -60,7 +63,7 @@ public class DrawFXCanvas extends VBox {
 	private Group fx3DGroup = new Group();
 	private SubScene fx3DScene = new SubScene(fx3DGroup, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	private Pane canvas = new Pane(targetGroup);
-	private DrawWFPanel virtualPanel = new DrawWFPanel();
+	private final DrawWFPanel virtualPanel = new DrawWFPanel();
 
 	public DrawFXCanvas() {
 		this(FXCollections.observableArrayList());
@@ -299,16 +302,14 @@ public class DrawFXCanvas extends VBox {
 			
 			if(target instanceof Swing2DConverter) {
 				
-				for (Object o: target.getFXShapes()) {
-					Shape s = (Shape)o;
+				for (Shape s: target.getFXShapes()) {
 					s.setStrokeWidth(1/scale);
 					
 					swing2DGroup.getChildren().add(s);
 				}							
 			}else if (target instanceof Swing3DConverter) {
 				
-				for (Object o: target.getFXShapes()) {
-					Shape s = (Shape)o;
+				for (Shape s: target.getFXShapes()) {
 					swing3DGroup.getChildren().add(s);
 				}
 				
@@ -317,18 +318,32 @@ public class DrawFXCanvas extends VBox {
 				fx3DGroup.getChildren().addAll(target.getFX3DShapes());		
 			} 
 		});
-		
-		Scale scale2D = new Scale(scale, scale);
-		Scale scale3D = new Scale(scale, scale, scale);
-		
-		swing2DGroup.getTransforms().add(scale2D);
-		fx2DGroup.getTransforms().add(scale2D);
-		fx3DGroup.getTransforms().add(scale3D);
 			
 		targetGroup.getChildren().add(swing2DGroup);
 		targetGroup.getChildren().add(swing3DGroup);
 		targetGroup.getChildren().add(fx2DGroup);
 		targetGroup.getChildren().add(fx3DScene);
+	
+		Scale scale2D = new Scale(scale, scale);
+		Scale scale3D = new Scale(scale, scale, scale);
+		
+		Affine mirror 
+		= new Affine(1, 0, 0, 0, -1, canvas.getHeight());
+		
+		Translate moveToCenter = new Translate(canvas.getWidth() / 2,
+												- canvas.getHeight() / 2);
+		
+		swing2DGroup.getTransforms().add(moveToCenter);
+		swing2DGroup.getTransforms().add(mirror);
+		swing2DGroup.getTransforms().add(scale2D);	
+
+		fx2DGroup.getTransforms().add(moveToCenter);
+		fx2DGroup.getTransforms().add(mirror);
+		fx2DGroup.getTransforms().add(scale2D);
+		
+		fx3DGroup.getTransforms().add(moveToCenter);
+		fx3DGroup.getTransforms().add(mirror);
+		fx3DGroup.getTransforms().add(scale3D);
 		
 		if(activeTarget instanceof Swing3DConverter) {
 			virtualPanel.setTarget
@@ -344,15 +359,23 @@ public class DrawFXCanvas extends VBox {
 		GridPane.setHalignment(viewLbl, HPos.CENTER);
 		viewLbl.setPadding(new Insets(4, 4, 4, 4));
 		TextField xTxt = new TextField();
+		xTxt.setText(String.valueOf(viewpoint.getX()));
 		TextField yTxt = new TextField();
+		yTxt.setText(String.valueOf(viewpoint.getY()));
 		TextField zTxt = new TextField();
+		zTxt.setText(String.valueOf(viewpoint.getZ()));
 		Label scaleLbl = new Label("Scale :");
 		GridPane.setHalignment(scaleLbl, HPos.CENTER);
 		scaleLbl.setPadding(new Insets(4, 4, 4, 4));
 		TextField scaleTxt = new TextField();	
+		scaleTxt.setText(String.valueOf(scale));
 		CheckBox wcsCheck = new CheckBox("Show WorldCS");
 		GridPane.setHalignment(wcsCheck, HPos.CENTER);
 		wcsCheck.setPadding(new Insets(4, 4, 4, 4));
+		wcsCheck.setOnAction((e) -> {
+			showWCS = wcsCheck.isSelected();
+			updateView();
+		});
 		Button redisplayBtn = new Button("ReDisplay");
 		redisplayBtn.setPrefWidth(Double.MAX_VALUE);
 		redisplayBtn.setOnAction((e) -> updateView());

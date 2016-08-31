@@ -3,11 +3,11 @@ package edu.ohiou.mfgresearch.labimp.fx;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.sun.j3d.utils.scenegraph.io.SceneGraphStreamWriter;
-
-import edu.ohiou.mfgresearch.implanner.geometry.PartModel;
-import edu.ohiou.mfgresearch.implanner.parts.MfgPartModel;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.StringProperty;
@@ -63,9 +63,9 @@ public class DrawFXPanel extends BorderPane{
 	MenuItem showAllMI;
 	@FXML
 	MenuItem hideAllMI;
-	
+
 	private ToggleGroup showActiveToggleGroup = new ToggleGroup();
-	
+
 	public DrawFXPanel() {
 		URL fxmlURL = this.getClass().getResource("FXPanelView.fxml");
 		FXMLLoader loader = new FXMLLoader();
@@ -79,24 +79,34 @@ public class DrawFXPanel extends BorderPane{
 			System.out.println(exception.getStackTrace());
 		}	
 	}
-	
+
 	@FXML
 	private void initialize() {
-		
-		targetView.setSelectionModel(null);
-		
+
+		final CheckBox masterVisibilityControl = new CheckBox();
+		masterVisibilityControl.setSelected(true);
+		masterVisibilityControl.setOnAction((e) -> {
+			if(masterVisibilityControl.isSelected()) {
+				handleShowAllAction(e);
+			} else {
+				handleHideAllAction(e);
+			}
+		});
+
+		visiblityCol.setGraphic(masterVisibilityControl);
+
 		targetCol.setCellValueFactory(cellData -> cellData.getValue().name());
-		
+
 		visiblityCol.setCellValueFactory(
 				param -> new ReadOnlyObjectWrapper<>(param.getValue())
 				);
-		
+
 		setActiveCol.setCellValueFactory(
 				param -> new ReadOnlyObjectWrapper<>(param.getValue())
 				);
-		
+
 		visiblityCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
-			private final Button visibilityBtn = new Button();
+			private final CheckBox visibilityBtn = new CheckBox();
 
 			@Override
 			protected void updateItem(DrawableFX target, boolean empty) {
@@ -106,38 +116,29 @@ public class DrawFXPanel extends BorderPane{
 					setGraphic(null);
 					return;
 				}
-				
-				if(target.getVisible().get()) {
-					visibilityBtn.setText("Hide");
-				} else {
-					visibilityBtn.setText("Show");
-				}
+
+				visibilityBtn.setSelected(target.getVisible().get());
 
 				target.getVisible().addListener((e) -> {
-					if(target.getVisible().get()) {
-						visibilityBtn.setText("Hide");
-					} else {
-						visibilityBtn.setText("Show");
-					}
+					visibilityBtn.setSelected(target.getVisible().get());
 				});
 
 				setAlignment(Pos.CENTER);
 				setGraphic(visibilityBtn);
-				visibilityBtn.setOnAction(
-						event -> {
-							target.changeVisibility();
-						}
-				);
+				visibilityBtn.setOnAction(event -> {
+					target.changeVisibility();
+					checkMasterVisibilityState(masterVisibilityControl);
+				}); 
 			}
 		});
-		
+
 		setActiveCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
 			private final RadioButton setActiveBtn = new RadioButton("");
 
 			@Override
 			protected void updateItem(DrawableFX target, boolean empty) {
 				super.updateItem(target, empty);
-				
+
 				if (target == null) {
 					setGraphic(null);
 					return;
@@ -148,16 +149,33 @@ public class DrawFXPanel extends BorderPane{
 
 				setAlignment(Pos.CENTER);
 				setGraphic(setActiveBtn);
-				setActiveBtn.setOnAction(
-						event -> setActiveTarget(target)
-				);
+				setActiveBtn.setOnAction(event -> {
+					setActiveTarget(target);
+					checkMasterVisibilityState(masterVisibilityControl);
+				});
 			}
 		});
-				
+
 		targetView.setItems(getTargetList());
-	
+
 	}
 	
+	public void checkMasterVisibilityState(CheckBox masterVisibilityControl) {
+		Set<DrawableFX> visibleList = getTargetList()
+									.stream()
+									.filter((t) -> t.getVisible().get())
+									.collect(Collectors.toSet());
+		if(visibleList.isEmpty()) {
+			masterVisibilityControl.setIndeterminate(false);
+			masterVisibilityControl.setSelected(false);
+		} else if (visibleList.containsAll(getTargetList())) {
+			masterVisibilityControl.setIndeterminate(false);
+			masterVisibilityControl.setSelected(true);
+		} else {
+			masterVisibilityControl.setIndeterminate(true);
+		}
+	}
+
 	public ObservableList<DrawableFX> getTargetList() {
 		return canvas.getTargetList();
 	}
@@ -166,7 +184,7 @@ public class DrawFXPanel extends BorderPane{
 		canvas.setTargetList(tList);
 		targetView.setItems(canvas.getTargetList());
 	}
-	
+
 	public void addTarget(DrawableFX target) {
 		canvas.addTarget(target);
 	}
@@ -177,20 +195,20 @@ public class DrawFXPanel extends BorderPane{
 
 	public void setActiveTarget(DrawableFX activeTarget) {
 		canvas.setActiveTarget(activeTarget);
-		
+
 		try {	
 
-				viewPanel.getChildren().clear();
-				viewPanel.getChildren().add(activeTarget.getPanel());
+			viewPanel.getChildren().clear();
+			viewPanel.getChildren().add(activeTarget.getPanel());
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			System.out.println(e.getStackTrace());
+    		System.out.println(e.getMessage());
+    		System.out.println(Arrays.toString(e.getStackTrace()));
 		}
 	}
-	
-    @FXML
-    private void handleOpenFileAction(ActionEvent event) {
+
+	@FXML
+	private void handleOpenFileAction(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Part File");
 		fileChooser.setInitialDirectory(new File("."));
@@ -199,39 +217,38 @@ public class DrawFXPanel extends BorderPane{
 				new ExtensionFilter("All Files", "*.*"));
 		File selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile != null) {
-			PartModel partModel = new PartModel(selectedFile);
-			Swing3DConverter newTarget = new Swing3DConverter(partModel);
+			PartModelConverter newTarget = new PartModelConverter(selectedFile);
 			addTarget(newTarget);
 		}
 
-    }
-	
-    @FXML
-    private void handleExitAction(ActionEvent event) {
-        System.exit(0);
-        Platform.exit();
-    }
-    
-    @FXML
-    private void handleShowAllAction(ActionEvent event) {
-    	getTargetList().stream()
-    		.filter((t) -> !t.getVisible().get())
-    		.forEach((t) -> t.getVisible().set(!t.getVisible().get()));
-    	canvas.updateView();
-    }
-    
-    @FXML
-    private void handleHideAllAction(ActionEvent event) {
-    	getTargetList().stream()
-			.filter((t) -> t.getVisible().get())
-			.forEach((t) -> t.getVisible().set(!t.getVisible().get()));
-    	canvas.updateView();
-    }
-    
-    @FXML
-    private void handleClearAllAction(ActionEvent event) {
-    	getTargetList().clear();
-    	canvas.updateView();
-    }
-	
+	}
+
+	@FXML
+	private void handleExitAction(ActionEvent event) {
+		System.exit(0);
+		Platform.exit();
+	}
+
+	@FXML
+	private void handleShowAllAction(ActionEvent event) {
+		getTargetList().stream()
+		.filter((t) -> !t.getVisible().get())
+		.forEach((t) -> t.getVisible().set(!t.getVisible().get()));
+		canvas.updateView();
+	}
+
+	@FXML
+	private void handleHideAllAction(ActionEvent event) {
+		getTargetList().stream()
+		.filter((t) -> t.getVisible().get())
+		.forEach((t) -> t.getVisible().set(!t.getVisible().get()));
+		canvas.updateView();
+	}
+
+	@FXML
+	private void handleClearAllAction(ActionEvent event) {
+		getTargetList().clear();
+		canvas.updateView();
+	}
+
 }
