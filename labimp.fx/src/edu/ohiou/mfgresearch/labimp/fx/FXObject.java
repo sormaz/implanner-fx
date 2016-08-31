@@ -3,8 +3,13 @@
  */
 package edu.ohiou.mfgresearch.labimp.fx;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.URL;
 import java.util.LinkedList;
+import java.util.Properties;
 
+import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -28,6 +33,11 @@ public abstract class FXObject implements DrawableFX {
 
 	private BooleanProperty IsVisible = new SimpleBooleanProperty(true);
 	protected DrawFXCanvas parentContainer;
+	static protected Properties properties = new Properties();
+	
+	static {
+		loadProperties(FXObject.class, "labimp.fx");
+	}
 	
 	public FXObject(DrawFXCanvas parentContainer) {
 		setParentContainer(parentContainer);
@@ -39,6 +49,10 @@ public abstract class FXObject implements DrawableFX {
 	
 	public StringProperty name() {
 		return new SimpleStringProperty(getClass().getSimpleName().toString());
+	}
+	
+	static public Properties getProperties () {
+		return properties;
 	}
 	
 	public BooleanProperty getVisible() {
@@ -100,5 +114,41 @@ public abstract class FXObject implements DrawableFX {
 		// TODO Auto-generated method stub
 		return new LinkedList<>();
 	}
+	
+	  public static void loadProperties (Class c, String name) {
+		   try {
+			      URL resourcePropertyURL = c.getResource(
+			      "/META-INF/properties/" + name + ".properties");
+			      properties.load(resourcePropertyURL.openStream());
+			      System.out.println(
+			      "Properties loaded from " + c.getSimpleName() + " resource, " + resourcePropertyURL);
+			    }
+			    catch (Exception ex) {
+			      System.err.println(
+			      "\nProperties "  + name + " not loaded from FXObject resource file.");
+			    }
+			    try {
+			      File propertyFile = new File(System.getProperty("user.home"),
+			      name + ".properties");
+			      properties.load(new FileInputStream(propertyFile));
+			      System.out.println(
+			      "Properties loaded from user home, file " + propertyFile);
+			    }
+			    catch (Exception ex) {
+			      System.err.println(
+			      "Properties " + name + " not loaded from user home.");
+			    }
+			    try {
+			      File propertyFile = new File(System.getProperty("user.dir"),
+			    		 name +  ".properties");
+			      properties.load(new FileInputStream(propertyFile));
+			      System.out.println(
+			      "Properties loaded from current folder, file " + propertyFile);
+			    }
+			    catch (Exception ex) {
+			      System.err.println(
+			      "\nProperties " + name + " not loaded from current folder.");
+			    }
+	  }
 
 }

@@ -211,7 +211,16 @@ public class DrawFXPanel extends BorderPane{
 	private void handleOpenFileAction(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Part File");
-		fileChooser.setInitialDirectory(new File("."));
+		
+		File existDirectory = 
+				new File(FXObject.properties.getProperty("UG_FILE_FOLDER"));
+		
+		if(existDirectory.exists()) {
+			fileChooser.setInitialDirectory(existDirectory);
+		} else {
+			fileChooser.setInitialDirectory(new File("."));
+		}
+
 		fileChooser.getExtensionFilters().addAll(
 				new ExtensionFilter("Part File", "*.prt"),
 				new ExtensionFilter("All Files", "*.*"));
