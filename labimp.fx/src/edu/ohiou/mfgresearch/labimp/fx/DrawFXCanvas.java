@@ -7,6 +7,8 @@ import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.DrawableWF;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -138,6 +140,7 @@ public class DrawFXCanvas extends VBox {
 
 	public void setScale(double scale) {
 		this.scale = scale;
+		virtualPanel.setView(scale);
 	}
 
 	public Pane getCanvas() {
@@ -274,8 +277,8 @@ public class DrawFXCanvas extends VBox {
 	    		zoomRatio = 0.95;
 	    	}
 	    	
-	    	scale = scale * zoomRatio;	    	
-	    	virtualPanel.setView(scale);
+	    	setScale(scale * zoomRatio);
+	    	
 	    	updateView();
 	    	
 	    });
@@ -318,6 +321,15 @@ public class DrawFXCanvas extends VBox {
 				fx3DGroup.getChildren().addAll(target.getFX3DShapes());		
 			} 
 		});
+		
+		if(showWCS) {
+			AxisFX axes = new AxisFX();
+			axes.getFXShapes().stream()
+				.forEach((axis) -> {
+					axis.setStrokeWidth(1/scale);
+					fx2DGroup.getChildren().add(axis);
+				});
+		}
 			
 		targetGroup.getChildren().add(swing2DGroup);
 		targetGroup.getChildren().add(swing3DGroup);
@@ -369,6 +381,30 @@ public class DrawFXCanvas extends VBox {
 		scaleLbl.setPadding(new Insets(4, 4, 4, 4));
 		TextField scaleTxt = new TextField();	
 		scaleTxt.setText(String.valueOf(scale));
+		scaleTxt.focusedProperty().addListener(new ChangeListener<Boolean>()
+		{		
+			double oldValue;
+			
+		    @Override
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+		    {
+		        if (newPropertyValue)
+		        {
+					oldValue = Double.valueOf(scaleTxt.getText());
+		        }
+		        else
+		        {
+		        	try {
+						setScale(Double.valueOf(scaleTxt.getText()));
+						updateView();
+					} catch (Exception e) {
+						scaleTxt.setText(String.valueOf(oldValue));
+						setScale(Double.valueOf(scaleTxt.getText()));
+					}				
+		        }
+		    }
+		});
+
 		CheckBox wcsCheck = new CheckBox("Show WorldCS");
 		GridPane.setHalignment(wcsCheck, HPos.CENTER);
 		wcsCheck.setPadding(new Insets(4, 4, 4, 4));
