@@ -36,23 +36,7 @@ public abstract class SwingConverter extends FXObject {
 		return new SimpleStringProperty
 				(getSwingTarget().getClass().getSimpleName().toString());
 	}
-	
-//	@Override
-//	public void init() {
-//		// TODO Auto-generated method stub
-//
-//		try {
-//			getSwingTarget().init();
-//			SwingNode swingPanel = new SwingNode();
-//			swingPanel.setContent(getSwingTarget().gettPanel());
-//			viewPanel = new Pane(swingPanel);
-//		} catch (Exception e) {
-//			super.init();
-//		}
-//		
-//
-//	}
-//	
+
 	@Override
 	public Pane getPanel() {
 		
