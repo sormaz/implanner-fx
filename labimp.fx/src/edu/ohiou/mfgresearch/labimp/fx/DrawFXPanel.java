@@ -70,7 +70,7 @@ public class DrawFXPanel extends BorderPane{
 			loader.load();
 		} catch (IOException exception) {
 			System.out.println(exception.getMessage());
-			System.out.println(exception.getStackTrace());
+    		System.out.println(Arrays.toString(exception.getStackTrace()));
 		}	
 	}
 
