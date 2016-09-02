@@ -331,10 +331,11 @@ public class DrawFXCanvas extends VBox {
 				});
 		}
 			
+		targetGroup.getChildren().add(fx3DScene);
 		targetGroup.getChildren().add(swing2DGroup);
 		targetGroup.getChildren().add(swing3DGroup);
 		targetGroup.getChildren().add(fx2DGroup);
-		targetGroup.getChildren().add(fx3DScene);
+
 	
 		Scale scale2D = new Scale(scale, scale);
 		Scale scale3D = new Scale(scale, scale, scale);

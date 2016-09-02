@@ -4,36 +4,28 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javafx.animation.Animation;
+import javafx.animation.Transition;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingNode;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.scene.control.ToggleButton;
+import javafx.util.Duration;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
@@ -53,6 +45,8 @@ public class DrawFXPanel extends BorderPane{
 	private TableColumn<DrawableFX, DrawableFX> visiblityCol;
 	@FXML
 	private TableColumn<DrawableFX, DrawableFX> setActiveCol;
+	@FXML
+	Button slideBtn;
 	@FXML
 	MenuItem openFileMI;
 	@FXML
@@ -158,6 +152,52 @@ public class DrawFXPanel extends BorderPane{
 
 		targetView.setItems(getTargetList());
 
+		setupSliding();		
+	}
+	
+	public void setupSliding() {
+		
+		final double expandedWidth = targetView.getPrefWidth();
+		
+		targetView.setPrefWidth(expandedWidth);
+		
+		slideBtn.setOnAction(new EventHandler<ActionEvent>() {
+	          @Override public void handle(ActionEvent actionEvent) {
+	            // create an animation to hide sidebar.
+	            final Animation hideSidebar = new Transition() {
+	              { setCycleDuration(Duration.millis(250)); }
+	              protected void interpolate(double frac) {
+	                final double curWidth = expandedWidth * (1.0 - frac);
+	                targetView.setPrefWidth(curWidth);
+	                targetView.setTranslateX(-expandedWidth + curWidth);
+	              }
+	            };
+	            hideSidebar.onFinishedProperty().set(new EventHandler<ActionEvent>() {
+	              @Override public void handle(ActionEvent actionEvent) {
+	            	targetView.setVisible(false);	            	  
+	              }
+	            });
+	    
+	            // create an animation to show a sidebar.
+	            final Animation showSidebar = new Transition() {
+	              { setCycleDuration(Duration.millis(250)); }
+	              protected void interpolate(double frac) {
+	                final double curWidth = expandedWidth * frac;
+	                targetView.setPrefWidth(curWidth);
+	                targetView.setTranslateX(-expandedWidth + curWidth);
+	              }
+	            };
+	    
+	            if (showSidebar.statusProperty().get() == Animation.Status.STOPPED && hideSidebar.statusProperty().get() == Animation.Status.STOPPED) {
+	              if (targetView.isVisible()) {
+	                hideSidebar.play();
+	              } else {
+	            	targetView.setVisible(true);
+	                showSidebar.play();
+	              }
+	            }
+	          }
+	        });
 	}
 	
 	public void checkMasterVisibilityState(CheckBox masterVisibilityControl) {

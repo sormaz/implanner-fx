@@ -46,7 +46,31 @@ public class SlideOut extends Application {
         sidebar.getControlButton(),
         webView
       ).build();
-    layout.setLeft(sidebar);
+    
+    //Arif Ahmed additional code
+    
+	HBox root = new HBox();
+	HBox.setHgrow(sidebar, Priority.ALWAYS);
+	
+	root.getChildren().add(sidebar);
+	
+	AnchorPane buttonHolder = new AnchorPane();
+	buttonHolder.setPrefWidth(10);
+	buttonHolder.setPrefHeight(600);
+	Button control = sidebar.getControlButton();
+	AnchorPane.setBottomAnchor(control, 0.0);
+	AnchorPane.setTopAnchor(control, 0.0);
+	AnchorPane.setLeftAnchor(control, 0.0);
+	AnchorPane.setRightAnchor(control, 0.0);
+	buttonHolder.getChildren().add(control);
+	
+	root.getChildren().add(buttonHolder);
+    
+    layout.setLeft(root);
+    
+    //Addition ends
+    
+//    layout.setLeft(sidebar);
     layout.setCenter(mainPane);
 
     // show the scene.
