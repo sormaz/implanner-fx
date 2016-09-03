@@ -17,6 +17,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
+import javafx.scene.AmbientLight;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
@@ -159,6 +160,9 @@ public class DrawFXCanvas extends VBox {
 		
 		clipRect.heightProperty().bind(canvas.heightProperty());
 		clipRect.widthProperty().bind(canvas.widthProperty());
+		
+		fx3DScene.heightProperty().bind(canvas.heightProperty());
+		fx3DScene.widthProperty().bind(canvas.widthProperty());
 		
 		Pane canvasControls = getToolbar();
 		canvasControls.setPrefWidth(DEFAULT_WIDTH);
