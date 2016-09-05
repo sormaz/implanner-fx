@@ -2,6 +2,7 @@ package edu.ohiou.mfgresearch.labimp.fx;
 
 import java.util.LinkedList;
 
+import edu.ohiou.mfgresearch.labimp.fx.test.TestDrawableFX;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,11 +11,11 @@ import javafx.stage.Stage;
 
 public class ApplicationLauncherExternal extends Application {
 
-	static FXObject target;
+	static DrawableFX target;
 	
-	public void setTarget(FXObject target) {
+	public void setTarget(DrawableFX dfx) {
 		// TODO Auto-generated constructor stub
-		ApplicationLauncherExternal.target = target;
+		ApplicationLauncherExternal.target = dfx;
 	}
 
 	@Override
@@ -31,8 +32,8 @@ public class ApplicationLauncherExternal extends Application {
         primaryStage.show();				
 	}
 
-	public void launch(FXObject target) {
-		setTarget(target);
+	public void launch(DrawableFX dfx) {
+		setTarget(dfx);
 		launch("");		
 	}
 
