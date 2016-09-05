@@ -119,7 +119,7 @@ public class DrawFXCanvas extends VBox {
 		if(activeTarget instanceof Swing3DConverter) {
 			virtualPanel.setTarget
 			((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
-			virtualPanel.mouseClicked(0, 0);
+			virtualPanel.createTargetTable();
 		} else {
 			virtualPanel.setTarget(null);
 		}
