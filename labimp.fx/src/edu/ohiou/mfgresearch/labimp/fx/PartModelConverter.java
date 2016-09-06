@@ -15,11 +15,7 @@ public class PartModelConverter extends Swing3DConverter {
 	}
 
 	public PartModelConverter(ImpObject swingTarget) {
-		this(null, swingTarget);
-	}
-
-	public PartModelConverter(DrawFXCanvas parentContainer, ImpObject swingTarget) {
-		super(parentContainer, swingTarget);
+		super(swingTarget);
 	}
 	
 	public StringProperty name() {

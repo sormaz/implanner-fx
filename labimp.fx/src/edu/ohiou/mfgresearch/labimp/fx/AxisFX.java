@@ -24,7 +24,7 @@ public class AxisFX extends FXObject {
 	
 	public AxisFX(DrawFXCanvas parentContainer, 
 			double xLength, double yLength, double zLength) {
-		super(parentContainer);
+		listeners.add(parentContainer);
 		this.xLength = xLength;
 		this.yLength = yLength;
 		this.zLength = zLength;

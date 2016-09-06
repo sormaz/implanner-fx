@@ -21,12 +21,6 @@ public class Swing2DConverter extends SwingConverter {
 	}
 
 	public Swing2DConverter(ViewObject swingTarget) {
-		this(null, swingTarget);
-	}
-	
-	public Swing2DConverter(DrawFXCanvas parentContainer, 
-										ViewObject swingTarget) {
-		super(parentContainer);
 		this.swingTarget = swingTarget;
 	}
 	

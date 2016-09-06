@@ -5,13 +5,15 @@ import edu.ohiou.mfgresearch.labimp.fx.FXObject;
 
 public class TestFXObject extends FXObject {
 	
-	public TestFXObject () {
-		this (new DrawFXCanvas());
-	}
-	public TestFXObject (DrawFXCanvas parentContainer) {
-		super(parentContainer);
-		
-	}
+	//Arif Ahmed - Reference to parentContainer has been
+	//removed from FXObject
+//	public TestFXObject () {
+//		this (new DrawFXCanvas());
+//	}
+//	public TestFXObject (DrawFXCanvas parentContainer) {
+//		super(parentContainer);
+//		
+//	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

@@ -13,20 +13,22 @@ import javafx.scene.text.Text;
 
 public interface DrawableFX {
 	
-	LinkedList<Shape> getFXShapes();
+	public LinkedList<Shape> getFXShapes();
 	
-	LinkedList<Shape3D> getFX3DShapes();
+	public LinkedList<Shape3D> getFX3DShapes();
 	
-	LinkedList<Shape> getFXFillShapes();
+	public LinkedList<Shape> getFXFillShapes();
 	
-	LinkedList<Text> getFXStringList();
+	public LinkedList<Text> getFXStringList();
 	
 	@SuppressWarnings("rawtypes")
-	LinkedList getFXSelectables();
+	public LinkedList getFXSelectables();
+
+	public void addListener(DrawListener listener);
 	
-	ObservableList<DrawableFX> getTargetList();
+	public void removeListener(DrawListener listener);
 	
-	Pane getPanel();
+	public Pane getPanel();
 	
 	void display();
 

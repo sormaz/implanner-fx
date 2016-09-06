@@ -14,11 +14,6 @@ public class SphereFX extends FXObject {
 	}
 	
 	public SphereFX(double radius) {
-		this(radius, null);
-	}
-
-	public SphereFX(double radius, DrawFXCanvas parentContainer) {
-		super(parentContainer);
 		setRadius(radius);
 	}
 		

@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.Properties;
 
+import com.sun.javafx.collections.ListListenerHelper;
+
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.BooleanProperty;
@@ -19,11 +21,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * @author Arif
@@ -32,19 +36,21 @@ import javafx.scene.text.Text;
 public abstract class FXObject implements DrawableFX {
 
 	private BooleanProperty IsVisible = new SimpleBooleanProperty(true);
-	protected DrawFXCanvas parentContainer;
 	static protected Properties properties = new Properties();
+	protected ObservableList<DrawListener> listeners = FXCollections.observableArrayList();
 	
 	static {
 		loadProperties(FXObject.class, "labimp.fx");
 	}
 	
-	public FXObject(DrawFXCanvas parentContainer) {
-		setParentContainer(parentContainer);
+	public void addListener(DrawListener listener) {
+		if(listeners.contains(listener)) return;
+		listeners.add(listener);
+		listener.addTarget(this);
 	}
 	
-	public void setParentContainer(DrawFXCanvas parentContainer) {
-		this.parentContainer = parentContainer;
+	public void removeListener(DrawListener listener) {
+		listeners.remove(listener);
 	}
 	
 	public StringProperty name() {
@@ -62,27 +68,23 @@ public abstract class FXObject implements DrawableFX {
 	@Override
 	public void changeVisibility() {
 		IsVisible.set(!IsVisible.get());
-		parentContainer.updateView();
 	}
 
 	@Override
 	public void display() {
-		// TODO Auto-generated method stub	
-		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
-		app.setTarget(this);
-		app.launch(this);		
+			
+		if(listeners.isEmpty()) addListener(new DrawFXPanel());		
+		
+		listeners.get(0).display();
+		
+//		listeners.stream().forEach(l -> l.display());
+		
 	}
 
 	@Override
 	public Pane getPanel() {
 		// TODO Auto-generated method stub
 		return new Pane();
-	}
-
-	@Override
-	public ObservableList<DrawableFX> getTargetList() {
-		// TODO Auto-generated method stub
-		return FXCollections.observableArrayList();
 	}
 
 	@Override

@@ -25,10 +25,6 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 
 public abstract class SwingConverter extends FXObject {
-
-	public SwingConverter(DrawFXCanvas parentContainer) {
-		super(parentContainer);
-	}
 	
 	public abstract ViewObject getSwingTarget();
 	

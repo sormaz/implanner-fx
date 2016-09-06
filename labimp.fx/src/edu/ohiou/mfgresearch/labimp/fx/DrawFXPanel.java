@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.sun.javafx.application.PlatformImpl;
+
+import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import javafx.animation.Animation;
 import javafx.animation.Transition;
 import javafx.application.Platform;
@@ -22,6 +25,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -31,7 +35,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 
-public class DrawFXPanel extends BorderPane{
+public class DrawFXPanel extends BorderPane implements DrawListener{
 
 	@FXML
 	private DrawFXCanvas canvas;
@@ -67,6 +71,7 @@ public class DrawFXPanel extends BorderPane{
 		loader.setRoot(this);
 		loader.setController(this);
 		try {
+			PlatformImpl.startup(() -> {});
 			loader.load();
 		} catch (IOException exception) {
 			System.out.println(exception.getMessage());
@@ -122,6 +127,7 @@ public class DrawFXPanel extends BorderPane{
 				visibilityBtn.setOnAction(event -> {
 					target.changeVisibility();
 					checkMasterVisibilityState(masterVisibilityControl);
+					updateView();
 				}); 
 			}
 		});
@@ -283,7 +289,7 @@ public class DrawFXPanel extends BorderPane{
 		getTargetList().stream()
 		.filter((t) -> !t.getVisible().get())
 		.forEach((t) -> t.getVisible().set(!t.getVisible().get()));
-		canvas.updateView();
+		updateView();
 	}
 
 	@FXML
@@ -291,13 +297,35 @@ public class DrawFXPanel extends BorderPane{
 		getTargetList().stream()
 		.filter((t) -> t.getVisible().get())
 		.forEach((t) -> t.getVisible().set(!t.getVisible().get()));
-		canvas.updateView();
+		updateView();
 	}
 
 	@FXML
 	private void handleClearAllAction(ActionEvent event) {
 		getTargetList().clear();
-		canvas.updateView();
+		updateView();
+	}
+
+	@Override
+	public void display() {
+		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
+		app.setListener(this);
+		app.launch(this);	
+	}
+
+	@Override
+	public void updateView() {
+		canvas.updateView();		
+	}
+
+	@Override
+	public DrawWFPanel getVirtualPanel() {
+		return canvas.getVirtualPanel();
+	}
+
+	@Override
+	public Pane getView() {
+		return this;
 	}
 
 }

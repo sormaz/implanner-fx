@@ -22,21 +22,24 @@ public class Swing3DConverter extends SwingConverter {
 	}
 
 	public Swing3DConverter(ImpObject swingTarget) {
-		this(null, swingTarget);
-	}
-	
-	public Swing3DConverter(DrawFXCanvas parentContainer, 
-					ImpObject swingTarget) {
-		super(parentContainer);
 		this.swingTarget = swingTarget;
 	}
 	
 	public LinkedList<Shape> getFXShapes() {
-		DrawWFPanel virtualPanel = parentContainer.getVirtualPanel();
+		try {
+			return getFXShapes(listeners.get(0));
+		} catch (Exception e) {
+			return new LinkedList<>();
+		}
+	}
+	
+	public LinkedList<Shape> getFXShapes(DrawListener listener) {
+		if(!listeners.contains(listener)) return new LinkedList<Shape>();
+		DrawWFPanel virtualPanel = listener.getVirtualPanel();
 		virtualPanel.setTarget(swingTarget);
 		Path swingPath = getFXShapes(swingTarget.getShapeList(virtualPanel));
 		
-		LinkedList<Shape> fxShapes = new LinkedList();
+		LinkedList<Shape> fxShapes = new LinkedList<Shape>();
 		fxShapes.add(swingPath);
 		return fxShapes;
 	}

@@ -3,6 +3,8 @@ package edu.ohiou.mfgresearch.labimp.fx;
 import java.awt.Dimension;
 import java.util.LinkedList;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.DrawableWF;
@@ -49,7 +51,7 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
-public class DrawFXCanvas extends VBox {	
+public class DrawFXCanvas extends VBox implements DrawListener{	
 
 	static final double DEFAULT_WIDTH = 650;
 	static final double DEFAULT_HEIGHT = 550;
@@ -90,16 +92,21 @@ public class DrawFXCanvas extends VBox {
 	}
 
 	public void setTargetList(ObservableList<DrawableFX> targetList) {
+		
+		this.targetList.stream()
+				.forEach(target -> target.removeListener(this));	
+		
 		this.targetList = targetList;
 		for(DrawableFX target: targetList) {
-			((FXObject)target).setParentContainer(this);
+			target.addListener(this);
 		}
 		updateView();
 	}
 	
 	public void addTarget(DrawableFX target) {
+		if(targetList.contains(target)) return;
 		targetList.add(target);
-		((FXObject)target).setParentContainer(this);
+		target.addListener(this);
 		updateView();
 	}
 
@@ -148,11 +155,14 @@ public class DrawFXCanvas extends VBox {
 		return canvas;
 	}
 
+	@Override
 	public DrawWFPanel getVirtualPanel() {
 		return virtualPanel;
 	}
 
 	private void init() {
+		
+		PlatformImpl.startup(() -> {});
 		
 		canvas.setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		Rectangle clipRect = new Rectangle(canvas.getWidth(), canvas.getHeight());
@@ -290,6 +300,15 @@ public class DrawFXCanvas extends VBox {
 		updateView();
 	}
 	
+
+	@Override
+	public void display() {
+		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
+		app.setListener(this);
+		app.launch(this);			
+	}
+	
+	@Override
 	public void updateView() {
 
 		targetGroup.getChildren().clear();
@@ -444,6 +463,11 @@ public class DrawFXCanvas extends VBox {
 		canvasControls.getRowConstraints().add(row);
 
 		return canvasControls;
+	}
+
+	@Override
+	public Pane getView() {
+		return this;
 	}
 
 }

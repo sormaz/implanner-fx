@@ -3,6 +3,7 @@ package edu.ohiou.mfgresearch.labimp.fx.test;
 import java.util.LinkedList;
 
 import edu.ohiou.mfgresearch.labimp.fx.ApplicationLauncherExternal;
+import edu.ohiou.mfgresearch.labimp.fx.DrawListener;
 import edu.ohiou.mfgresearch.labimp.fx.DrawableFX;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -44,12 +45,29 @@ public class TestDrawableFX implements DrawableFX {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	//Arif Ahmed - addListener and removeListener
+	//are newly added methods to DrawableFX
+	@Override
+	public void addListener(DrawListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
-	public ObservableList<DrawableFX> getTargetList() {
+	public void removeListener(DrawListener listener) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
+
+	
+	//Arif Ahmed - This method definition has been removed 
+	//from DrawableFX
+//	@Override
+//	public ObservableList<DrawableFX> getTargetList() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public Pane getPanel() {
@@ -60,9 +78,13 @@ public class TestDrawableFX implements DrawableFX {
 	@Override
 	public void display() {
 		// TODO Auto-generated method stub	
-		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
-		app.setTarget(this);
-		app.launch(this);		
+		
+		//Arif Ahmed - ApplicationLauncherExternal now takes
+		//DrawListeners instead of DrawableFX
+		//This code will need to be rewritten.
+//		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
+//		app.setTarget(this);
+//		app.launch(this);		
 	}
 
 	@Override
@@ -88,5 +110,7 @@ public class TestDrawableFX implements DrawableFX {
 		TestDrawableFX tdfx = new TestDrawableFX();
 		tdfx.display();
 	}
+
+
 
 }

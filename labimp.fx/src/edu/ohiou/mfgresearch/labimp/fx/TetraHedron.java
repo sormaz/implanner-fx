@@ -23,11 +23,6 @@ public class TetraHedron extends FXObject {
 	}
 	
 	public TetraHedron(float height, float hypotenuse) {
-		this(null, height, hypotenuse);
-	}
-
-	public TetraHedron(DrawFXCanvas parentContainer, float height, float hypotenuse) {
-		super(parentContainer);
 		this.height = height;
 		this.hypotenuse = hypotenuse;
 	}
