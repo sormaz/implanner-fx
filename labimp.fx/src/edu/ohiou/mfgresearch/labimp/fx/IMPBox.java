@@ -122,7 +122,6 @@ public class IMPBox extends ImpObject {
 	
 	static class BoxPanel extends ViewPanel {
 		
-		private IMPBox boxObject;	
 		private JTextField widthText, heigthText, depthText;
 		
 		public double getBoxWidth() { 
@@ -132,35 +131,35 @@ public class IMPBox extends ImpObject {
 		public double getBoxDepth() { 
 			return Double.parseDouble(depthText.getText()); }
 	
-		public BoxPanel(IMPBox object) {
+		public BoxPanel(IMPBox box) {
 			
-			boxObject = object;
+			this.object = box;
 			
 			widthText = new JTextField
-					(String.valueOf(boxObject.width));
+					(String.valueOf(box.width));
 			heigthText = new JTextField
-					(String.valueOf(boxObject.height));
+					(String.valueOf(box.height));
 			depthText = new JTextField
-					(String.valueOf(boxObject.depth));
+					(String.valueOf(box.depth));
 			
 			widthText.addFocusListener(new FocusAdapter() {
 			    public void focusLost(FocusEvent e) {
-			    	boxObject.width = getBoxWidth();
-			    	boxObject.repaint();
+			    	box.width = getBoxWidth();
+			    	box.repaint();
 			    }
 			});
 			
 			heigthText.addFocusListener(new FocusAdapter() {
 			    public void focusLost(FocusEvent e) {
-			    	boxObject.height = getBoxHeight();
-			    	boxObject.repaint();
+			    	box.height = getBoxHeight();
+			    	box.repaint();
 			    }
 			});
 			
 			depthText.addFocusListener(new FocusAdapter() {
 			    public void focusLost(FocusEvent e) {
-			    	boxObject.depth = getBoxDepth();
-			    	boxObject.repaint();
+			    	box.depth = getBoxDepth();
+			    	box.repaint();
 			    }
 			});
 			
