@@ -45,6 +45,12 @@ public class Globe extends ImpObject {
 		panel = new GlobePanel(this);
 	}
 	
+	public void setCenter(double x, double y, double z) {
+		center.setX(x);
+		center.setY(y);
+		center.setZ(z);
+	}
+	
 	public LinkedList getPointSet() {
 		LinkedList pointSet = new LinkedList<>();
 		pointSet.add(center);
