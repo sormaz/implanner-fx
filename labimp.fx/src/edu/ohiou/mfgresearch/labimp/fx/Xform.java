@@ -37,7 +37,7 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
-public class Xform extends Group{
+public class Xform extends Group {
 
     public enum RotateOrder {
         XYZ, XZY, YXZ, YZX, ZXY, ZYX
@@ -202,89 +202,4 @@ public class Xform extends Group{
                            ip.getY() + ", " + 
                            ip.getZ() + ")]";
     }
-
-	public void fitWidth() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void fitHeight() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void fitToScreen() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void scaleX(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void scaleY(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void scaleZ(double scale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void scale(double scaleX, double scaleY, double scaleZ) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void rotateAroundXAxis() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void rotateAroundYAxis() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mirrorAroundXAxis() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mirrorAroundYAxis() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void panUp() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void panDown() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void panLeft() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void panRight() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void zoomIn() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void zoomOut() {
-		// TODO Auto-generated method stub
-		
-	}
 }
