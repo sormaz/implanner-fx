@@ -29,7 +29,7 @@ public class Globe extends ImpObject {
 	}
 	
 	public Globe(double radius) {
-		this(radius, new Point3d(0,0,0));
+		this(radius, new Point3d(0,0,20));
 	}
 	
 	public Globe(double radius, Point3d center) {
@@ -108,8 +108,7 @@ public class Globe extends ImpObject {
 	}
 	
 	static class GlobePanel extends ViewPanel {
-		
-		private Globe globeObject;	
+			
 		private JTextField radText, longText, latText;
 		
 		public double getR() { 
@@ -119,35 +118,35 @@ public class Globe extends ImpObject {
 		public int getLatLines() { 
 			return (int)Double.parseDouble(latText.getText()); }
 	
-		public GlobePanel(Globe object) {
+		public GlobePanel(Globe globe) {
 			
-			globeObject = object;
+			this.object = globe;
 			
 			radText = new JTextField
-					(String.valueOf(globeObject.radius));
+					(String.valueOf(globe.radius));
 			longText = new JTextField
-					(String.valueOf(globeObject.linesOfLongitude));
+					(String.valueOf(globe.linesOfLongitude));
 			latText = new JTextField
-					(String.valueOf(globeObject.linesOfLatitude));
+					(String.valueOf(globe.linesOfLatitude));
 			
 			radText.addFocusListener(new FocusAdapter() {
 			    public void focusLost(FocusEvent e) {
-			        globeObject.radius = getR();
-			        globeObject.repaint();
+			    	globe.radius = getR();
+			    	globe.repaint();
 			    }
 			});
 			
 			longText.addFocusListener(new FocusAdapter() {
 			    public void focusLost(FocusEvent e) {
-			        globeObject.linesOfLongitude = getLongLines();
-			        globeObject.repaint();
+			    	globe.linesOfLongitude = getLongLines();
+			    	globe.repaint();
 			    }
 			});
 			
 			latText.addFocusListener(new FocusAdapter() {
 			    public void focusLost(FocusEvent e) {
-			        globeObject.linesOfLatitude = getLatLines();
-			        globeObject.repaint();
+			    	globe.linesOfLatitude = getLatLines();
+			    	globe.repaint();
 			    }
 			});
 			
