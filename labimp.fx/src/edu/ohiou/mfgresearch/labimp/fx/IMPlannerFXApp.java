@@ -28,6 +28,9 @@ public class IMPlannerFXApp extends Application{
         Globe globe = new Globe(3, 0, 0, 0);
         Swing3DConverter globeFX = new Swing3DConverter(globe);
         
+        IMPBox box = new IMPBox(3);
+        Swing3DConverter boxFX = new Swing3DConverter(box);
+        
         Torus torus = new Torus(5,1);
         Swing3DConverter torusFX = new Swing3DConverter(torus);
         
@@ -58,6 +61,7 @@ public class IMPlannerFXApp extends Application{
 		Swing2DConverter ccFX = new Swing2DConverter(cc);
 		
         targetList.add(globeFX);
+        targetList.add(boxFX);
         targetList.add(torusFX);
         targetList.add(polygonFX);
         targetList.add(th);
