@@ -19,19 +19,27 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 
@@ -255,26 +263,107 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 
 	@FXML
 	private void handleOpenFileAction(ActionEvent event) {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Part File");
 		
-		File existDirectory = 
-				new File(FXObject.properties.getProperty("UG_FILE_FOLDER"));
+		VBox root = new VBox();
+		HBox prtHbox = new HBox();
+		Label prtLbl = new Label("Part File Location:   ");
+		TextField prtTxt = new TextField("");
+		HBox.setHgrow(prtTxt, Priority.ALWAYS);
+		Button prtBtn = new Button("...");
+		prtHbox.getChildren().addAll(prtLbl, prtTxt, prtBtn);
 		
-		if(existDirectory.exists()) {
-			fileChooser.setInitialDirectory(existDirectory);
-		} else {
-			fileChooser.setInitialDirectory(new File("."));
-		}
+		prtHbox.getChildren().forEach(n -> {
+			HBox.setMargin(n, new Insets(10,10,10,10));
+		});
+		
+		HBox stkHbox = new HBox();
+		Label stkLbl = new Label("Stock File Location:");
+		TextField stkTxt = new TextField("");
+		HBox.setHgrow(stkTxt, Priority.ALWAYS);
+		Button stkBtn = new Button("...");
+		stkHbox.getChildren().addAll(stkLbl, stkTxt, stkBtn);
+		
+		stkHbox.getChildren().forEach(n -> {
+			HBox.setMargin(n, new Insets(10,10,10,10));
+		});
+		
+		HBox btnHbox = new HBox();
+		btnHbox.setAlignment(Pos.CENTER_RIGHT);
+		Button okBtn = new Button("Ok");
+		btnHbox.getChildren().add(okBtn);
+		btnHbox.getChildren().forEach(n -> {
+			HBox.setMargin(n, new Insets(10,10,10,10));
+		});
+		
+		root.getChildren().add(prtHbox);
+		root.getChildren().add(stkHbox);
+		root.getChildren().add(btnHbox);
+		
+		Scene scene = new Scene(root, 600, 150);
+		Stage stage = new Stage();
+		stage.resizableProperty().set(false);
+		stage.setScene(scene);
+		stage.show();
+		
+		prtBtn.setOnAction(e -> {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Open Part File");
+			
+			File existDirectory = 
+					new File(FXObject.properties.getProperty("UG_FILE_FOLDER"));
+			
+			if(existDirectory.exists()) {
+				fileChooser.setInitialDirectory(existDirectory);
+			} else {
+				fileChooser.setInitialDirectory(new File("."));
+			}
+	
+			fileChooser.getExtensionFilters().addAll(
+					new ExtensionFilter("Part File", "*.prt"),
+					new ExtensionFilter("All Files", "*.*"));
+			File selectedFile = fileChooser.showOpenDialog(null);
+			if (selectedFile != null) {
+				prtTxt.setText(selectedFile.getPath());
+			}
+		});
+		
+		stkBtn.setOnAction(e -> {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Open Stock File");
+			
+			File existDirectory = 
+					new File(FXObject.properties.getProperty("UG_FILE_FOLDER"));
+			
+			if(existDirectory.exists()) {
+				fileChooser.setInitialDirectory(existDirectory);
+			} else {
+				fileChooser.setInitialDirectory(new File("."));
+			}
+	
+			fileChooser.getExtensionFilters().addAll(
+					new ExtensionFilter("Part File", "*.prt"),
+					new ExtensionFilter("All Files", "*.*"));
+			File selectedFile = fileChooser.showOpenDialog(null);
+			if (selectedFile != null) {
+				stkTxt.setText(selectedFile.getPath());
 
-		fileChooser.getExtensionFilters().addAll(
-				new ExtensionFilter("Part File", "*.prt"),
-				new ExtensionFilter("All Files", "*.*"));
-		File selectedFile = fileChooser.showOpenDialog(null);
-		if (selectedFile != null) {
-			PartModelConverter newTarget = new PartModelConverter(selectedFile);
-			addTarget(newTarget);
-		}
+			}
+		});
+		
+		okBtn.setOnAction(e -> {
+			
+			File prtFile = new File(prtTxt.getText());
+			File stkFile = new File(stkTxt.getText());
+			
+			if(prtFile.exists() && stkFile.exists()) {
+				PartModelConverter newTarget = new PartModelConverter(prtFile);
+				newTarget.setStock(stkFile);
+				addTarget(newTarget);
+				stage.close();
+			}
+		});
+		
+
 
 	}
 
