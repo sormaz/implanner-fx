@@ -3,6 +3,7 @@ package edu.ohiou.mfgresearch.labimp.fx;
 import java.io.File;
 
 import edu.ohiou.mfgresearch.implanner.geometry.PartModel;
+import edu.ohiou.mfgresearch.implanner.geometry.Stock;
 import edu.ohiou.mfgresearch.implanner.parts.MfgPartModel;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,6 +17,10 @@ public class PartModelConverter extends Swing3DConverter {
 
 	public PartModelConverter(ImpObject swingTarget) {
 		super(swingTarget);
+	}
+	
+	public void setStock(File stkFile) {
+		((MfgPartModel)getSwingTarget()).setStock(new Stock(stkFile));
 	}
 	
 	public StringProperty name() {
