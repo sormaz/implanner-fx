@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import com.sun.javafx.application.PlatformImpl;
 
+import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
+import edu.ohiou.mfgresearch.implanner.features.MfgFeature;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import javafx.animation.Animation;
 import javafx.animation.Transition;
@@ -37,9 +39,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
+import sun.reflect.generics.tree.Tree;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableView;
+import javafx.scene.control.TreeView;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 
@@ -52,7 +59,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	@FXML
 	private TableView<DrawableFX> targetView;
 	@FXML
-	private TableColumn<DrawableFX, String> targetCol; 
+	private TableColumn<DrawableFX, DrawableFX> targetCol; 
 	@FXML
 	private TableColumn<DrawableFX, DrawableFX> visiblityCol;
 	@FXML
@@ -102,7 +109,9 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 
 		visiblityCol.setGraphic(masterVisibilityControl);
 
-		targetCol.setCellValueFactory(cellData -> cellData.getValue().name());
+		targetCol.setCellValueFactory(				
+				param -> new ReadOnlyObjectWrapper<>(param.getValue())
+				);
 
 		visiblityCol.setCellValueFactory(
 				param -> new ReadOnlyObjectWrapper<>(param.getValue())
@@ -112,6 +121,47 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 				param -> new ReadOnlyObjectWrapper<>(param.getValue())
 				);
 
+		targetCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
+			
+			@Override
+			protected void updateItem(DrawableFX target, boolean empty) {
+				super.updateItem(target, empty);
+				
+				if(target == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				if(target instanceof PartModelConverter) {
+					PartModelConverter t = (PartModelConverter)target;
+					
+					TreeView<Swing3DConverter> fTreeView 
+								= new TreeView<Swing3DConverter>();
+					
+					fTreeView.setMaxHeight(25);
+			
+					TreeItem<Swing3DConverter> root 
+										= new TreeItem<>(t);
+				
+					t.getFeatureList().forEach(s -> {
+						TreeItem<Swing3DConverter> item 
+								= new TreeItem<>(s);
+						fTreeView.setMaxHeight(fTreeView.getMaxHeight() + 25);
+						root.getChildren().add(item);
+					});
+					
+					root.setExpanded(true);
+					setPrefHeight(fTreeView.getMaxHeight()+10);
+					fTreeView.setRoot(root);
+					setGraphic(fTreeView);
+					
+				} else {
+					setGraphic(new Label(target.name().get()));
+				}			
+			}
+			
+		});
+		
 		visiblityCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
 			private final CheckBox visibilityBtn = new CheckBox();
 
