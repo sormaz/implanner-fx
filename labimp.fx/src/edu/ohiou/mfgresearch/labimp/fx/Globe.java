@@ -29,7 +29,7 @@ public class Globe extends ImpObject {
 	}
 	
 	public Globe(double radius) {
-		this(radius, new Point3d(0,0,20));
+		this(radius, new Point3d(0,0,0));
 	}
 	
 	public Globe(double radius, Point3d center) {
