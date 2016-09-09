@@ -122,6 +122,10 @@ public class Xform extends Group {
         s.setY(scaleFactor);
         s.setZ(scaleFactor);
     }
+    
+    public double getScale() {
+    	return s.getX();
+    }
 
     public void setScale(double x, double y, double z) {
         s.setX(x);
