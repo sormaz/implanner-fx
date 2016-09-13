@@ -1,6 +1,7 @@
 package edu.ohiou.mfgresearch.labimp.fx;
 
 import java.awt.Dimension;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 
 import com.sun.javafx.application.PlatformImpl;
@@ -62,9 +63,9 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	
 	private SimpleDoubleProperty viewPointX = new SimpleDoubleProperty();
 	private SimpleDoubleProperty viewPointY = new SimpleDoubleProperty();
-	private SimpleDoubleProperty viewPointZ = new SimpleDoubleProperty();
+	private SimpleDoubleProperty viewPointZ = new SimpleDoubleProperty();	
+	private SimpleDoubleProperty scale = new SimpleDoubleProperty();
 	
-	private double scale;
 	private boolean showWCS;
 	private Group targetGroup = new Group(); 
 	private Group swing2DGroup = new Group(); 
@@ -151,11 +152,11 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	}
 
 	public double getScale() {
-		return scale;
+		return scale.get();
 	}
 
 	public void setScale(double scale) {
-		this.scale = scale;
+		this.scale.set(scale);
 		virtualPanel.setView(scale);
 	}
 
@@ -198,7 +199,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		virtualPanel.getDrawPanel().setSize
 		(new Dimension((int)DEFAULT_WIDTH, (int)DEFAULT_HEIGHT));
 
-		virtualPanel.setView(scale, viewPointX.get(), 
+		virtualPanel.setView(scale.get(), viewPointX.get(), 
 				viewPointY.get(), viewPointZ.get());
 		
         canvas.widthProperty().addListener(evt -> {
@@ -300,7 +301,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	    		zoomRatio = 0.95;
 	    	}
 	    	
-	    	setScale(scale * zoomRatio);
+	    	setScale(scale.get() * zoomRatio);
 	    	
 	    	updateView();
 	    	
@@ -329,7 +330,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 			if(target instanceof Swing2DConverter) {
 				
 				for (Shape s: target.getFXShapes()) {
-					s.setStrokeWidth(1/scale);
+					s.setStrokeWidth(1/scale.get());
 					
 					swing2DGroup.getChildren().add(s);
 				}							
@@ -349,7 +350,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 			AxisFX axes = new AxisFX();
 			axes.getFXShapes().stream()
 				.forEach((axis) -> {
-					axis.setStrokeWidth(1/scale);
+					axis.setStrokeWidth(1/scale.get());
 					fx2DGroup.getChildren().add(axis);
 				});
 		}
@@ -360,8 +361,8 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		targetGroup.getChildren().add(fx2DGroup);
 
 	
-		Scale scale2D = new Scale(scale, scale);
-		Scale scale3D = new Scale(scale, scale, scale);
+		Scale scale2D = new Scale(scale.get(), scale.get());
+		Scale scale3D = new Scale(scale.get(), scale.get(), scale.get());
 		
 		Affine mirror 
 		= new Affine(1, 0, 0, 0, -1, canvas.getHeight());
@@ -404,7 +405,13 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		GridPane.setHalignment(scaleLbl, HPos.CENTER);
 		scaleLbl.setPadding(new Insets(4, 4, 4, 4));
 		TextField scaleTxt = new TextField();	
-		scaleTxt.setText(String.valueOf(scale));
+		scaleTxt.setText(String.valueOf(scale.get()));
+		
+		scale.addListener((e,o,n) -> {
+			DecimalFormat df = new DecimalFormat("#.00");
+			scaleTxt.setText(df.format(scale.get()));
+		});
+		
 		scaleTxt.focusedProperty().addListener(new ChangeListener<Boolean>()
 		{		
 			double oldValue;
