@@ -9,6 +9,7 @@ import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.DrawableWF;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -58,7 +59,11 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	
 	private ObservableList<DrawableFX> targetList = FXCollections.observableArrayList();
 	private DrawableFX activeTarget;
-	private Point3D viewpoint;
+	
+	private SimpleDoubleProperty viewPointX = new SimpleDoubleProperty();
+	private SimpleDoubleProperty viewPointY = new SimpleDoubleProperty();
+	private SimpleDoubleProperty viewPointZ = new SimpleDoubleProperty();
+	
 	private double scale;
 	private boolean showWCS;
 	private Group targetGroup = new Group(); 
@@ -80,7 +85,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 
 	public DrawFXCanvas(ObservableList<DrawableFX> targetList, 
 			Point3D viewpoint, double scale, boolean showWCS) {
-		this.viewpoint = viewpoint;
+		setViewpoint(viewpoint);
 		setScale(scale);
 		this.showWCS = showWCS;
 		init();			
@@ -135,11 +140,14 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	}
 
 	public Point3D getViewpoint() {
-		return viewpoint;
+		return new Point3D
+			(viewPointX.get(), viewPointY.get(), viewPointZ.get());
 	}
 
 	public void setViewpoint(Point3D viewpoint) {
-		this.viewpoint = viewpoint;
+		viewPointX.set(viewpoint.getX());
+		viewPointY.set(viewpoint.getY());
+		viewPointZ.set(viewpoint.getZ());
 	}
 
 	public double getScale() {
@@ -190,8 +198,8 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		virtualPanel.getDrawPanel().setSize
 		(new Dimension((int)DEFAULT_WIDTH, (int)DEFAULT_HEIGHT));
 
-		virtualPanel.setView(scale, viewpoint.getX(), 
-				viewpoint.getY(), viewpoint.getZ());
+		virtualPanel.setView(scale, viewPointX.get(), 
+				viewPointY.get(), viewPointZ.get());
 		
         canvas.widthProperty().addListener(evt -> {
         	virtualPanel.getDrawPanel()
@@ -394,11 +402,11 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		GridPane.setHalignment(viewLbl, HPos.CENTER);
 		viewLbl.setPadding(new Insets(4, 4, 4, 4));
 		TextField xTxt = new TextField();
-		xTxt.setText(String.valueOf(viewpoint.getX()));
+		xTxt.setText(String.valueOf(viewPointX.get()));
 		TextField yTxt = new TextField();
-		yTxt.setText(String.valueOf(viewpoint.getY()));
+		yTxt.setText(String.valueOf(viewPointY.get()));
 		TextField zTxt = new TextField();
-		zTxt.setText(String.valueOf(viewpoint.getZ()));
+		zTxt.setText(String.valueOf(viewPointZ.get()));
 		Label scaleLbl = new Label("Scale :");
 		GridPane.setHalignment(scaleLbl, HPos.CENTER);
 		scaleLbl.setPadding(new Insets(4, 4, 4, 4));
