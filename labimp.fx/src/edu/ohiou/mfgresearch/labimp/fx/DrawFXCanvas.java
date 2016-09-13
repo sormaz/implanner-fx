@@ -10,6 +10,7 @@ import edu.ohiou.mfgresearch.labimp.draw.DrawWFApplet;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.DrawableWF;
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -58,6 +59,18 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	static final double DEFAULT_WIDTH = 650;
 	static final double DEFAULT_HEIGHT = 550;
 	
+	private static final double CAMERA_NEAR_CLIP = 0.1;
+	private static final double CAMERA_FAR_CLIP = 1000.0;
+	
+	double mousePosX;
+	double mousePosY;
+	double mouseOldX;
+	double mouseOldY;
+	double mouseDeltaX;
+	double mouseDeltaY;
+
+
+	
 	private ObservableList<DrawableFX> targetList = FXCollections.observableArrayList();
 	private DrawableFX activeTarget;
 	
@@ -66,7 +79,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	private SimpleDoubleProperty viewPointZ = new SimpleDoubleProperty();	
 	private SimpleDoubleProperty scale = new SimpleDoubleProperty();
 	
-	private boolean showWCS;
+	private SimpleBooleanProperty showWCS = new SimpleBooleanProperty();
 	private Group targetGroup = new Group(); 
 	private Group swing2DGroup = new Group(); 
 	private Group swing3DGroup = new Group(); 
@@ -88,7 +101,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 			Point3D viewpoint, double scale, boolean showWCS) {
 		setViewpoint(viewpoint);
 		setScale(scale);
-		this.showWCS = showWCS;
+		this.showWCS.set(showWCS);
 		init();			
 		setTargetList(targetList);
 	}
@@ -346,7 +359,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 			} 
 		});
 		
-		if(showWCS) {
+		if(showWCS.get()) {
 			AxisFX axes = new AxisFX();
 			axes.getFXShapes().stream()
 				.forEach((axis) -> {
@@ -458,10 +471,9 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		CheckBox wcsCheck = new CheckBox("Show WorldCS");
 		GridPane.setHalignment(wcsCheck, HPos.CENTER);
 		wcsCheck.setPadding(new Insets(4, 4, 4, 4));
-		wcsCheck.setOnAction((e) -> {
-			showWCS = wcsCheck.isSelected();
-			updateView();
-		});
+		wcsCheck.selectedProperty().bindBidirectional(showWCS);
+		wcsCheck.setOnAction((e) -> {updateView();});
+		
 		Button redisplayBtn = new Button("ReDisplay");
 		redisplayBtn.setPrefWidth(Double.MAX_VALUE);
 		redisplayBtn.setOnAction((e) -> updateView());
