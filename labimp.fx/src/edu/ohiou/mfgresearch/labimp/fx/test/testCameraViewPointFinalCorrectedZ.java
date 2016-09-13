@@ -141,10 +141,12 @@ public class testCameraViewPointFinalCorrectedZ extends Application {
 					Text text = new Text(0, 0, 
 							String.format("(%1$d,%2$d,%3$d)", x, y,z));
 					text.setScaleY(-1);
-					Xform xText = new Xform();
-					xText.getChildren().add(text);
-					xText.setTranslate(x, y, z);
-					targetList.add(xText);
+					
+					text.setTranslateX(x);
+					text.setTranslateY(y);
+					text.setTranslateZ(z);
+					targetList.add(text);
+					
 
 				}
 			}
