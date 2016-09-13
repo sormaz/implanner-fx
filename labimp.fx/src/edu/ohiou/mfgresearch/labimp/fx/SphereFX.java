@@ -2,6 +2,7 @@ package edu.ohiou.mfgresearch.labimp.fx;
 
 import java.util.LinkedList;
 
+import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 
@@ -30,6 +31,7 @@ public class SphereFX extends FXObject {
 		// TODO Auto-generated method stub
 		LinkedList<Shape3D> fxShape = new LinkedList();
 		Sphere sphere = new Sphere(radius);
+		sphere.drawModeProperty().set(DrawMode.LINE);
 		fxShape.add(sphere);
 		return fxShape;
 	}
