@@ -80,11 +80,11 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 
 	public DrawFXCanvas(ObservableList<DrawableFX> targetList, 
 			Point3D viewpoint, double scale, boolean showWCS) {
-		setTargetList(targetList);
 		this.viewpoint = viewpoint;
 		setScale(scale);
 		this.showWCS = showWCS;
 		init();			
+		setTargetList(targetList);
 	}
 	
 	public ObservableList<DrawableFX> getTargetList() {
@@ -164,6 +164,13 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		
 		PlatformImpl.startup(() -> {});
 		
+		setupPanels();
+
+        setEventHandlers();
+
+	}
+	
+	void setupPanels() {
 		canvas.setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		Rectangle clipRect = new Rectangle(canvas.getWidth(), canvas.getHeight());
 		canvas.setClip(clipRect);
@@ -176,14 +183,6 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		
 		Pane canvasControls = getToolbar();
 		canvasControls.setPrefWidth(DEFAULT_WIDTH);
-		
-//		canvas.setStyle("-fx-border-width: 1; "
-//				+ "-fx-border-style: solid;"
-//				+ "-fx-border-color:black;");
-		
-//		canvasControls.setStyle("-fx-border-width: 1; "
-//								+ "-fx-border-style: solid;"
-//								+ "-fx-border-color:black;");
 						
 		VBox.setVgrow(canvas, Priority.ALWAYS);
 		getChildren().addAll(canvas, canvasControls);
@@ -204,8 +203,10 @@ public class DrawFXCanvas extends VBox implements DrawListener{
         		.setSize((int)canvas.getWidth(), (int)canvas.getHeight());   	
         	updateView();
         });
+	}
+	
+	void setEventHandlers() {
 		
-
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -296,10 +297,8 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	    	updateView();
 	    	
 	    });
-
-		updateView();
+		
 	}
-	
 
 	@Override
 	public void display() {
