@@ -307,13 +307,6 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	    });
 		
 	}
-
-	@Override
-	public void display() {
-		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
-		app.setListener(this);
-		app.launch(this);			
-	}
 	
 	@Override
 	public void updateView() {
@@ -426,6 +419,9 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		        else
 		        {
 		        	try {
+		        		if(Double.valueOf(scaleTxt.getText()) <= 0) {
+		        			throw new Exception("Scale must be greater than zero.");
+		        		}
 						setScale(Double.valueOf(scaleTxt.getText()));
 						updateView();
 					} catch (Exception e) {
@@ -477,4 +473,11 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		return this;
 	}
 
+	@Override
+	public void display() {
+		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
+		app.setListener(this);
+		app.launch(this);			
+	}
+	
 }
