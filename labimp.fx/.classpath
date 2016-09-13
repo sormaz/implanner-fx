@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
-		<accessrules>
-			<accessrule kind="accessible" pattern="javafx/**"/>
-		</accessrules>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/implanner"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/labimp.basis"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/labimp.extend"/>
-	<classpathentry kind="lib" path="C:/java-lib/java3d/j3daudio.jar"/>
-	<classpathentry kind="lib" path="C:/java-lib/java3d/j3dcore.jar"/>
-	<classpathentry kind="lib" path="C:/java-lib/java3d/j3dutils.jar"/>
-	<classpathentry kind="lib" path="C:/java-lib/java3d/vecmath.jar"/>
-	<classpathentry kind="lib" path="C:/java-lib/vrmlloader-lib/cv97r140.jar"/>
-	<classpathentry kind="lib" path="C:/java-lib/nxopen/NXOpen.jar"/>
-	<classpathentry kind="lib" path="C:/java-lib/nxopen/NXOpenUF.jar"/>
+	<classpathentry kind="lib" path="/java-library/Other/cv97r140.jar"/>
+	<classpathentry kind="lib" path="/java-library/java3d/j3daudio.jar"/>
+	<classpathentry kind="lib" path="/java-library/java3d/j3dcore.jar"/>
+	<classpathentry kind="lib" path="/java-library/java3d/j3dutils.jar"/>
+	<classpathentry kind="lib" path="/java-library/java3d/vecmath.jar" sourcepath="/java-library/java3d/vecmath-1_5_2-src.zip"/>
+	<classpathentry kind="lib" path="/java-library/NX/NXOpen.jar"/>
+	<classpathentry kind="lib" path="/java-library/NX/NXOpenUF.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_102-32b"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

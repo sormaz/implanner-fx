@@ -395,12 +395,28 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		Label viewLbl = new Label("View Point :");
 		GridPane.setHalignment(viewLbl, HPos.CENTER);
 		viewLbl.setPadding(new Insets(4, 4, 4, 4));
+		
 		TextField xTxt = new TextField();
 		xTxt.setText(String.valueOf(viewPointX.get()));
+		viewPointX.addListener((e,o,n) -> {
+			DecimalFormat df = new DecimalFormat("#.00");
+			xTxt.setText(df.format(viewPointX.get()));
+		});
+			
 		TextField yTxt = new TextField();
 		yTxt.setText(String.valueOf(viewPointY.get()));
+		viewPointY.addListener((e,o,n) -> {
+			DecimalFormat df = new DecimalFormat("#.00");
+			yTxt.setText(df.format(viewPointY.get()));
+		});
+		
 		TextField zTxt = new TextField();
 		zTxt.setText(String.valueOf(viewPointZ.get()));
+		viewPointZ.addListener((e,o,n) -> {
+			DecimalFormat df = new DecimalFormat("#.00");
+			zTxt.setText(df.format(viewPointZ.get()));
+		});
+		
 		Label scaleLbl = new Label("Scale :");
 		GridPane.setHalignment(scaleLbl, HPos.CENTER);
 		scaleLbl.setPadding(new Insets(4, 4, 4, 4));
