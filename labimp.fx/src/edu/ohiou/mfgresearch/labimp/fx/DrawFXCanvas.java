@@ -373,64 +373,57 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 				
 			}
 		});
+		
+		EventHandler<MouseEvent> onMouseDragged = e -> {
+			mouseOldX = mousePosX;
+			mouseOldY = mousePosY;
+			mousePosX = e.getSceneX();
+			mousePosY = e.getSceneY();
+			mouseDeltaX = (mousePosX - mouseOldX); 
+			mouseDeltaY = (mousePosY - mouseOldY); 
 
-		setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-//				System.out.println("fx: Mouse Dragged " + e.getX() + ", " + e.getY());
-				
-				mouseOldX = mousePosX;
-				mouseOldY = mousePosY;
-				mousePosX = e.getSceneX();
-				mousePosY = e.getSceneY();
-				mouseDeltaX = (mousePosX - mouseOldX); 
-				mouseDeltaY = (mousePosY - mouseOldY); 
-
-				if (e.isControlDown()) {} 
-				if (e.isShiftDown()) {}   
-
-//				if (e.isPrimaryButtonDown() && e.isSecondaryButtonDown()) {
-//					camera.setTranslateX(camera.getTranslateX() + mouseDeltaX);
-//					camera.setTranslateY(camera.getTranslateY() + mouseDeltaY);
-//				}
-				if (e.isPrimaryButtonDown()) {
-					
-					System.out.println("Old rxAngle Angle: " + cameraXform.rx.getAngle());
-					System.out.println("Old ryAngle Angle: " + cameraXform.ry.getAngle());
-					
-					cameraXform.ry.setAngle(cameraXform.ry.getAngle() + mouseDeltaX);  
-					cameraXform.rx.setAngle(cameraXform.rx.getAngle() - mouseDeltaY);  
-					
-					System.out.println("New rxAngle Angle: " + cameraXform.rx.getAngle());
-					System.out.println("New ryAngle Angle: " + cameraXform.ry.getAngle());
-					
-					setViewPointFromCamera();
-				}
-				else if (e.isSecondaryButtonDown()) {
-					double z = camera.getTranslateZ();
-					System.out.println("Old z: " + z);
-					double newZ = z + mouseDeltaX;
-					camera.setTranslateZ(newZ);
-					System.out.println("New z: " + newZ);
-				
-					setViewPointFromCamera();
-					
-				}
-//				else if (e.isMiddleButtonDown()) {
-//					cameraXform2.t.setX(cameraXform2.t.getX() + mouseDeltaX);  
-//					cameraXform2.t.setY(cameraXform2.t.getY() + mouseDeltaY);  
-//				}
-				
+			if (mouseMode == MouseMode.MODIFY_TARGET) {
 				if(activeTarget instanceof Swing3DConverter) {
 					virtualPanel.setTarget
 					((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
-				}
+					((DrawWFPanel)virtualPanel.gettCanvas()).
+					modifyTargetPoint((int)e.getX(), (int)e.getY());
+				} else {
+					
+				}	
 				
-				((DrawWFPanel)virtualPanel.gettCanvas()).
-				mouseDragged((int)e.getX(), (int)e.getY());	
-				updateView();				
+				return;
+			} 
+
+			if (e.isPrimaryButtonDown()) {
+				
+				System.out.println("Old rxAngle Angle: " + cameraXform.rx.getAngle());
+				System.out.println("Old ryAngle Angle: " + cameraXform.ry.getAngle());
+				
+				cameraXform.ry.setAngle(cameraXform.ry.getAngle() + mouseDeltaX);  
+				cameraXform.rx.setAngle(cameraXform.rx.getAngle() - mouseDeltaY);  
+				
+				System.out.println("New rxAngle Angle: " + cameraXform.rx.getAngle());
+				System.out.println("New ryAngle Angle: " + cameraXform.ry.getAngle());
+				
+				setViewPointFromCamera();
 			}
-		});
+			else if (e.isSecondaryButtonDown()) {
+				double z = camera.getTranslateZ();
+				System.out.println("Old z: " + z);
+				double newZ = z + mouseDeltaX;
+				camera.setTranslateZ(newZ);
+				System.out.println("New z: " + newZ);
+			
+				setViewPointFromCamera();
+				
+			}
+			
+			updateView();
+		};
+
+		setOnMouseDragged(onMouseDragged);
+
 		
 	    setOnScroll((e) -> {
 	
@@ -466,6 +459,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		System.out.println("");
 		
 		setViewpoint(new Point3D(x, y, z));
+		virtualPanel.setView(scale.get(), x, y, z);
 	}
 	
 	private void setCameraFromViewPoint() {
@@ -613,9 +607,19 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		        	try {
 		        		viewPointX.set(Double.valueOf(xTxt.getText()));
 		        		setCameraFromViewPoint();
+		        		virtualPanel.setView(scale.get(), 
+		        							viewPointX.get(), 
+		        							viewPointY.get(), 
+		        							viewPointZ.get());
+		        		updateView();
 					} catch (Exception e) {
 		        		viewPointX.set(oldValue);
 		        		setCameraFromViewPoint();
+		        		virtualPanel.setView(scale.get(), 
+			    							viewPointX.get(), 
+			    							viewPointY.get(), 
+			    							viewPointZ.get());
+		        		updateView();
 					}				
 		        }
 		    }
@@ -634,9 +638,19 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		        	try {
 		        		viewPointY.set(Double.valueOf(yTxt.getText()));
 		        		setCameraFromViewPoint();
+		        		virtualPanel.setView(scale.get(), 
+    							viewPointX.get(), 
+    							viewPointY.get(), 
+    							viewPointZ.get());
+		        		updateView();
 					} catch (Exception e) {
 		        		viewPointY.set(oldValue);
 		        		setCameraFromViewPoint();
+		        		virtualPanel.setView(scale.get(), 
+    							viewPointX.get(), 
+    							viewPointY.get(), 
+    							viewPointZ.get());
+		        		updateView();
 					}				
 		        }
 		    }
@@ -655,9 +669,19 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		        	try {
 		        		viewPointZ.set(Double.valueOf(zTxt.getText()));
 		        		setCameraFromViewPoint();
+		        		virtualPanel.setView(scale.get(), 
+    							viewPointX.get(), 
+    							viewPointY.get(), 
+    							viewPointZ.get());
+		        		updateView();
 					} catch (Exception e) {
 		        		viewPointZ.set(oldValue);
 		        		setCameraFromViewPoint();
+		        		virtualPanel.setView(scale.get(), 
+    							viewPointX.get(), 
+    							viewPointY.get(), 
+    							viewPointZ.get());
+		        		updateView();
 					}				
 		        }
 		    }
