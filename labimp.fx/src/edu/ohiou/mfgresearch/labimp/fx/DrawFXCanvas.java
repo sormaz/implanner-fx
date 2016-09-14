@@ -76,6 +76,9 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	
 	private static double fieldOfView = 90;
 	
+	private static double mouseSpeed = 0.1;
+	private static double zoomRatioPercent = 5;
+	
 	private double mousePosX;
 	private double mousePosY;
 	private double mouseOldX;
@@ -88,23 +91,23 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	private ObservableList<DrawableFX> targetList = FXCollections.observableArrayList();
 	private DrawableFX activeTarget;
 	
-	private SimpleDoubleProperty viewPointX = new SimpleDoubleProperty();
-	private SimpleDoubleProperty viewPointY = new SimpleDoubleProperty();
-	private SimpleDoubleProperty viewPointZ = new SimpleDoubleProperty();	
-	private SimpleDoubleProperty scale = new SimpleDoubleProperty();	
-	private SimpleBooleanProperty showWCS = new SimpleBooleanProperty();
+	private final SimpleDoubleProperty viewPointX = new SimpleDoubleProperty();
+	private final SimpleDoubleProperty viewPointY = new SimpleDoubleProperty();
+	private final SimpleDoubleProperty viewPointZ = new SimpleDoubleProperty();	
+	private final SimpleDoubleProperty scale = new SimpleDoubleProperty();	
+	private final SimpleBooleanProperty showWCS = new SimpleBooleanProperty();
 	
-	private Xform root = new Xform(); 
-	private Xform fxRoot = new Xform();
-	private Xform swingRoot = new Xform();
-	private Xform correctedYZGroup = new Xform();
-	private Xform swing2DGroup = new Xform(); 
-	private Xform swing3DGroup = new Xform(); 
-	private Xform fx2DGroup = new Xform(); 
-	private Xform fx3DGroup = new Xform();
-	private SubScene fxScene = new SubScene(fxRoot, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	private SubScene swingScene = new SubScene(swingRoot, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	private Pane canvas = new Pane(root);
+	private final Xform root = new Xform(); 
+	private final Xform fxRoot = new Xform();
+	private final Xform swingRoot = new Xform();
+	private final Xform correctedYZGroup = new Xform();
+	private final Xform swing2DGroup = new Xform(); 
+	private final Xform swing3DGroup = new Xform(); 
+	private final Xform fx2DGroup = new Xform(); 
+	private final Xform fx3DGroup = new Xform();
+	private final SubScene fxScene = new SubScene(fxRoot, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	private final SubScene swingScene = new SubScene(swingRoot, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	private final Pane canvas = new Pane(root);
 	
 	private final PerspectiveCamera camera = new PerspectiveCamera(true);
 	private final Xform cameraXform = new Xform();
@@ -441,8 +444,10 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 					System.out.println("Old rxAngle Angle: " + cameraXform.rx.getAngle());
 					System.out.println("Old ryAngle Angle: " + cameraXform.ry.getAngle());
 					
-					cameraXform.ry.setAngle((cameraXform.ry.getAngle() + mouseDeltaX) % 360);  
-					cameraXform.rx.setAngle((cameraXform.rx.getAngle() - mouseDeltaY) % 360);  
+					cameraXform.ry.setAngle
+						((cameraXform.ry.getAngle() + mouseDeltaX * mouseSpeed) % 360);  
+					cameraXform.rx.setAngle
+						((cameraXform.rx.getAngle() - mouseDeltaY * mouseSpeed) % 360);  
 					
 					System.out.println("New rxAngle Angle: " + cameraXform.rx.getAngle());
 					System.out.println("New ryAngle Angle: " + cameraXform.ry.getAngle());
@@ -452,7 +457,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 				else if (e.isSecondaryButtonDown()) {
 					double z = camera.getTranslateZ();
 					System.out.println("Old z: " + z);
-					double newZ = z + mouseDeltaX;
+					double newZ = z + mouseDeltaX * mouseSpeed;
 					camera.setTranslateZ(newZ);
 					System.out.println("New z: " + newZ);
 				
@@ -471,9 +476,9 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	
 	    	double zoomRatio = 1;
 	    	if(e.getDeltaY() > 0) {
-	    		zoomRatio = 1.05;
+	    		zoomRatio = 1 + zoomRatioPercent / 100;
 	    	} else {
-	    		zoomRatio = 0.95;
+	    		zoomRatio = 1 - zoomRatioPercent / 100;
 	    	}
 	    	
 	    	setScale(scale.get() * zoomRatio);
