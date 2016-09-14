@@ -38,6 +38,10 @@ public class AxisFX extends FXObject {
         Box yAxis = new Box(1, yLength, 1);
         Box zAxis = new Box(1, 1, zLength);
 		
+        xAxis.setTranslateX(xLength / 2);
+        yAxis.setTranslateY(yLength / 2);
+        zAxis.setTranslateZ(zLength / 2);
+        
 		shapes.add(xAxis);
 		shapes.add(yAxis);
 		shapes.add(zAxis);
