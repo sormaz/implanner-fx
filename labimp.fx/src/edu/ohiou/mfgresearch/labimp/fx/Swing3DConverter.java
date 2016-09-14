@@ -63,9 +63,4 @@ public class Swing3DConverter extends SwingConverter {
 		return selectables;
 	}
 	
-	@Override
-	public String toString() {
-	    return name().get();
-	}
-
 }

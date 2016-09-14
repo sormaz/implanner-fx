@@ -152,5 +152,10 @@ public abstract class FXObject implements DrawableFX {
 			      "\nProperties " + name + " not loaded from current folder.");
 			    }
 	  }
+	  
+	  @Override
+	  public String toString() {
+		  return name().get();
+	  }
 
 }
