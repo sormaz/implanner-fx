@@ -64,7 +64,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	private static final double YAXIS_LENGTH = 10;
 	private static final double ZAXIS_LENGTH = 10;
 	
-	private static final double DEFAULT_SCALE = 5;
+	private static final double DEFAULT_SCALE = 20;
 	private static final 
 			Point3D DEFAULT_VIEWPOINT = new Point3D(0, 0, 100);
 	
@@ -391,32 +391,32 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 				} else {
 					
 				}	
-				
-				return;
-			} 
 
-			if (e.isPrimaryButtonDown()) {
+			} else {
+	
+				if (e.isPrimaryButtonDown()) {
+					
+					System.out.println("Old rxAngle Angle: " + cameraXform.rx.getAngle());
+					System.out.println("Old ryAngle Angle: " + cameraXform.ry.getAngle());
+					
+					cameraXform.ry.setAngle((cameraXform.ry.getAngle() + mouseDeltaX) % 360);  
+					cameraXform.rx.setAngle((cameraXform.rx.getAngle() - mouseDeltaY) % 360);  
+					
+					System.out.println("New rxAngle Angle: " + cameraXform.rx.getAngle());
+					System.out.println("New ryAngle Angle: " + cameraXform.ry.getAngle());
+					
+					setViewPointFromCamera();
+				}
+				else if (e.isSecondaryButtonDown()) {
+					double z = camera.getTranslateZ();
+					System.out.println("Old z: " + z);
+					double newZ = z + mouseDeltaX;
+					camera.setTranslateZ(newZ);
+					System.out.println("New z: " + newZ);
 				
-				System.out.println("Old rxAngle Angle: " + cameraXform.rx.getAngle());
-				System.out.println("Old ryAngle Angle: " + cameraXform.ry.getAngle());
-				
-				cameraXform.ry.setAngle(cameraXform.ry.getAngle() + mouseDeltaX);  
-				cameraXform.rx.setAngle(cameraXform.rx.getAngle() - mouseDeltaY);  
-				
-				System.out.println("New rxAngle Angle: " + cameraXform.rx.getAngle());
-				System.out.println("New ryAngle Angle: " + cameraXform.ry.getAngle());
-				
-				setViewPointFromCamera();
-			}
-			else if (e.isSecondaryButtonDown()) {
-				double z = camera.getTranslateZ();
-				System.out.println("Old z: " + z);
-				double newZ = z + mouseDeltaX;
-				camera.setTranslateZ(newZ);
-				System.out.println("New z: " + newZ);
-			
-				setViewPointFromCamera();
-				
+					setViewPointFromCamera();
+					
+				}
 			}
 			
 			updateView();
