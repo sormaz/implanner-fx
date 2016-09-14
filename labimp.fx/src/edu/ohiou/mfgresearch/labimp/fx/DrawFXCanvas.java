@@ -53,6 +53,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
@@ -552,16 +553,30 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 				for (Shape s: target.getFXShapesWColor()) {
 					s.setStrokeWidth(1/scale.get());
 					swing2DGroup.getChildren().add(s);
-				}							
+				}		
+				
+				for (Shape s: target.getFXFillShapesWColor()) {
+					s.setStrokeWidth(1/scale.get());
+					swing2DGroup.getChildren().add(s);
+				}		
+				
 			}else if (target instanceof Swing3DConverter) {
 				
-				for (Shape s: target.getFXShapesWColor()) {
-					swing3DGroup.getChildren().add(s);
-				}
+				swing3DGroup.getChildren()
+						.addAll(target.getFXShapesWColor());
 				
 			} else {
-				fx2DGroup.getChildren().addAll(target.getFXShapesWColor());	
-				fx3DGroup.getChildren().addAll(target.getFX3DShapesWColor());		
+				
+				for (Shape s: target.getFXShapesWColor()) {
+					s.setStrokeWidth(1/scale.get());
+					fx2DGroup.getChildren().add(s);
+				}
+				for (Shape s: target.getFXFillShapesWColor()) {
+					s.setStrokeWidth(1/scale.get());
+					fx2DGroup.getChildren().add(s);
+				}	
+				fx3DGroup.getChildren()
+						.addAll(target.getFX3DShapesWColor());		
 			} 
 		});
 		
