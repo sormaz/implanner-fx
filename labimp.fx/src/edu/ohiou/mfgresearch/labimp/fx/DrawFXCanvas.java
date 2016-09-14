@@ -107,6 +107,10 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	private final Xform cameraXform3 = new Xform();
 	
 	private final DrawWFPanel virtualPanel = new DrawWFPanel();
+	
+	public enum MouseMode {
+	    MODIFY_VIEW, MODIFY_TARGET
+	}
 
 	public DrawFXCanvas() {
 		this(FXCollections.observableArrayList());
@@ -189,11 +193,21 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 
 	public void setScale(double scale) {
 		this.scale.set(scale);
-		virtualPanel.setView(scale);
+		virtualPanel.setScale(scale);
+		virtualPanel.createTargetTable();
 	}
 
 	public Pane getCanvas() {
 		return canvas;
+	}
+	
+	public MouseMode getMouseMode() {
+		if (((DrawWFPanel)virtualPanel.gettCanvas()).mouseMode 
+				== DrawWFPanel.MODIFY_TARGET) {
+			return MouseMode.MODIFY_TARGET;
+		} else {
+			return MouseMode.MODIFY_VIEW;
+		}
 	}
 
 	@Override
@@ -280,11 +294,16 @@ public class DrawFXCanvas extends VBox implements DrawListener{
         canvas.widthProperty().addListener(evt -> {
         	virtualPanel.getDrawPanel()
         		.setSize((int)canvas.getWidth(), (int)canvas.getHeight());
+        	virtualPanel.setViewTransform();
+        	virtualPanel.createTargetTable();
         	updateView();
         });
+        
         canvas.heightProperty().addListener(evt -> {
         	virtualPanel.getDrawPanel()
-        		.setSize((int)canvas.getWidth(), (int)canvas.getHeight());   	
+        		.setSize((int)canvas.getWidth(), (int)canvas.getHeight());  
+        	virtualPanel.setViewTransform();
+        	virtualPanel.createTargetTable();
         	updateView();
         });
 	}
