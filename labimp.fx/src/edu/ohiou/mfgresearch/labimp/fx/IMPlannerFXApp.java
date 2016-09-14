@@ -60,6 +60,11 @@ public class IMPlannerFXApp extends Application{
 		CubicCurveIMPlanner cc = new CubicCurveIMPlanner();
 		Swing2DConverter ccFX = new Swing2DConverter(cc);
 		
+		globeFX.getVisible().set(false);
+		boxFX.getVisible().set(false);
+		torusFX.getVisible().set(false);
+		polygonFX.getVisible().set(false);
+		
         targetList.add(globeFX);
         targetList.add(boxFX);
         targetList.add(torusFX);
