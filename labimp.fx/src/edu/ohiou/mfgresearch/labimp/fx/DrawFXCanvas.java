@@ -385,6 +385,8 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 					
 					System.out.println("New rxAngle Angle: " + cameraXform.rx.getAngle());
 					System.out.println("New ryAngle Angle: " + cameraXform.ry.getAngle());
+					
+					setViewPointFromCamera();
 				}
 				else if (e.isSecondaryButtonDown()) {
 					double z = camera.getTranslateZ();
@@ -393,11 +395,13 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 					camera.setTranslateZ(newZ);
 					System.out.println("New z: " + newZ);
 				
+					setViewPointFromCamera();
+					
 				}
-				else if (e.isMiddleButtonDown()) {
-					cameraXform2.t.setX(cameraXform2.t.getX() + mouseDeltaX);  
-					cameraXform2.t.setY(cameraXform2.t.getY() + mouseDeltaY);  
-				}
+//				else if (e.isMiddleButtonDown()) {
+//					cameraXform2.t.setX(cameraXform2.t.getX() + mouseDeltaX);  
+//					cameraXform2.t.setY(cameraXform2.t.getY() + mouseDeltaY);  
+//				}
 				
 				if(activeTarget instanceof Swing3DConverter) {
 					virtualPanel.setTarget
@@ -427,7 +431,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		
 	}
 	
-	private Point3D getViewPointFromCamera() {		
+	private void setViewPointFromCamera() {		
 		
 		double zTranslate = Math.abs(camera.getTranslateZ());
 		double rxAngle = cameraXform.rx.getAngle();
@@ -443,7 +447,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		System.out.println("Viewpoint: (" + x + ", " + y + ", " + z + ")");
 		System.out.println("");
 		
-		return new Point3D(x, y, z);
+		setViewpoint(new Point3D(x, y, z));
 	}
 	
 	private void setCameraFromViewPoint() {
