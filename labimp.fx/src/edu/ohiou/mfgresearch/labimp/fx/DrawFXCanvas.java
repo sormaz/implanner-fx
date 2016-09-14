@@ -546,7 +546,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 			DecimalFormat df = new DecimalFormat("#.00");
 			xTxt.setText(df.format(viewPointX.get()));
 		});
-			
+					
 		TextField yTxt = new TextField();
 		yTxt.setText(String.valueOf(viewPointY.get()));
 		viewPointY.addListener((e,o,n) -> {
@@ -559,6 +559,90 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		viewPointZ.addListener((e,o,n) -> {
 			DecimalFormat df = new DecimalFormat("#.00");
 			zTxt.setText(df.format(viewPointZ.get()));
+		});
+		
+		xTxt.focusedProperty().addListener(new ChangeListener<Boolean>()
+		{		
+			double oldValue;
+			
+		    @Override
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+		    {
+		        if (newPropertyValue) {
+					oldValue = Double.valueOf(xTxt.getText());
+		        } else {
+		        	try {
+		        		viewPointX.set(Double.valueOf(xTxt.getText()));
+		        		setCameraFromViewPoint();
+					} catch (Exception e) {
+		        		viewPointX.set(oldValue);
+		        		setCameraFromViewPoint();
+					}				
+		        }
+		    }
+		});
+		
+		xTxt.focusedProperty().addListener(new ChangeListener<Boolean>()
+		{		
+			double oldValue;
+			
+		    @Override
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+		    {
+		        if (newPropertyValue) {
+					oldValue = Double.valueOf(xTxt.getText());
+		        } else {
+		        	try {
+		        		viewPointX.set(Double.valueOf(xTxt.getText()));
+		        		setCameraFromViewPoint();
+					} catch (Exception e) {
+		        		viewPointX.set(oldValue);
+		        		setCameraFromViewPoint();
+					}				
+		        }
+		    }
+		});
+		
+		yTxt.focusedProperty().addListener(new ChangeListener<Boolean>()
+		{		
+			double oldValue;
+			
+		    @Override
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+		    {
+		        if (newPropertyValue) {
+					oldValue = Double.valueOf(yTxt.getText());
+		        } else {
+		        	try {
+		        		viewPointY.set(Double.valueOf(yTxt.getText()));
+		        		setCameraFromViewPoint();
+					} catch (Exception e) {
+		        		viewPointY.set(oldValue);
+		        		setCameraFromViewPoint();
+					}				
+		        }
+		    }
+		});
+		
+		zTxt.focusedProperty().addListener(new ChangeListener<Boolean>()
+		{		
+			double oldValue;
+			
+		    @Override
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+		    {
+		        if (newPropertyValue) {
+					oldValue = Double.valueOf(zTxt.getText());
+		        } else {
+		        	try {
+		        		viewPointZ.set(Double.valueOf(zTxt.getText()));
+		        		setCameraFromViewPoint();
+					} catch (Exception e) {
+		        		viewPointZ.set(oldValue);
+		        		setCameraFromViewPoint();
+					}				
+		        }
+		    }
 		});
 		
 		Label scaleLbl = new Label("Scale :");
@@ -579,12 +663,9 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		    @Override
 		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
 		    {
-		        if (newPropertyValue)
-		        {
+		        if (newPropertyValue) {
 					oldValue = Double.valueOf(scaleTxt.getText());
-		        }
-		        else
-		        {
+		        } else {
 		        	try {
 		        		if(Double.valueOf(scaleTxt.getText()) <= 0) {
 		        			throw new Exception("Scale must be greater than zero.");
