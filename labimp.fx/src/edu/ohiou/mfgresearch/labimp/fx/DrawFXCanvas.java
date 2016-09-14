@@ -80,6 +80,8 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	private double mouseDeltaX;
 	private double mouseDeltaY;
 	
+	private MouseMode mouseMode = MouseMode.MODIFY_VIEW;
+	
 	private ObservableList<DrawableFX> targetList = FXCollections.observableArrayList();
 	private DrawableFX activeTarget;
 	
@@ -199,15 +201,6 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 
 	public Pane getCanvas() {
 		return canvas;
-	}
-	
-	public MouseMode getMouseMode() {
-		if (((DrawWFPanel)virtualPanel.gettCanvas()).mouseMode 
-				== DrawWFPanel.MODIFY_TARGET) {
-			return MouseMode.MODIFY_TARGET;
-		} else {
-			return MouseMode.MODIFY_VIEW;
-		}
 	}
 
 	@Override
@@ -363,14 +356,20 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 
 					if (((DrawWFPanel)virtualPanel.gettCanvas()).mouseMode 
 										== DrawWFPanel.MODIFY_TARGET) {
-						getScene().setCursor(Cursor.CROSSHAIR);
+						mouseMode = MouseMode.MODIFY_TARGET;
 					} else {
-						getScene().setCursor(Cursor.DEFAULT);
+						mouseMode = MouseMode.MODIFY_VIEW;
 					}		
 					
 				} else {
 					
 				}		
+				
+				if (mouseMode == MouseMode.MODIFY_TARGET) {
+					getScene().setCursor(Cursor.CROSSHAIR);
+				} else {
+					getScene().setCursor(Cursor.DEFAULT);
+				}
 				
 			}
 		});
