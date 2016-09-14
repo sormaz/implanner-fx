@@ -56,11 +56,17 @@ import javafx.scene.transform.Translate;
 
 public class DrawFXCanvas extends VBox implements DrawListener{	
 
-	static final double DEFAULT_WIDTH = 650;
-	static final double DEFAULT_HEIGHT = 550;
+	private static final double DEFAULT_WIDTH = 650;
+	private static final double DEFAULT_HEIGHT = 550;
+	
+	private static final double DEFAULT_SCALE = 5;
+	private static final 
+			Point3D DEFAULT_VIEWPOINT = new Point3D(0, 0, 100);
 	
 	private static final double CAMERA_NEAR_CLIP = 0.1;
-	private static final double CAMERA_FAR_CLIP = 1000.0;
+	private static final double CAMERA_FAR_CLIP = 10000.0;
+	
+	private static double fieldOfView = 90;
 	
 	double mousePosX;
 	double mousePosY;
@@ -68,8 +74,6 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	double mouseOldY;
 	double mouseDeltaX;
 	double mouseDeltaY;
-
-
 	
 	private ObservableList<DrawableFX> targetList = FXCollections.observableArrayList();
 	private DrawableFX activeTarget;
@@ -77,16 +81,25 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	private SimpleDoubleProperty viewPointX = new SimpleDoubleProperty();
 	private SimpleDoubleProperty viewPointY = new SimpleDoubleProperty();
 	private SimpleDoubleProperty viewPointZ = new SimpleDoubleProperty();	
-	private SimpleDoubleProperty scale = new SimpleDoubleProperty();
-	
+	private SimpleDoubleProperty scale = new SimpleDoubleProperty();	
 	private SimpleBooleanProperty showWCS = new SimpleBooleanProperty();
-	private Group targetGroup = new Group(); 
-	private Group swing2DGroup = new Group(); 
-	private Group swing3DGroup = new Group(); 
-	private Group fx2DGroup = new Group(); 
-	private Group fx3DGroup = new Group();
-	private SubScene fx3DScene = new SubScene(fx3DGroup, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	private Pane canvas = new Pane(targetGroup);
+	
+	private Xform root = new Xform(); 
+	private Xform fxRoot = new Xform();
+	private Xform correctedYZGroup = new Xform();
+	private Xform swing2DGroup = new Xform(); 
+	private Xform swing3DGroup = new Xform(); 
+	private Xform fx2DGroup = new Xform(); 
+	private Xform fx3DGroup = new Xform();
+	private SubScene fxScene = new SubScene(fxRoot, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	private SubScene swingScene = new SubScene(swing3DGroup, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	private Pane canvas = new Pane(root);
+	
+	private final PerspectiveCamera camera = new PerspectiveCamera(true);
+	private final Xform cameraXform = new Xform();
+	private final Xform cameraXform2 = new Xform();
+	private final Xform cameraXform3 = new Xform();
+	
 	private final DrawWFPanel virtualPanel = new DrawWFPanel();
 
 	public DrawFXCanvas() {
@@ -94,7 +107,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	}
 
 	public DrawFXCanvas(ObservableList<DrawableFX> targetList) {
-		this(targetList, new Point3D(0, 0, 20), 50, false);
+		this(targetList, DEFAULT_VIEWPOINT, DEFAULT_SCALE, false);
 	}
 
 	public DrawFXCanvas(ObservableList<DrawableFX> targetList, 
@@ -189,10 +202,47 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		setupPanels();
 
         setEventHandlers();
+        
+        setupGroups();
+        
+        buildCamera();
 
 	}
 	
-	void setupPanels() {
+	private void setupGroups() {
+		
+		root.getChildren().add(fxScene);
+		root.getChildren().add(swingScene);
+		fxRoot.getChildren().add(correctedYZGroup);
+		
+		Scale mirrorYZ = new Scale(1, -1, -1);
+		correctedYZGroup.getTransforms().add(mirrorYZ);
+		
+		correctedYZGroup.getChildren()
+				.addAll(swing2DGroup, fx2DGroup, fx3DGroup);	
+	}
+	
+	private void buildCamera() {
+		System.out.println("buildCamera()");
+		fxRoot.getChildren().add(cameraXform);
+		cameraXform.getChildren().add(cameraXform2);
+		cameraXform2.getChildren().add(cameraXform3);
+		cameraXform3.getChildren().add(camera);
+	
+		camera.setFieldOfView(fieldOfView);
+		
+		camera.setNearClip(CAMERA_NEAR_CLIP);
+		camera.setFarClip(CAMERA_FAR_CLIP);
+		
+		fxScene.setCamera(camera);
+		
+		setCameraFromViewPoint();
+		
+//		getViewPointFromCamera();
+		
+	}
+	
+	private void setupPanels() {
 		canvas.setPrefSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		Rectangle clipRect = new Rectangle(canvas.getWidth(), canvas.getHeight());
 		canvas.setClip(clipRect);
@@ -200,8 +250,11 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		clipRect.heightProperty().bind(canvas.heightProperty());
 		clipRect.widthProperty().bind(canvas.widthProperty());
 		
-		fx3DScene.heightProperty().bind(canvas.heightProperty());
-		fx3DScene.widthProperty().bind(canvas.widthProperty());
+		fxScene.heightProperty().bind(canvas.heightProperty());
+		fxScene.widthProperty().bind(canvas.widthProperty());
+		
+		swingScene.heightProperty().bind(canvas.heightProperty());
+		swingScene.widthProperty().bind(canvas.widthProperty());
 		
 		Pane canvasControls = getToolbar();
 		canvasControls.setPrefWidth(DEFAULT_WIDTH);
@@ -227,7 +280,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
         });
 	}
 	
-	void setEventHandlers() {
+	private void setEventHandlers() {
 		
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -322,19 +375,62 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		
 	}
 	
+	private void getViewPointFromCamera() {		
+		
+		double zTranslate = Math.abs(camera.getTranslateZ());
+		double rxAngle = cameraXform.rx.getAngle();
+		double ryAngle = cameraXform.ry.getAngle();
+		
+		double x = - zTranslate * Math.cos(Math.toRadians(rxAngle)) * Math.sin(Math.toRadians(ryAngle));
+		double y = - zTranslate * Math.sin(Math.toRadians(rxAngle));
+		double z = zTranslate * Math.cos(Math.toRadians(rxAngle)) * Math.cos(Math.toRadians(ryAngle));
+		
+		System.out.println("zTranslate: " + zTranslate);
+		System.out.println("rxAngle: " + rxAngle);
+		System.out.println("ryAngle: " + ryAngle);
+		System.out.println("Viewpoint: (" + x + ", " + y + ", " + z + ")");
+		System.out.println("");
+	}
+	
+	private void setCameraFromViewPoint() {
+		
+		double x = viewPointX.get();
+		double y = viewPointY.get();
+		double z = viewPointZ.get();
+		
+		double zTranslate 
+		= Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));	
+		
+		double ryAngle, rxAngle;
+		
+		if(zTranslate > 0) {
+			ryAngle = - Math.toDegrees(Math.atan2(x , z));	
+			rxAngle 
+				= - Math.toDegrees(Math.asin(y / zTranslate));
+		} else {
+			ryAngle = 0;
+			rxAngle = 0;		
+		}
+		
+		System.out.println("Viewpoint: (" + x + ", " + y + ", " + z + ")");
+		System.out.println("zTranslate: " + zTranslate);
+		System.out.println("ryAngle: " + ryAngle);
+		System.out.println("rxAngle: " + rxAngle);
+		
+		camera.setTranslateZ(-zTranslate);	
+		cameraXform.ry.setAngle(ryAngle);  
+		cameraXform.rx.setAngle(rxAngle); 	
+		
+	}
+	
+	
 	@Override
 	public void updateView() {
 
-		targetGroup.getChildren().clear();
 		swing2DGroup.getChildren().clear();
 		swing3DGroup.getChildren().clear();
 		fx2DGroup.getChildren().clear();
 		fx3DGroup.getChildren().clear();
-		
-//		targetGroup.getTransforms().clear();
-		swing2DGroup.getTransforms().clear();
-		fx2DGroup.getTransforms().clear();
-		fx3DGroup.getTransforms().clear();
 		
 		targetList.stream()
 				.filter((t) -> t.getVisible().get()) 
@@ -367,33 +463,10 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 					fx2DGroup.getChildren().add(axis);
 				});
 		}
-			
-		targetGroup.getChildren().add(fx3DScene);
-		targetGroup.getChildren().add(swing2DGroup);
-		targetGroup.getChildren().add(swing3DGroup);
-		targetGroup.getChildren().add(fx2DGroup);
-
-	
-		Scale scale2D = new Scale(scale.get(), scale.get());
-		Scale scale3D = new Scale(scale.get(), scale.get(), scale.get());
 		
-		Affine mirror 
-		= new Affine(1, 0, 0, 0, -1, canvas.getHeight());
-		
-		Translate moveToCenter = new Translate(canvas.getWidth() / 2,
-												- canvas.getHeight() / 2);
-		
-		swing2DGroup.getTransforms().add(moveToCenter);
-		swing2DGroup.getTransforms().add(mirror);
-		swing2DGroup.getTransforms().add(scale2D);	
-
-		fx2DGroup.getTransforms().add(moveToCenter);
-		fx2DGroup.getTransforms().add(mirror);
-		fx2DGroup.getTransforms().add(scale2D);
-		
-		fx3DGroup.getTransforms().add(moveToCenter);
-		fx3DGroup.getTransforms().add(mirror);
-		fx3DGroup.getTransforms().add(scale3D);
+		swing2DGroup.setScale(scale.get());
+		fx2DGroup.setScale(scale.get());
+		fx3DGroup.setScale(scale.get());
 		
 		if(activeTarget instanceof Swing3DConverter) {
 			virtualPanel.setTarget
