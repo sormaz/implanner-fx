@@ -50,6 +50,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
@@ -58,6 +59,10 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 
 	private static final double DEFAULT_WIDTH = 650;
 	private static final double DEFAULT_HEIGHT = 550;
+	
+	private static final double XAXIS_LENGTH = 10;
+	private static final double YAXIS_LENGTH = 10;
+	private static final double ZAXIS_LENGTH = 10;
 	
 	private static final double DEFAULT_SCALE = 5;
 	private static final 
@@ -68,12 +73,12 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	
 	private static double fieldOfView = 90;
 	
-	double mousePosX;
-	double mousePosY;
-	double mouseOldX;
-	double mouseOldY;
-	double mouseDeltaX;
-	double mouseDeltaY;
+	private double mousePosX;
+	private double mousePosY;
+	private double mouseOldX;
+	private double mouseOldY;
+	private double mouseDeltaX;
+	private double mouseDeltaY;
 	
 	private ObservableList<DrawableFX> targetList = FXCollections.observableArrayList();
 	private DrawableFX activeTarget;
@@ -86,13 +91,14 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	
 	private Xform root = new Xform(); 
 	private Xform fxRoot = new Xform();
+	private Xform swingRoot = new Xform();
 	private Xform correctedYZGroup = new Xform();
 	private Xform swing2DGroup = new Xform(); 
 	private Xform swing3DGroup = new Xform(); 
 	private Xform fx2DGroup = new Xform(); 
 	private Xform fx3DGroup = new Xform();
 	private SubScene fxScene = new SubScene(fxRoot, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	private SubScene swingScene = new SubScene(swing3DGroup, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	private SubScene swingScene = new SubScene(swingRoot, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	private Pane canvas = new Pane(root);
 	
 	private final PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -220,6 +226,9 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		
 		correctedYZGroup.getChildren()
 				.addAll(swing2DGroup, fx2DGroup, fx3DGroup);	
+		
+		swingRoot.getChildren()
+				.addAll(swing3DGroup);
 	}
 	
 	private void buildCamera() {
@@ -304,6 +313,11 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 			public void handle(MouseEvent e) {
 //				System.out.println("fx: Mouse Pressed " + e.getX() + ", " + e.getY());
 				
+				mousePosX = e.getSceneX();
+				mousePosY = e.getSceneY();
+				mouseOldX = e.getSceneX();
+				mouseOldY = e.getSceneY();
+				
 				if(activeTarget instanceof Swing3DConverter) {
 					virtualPanel.setTarget
 							((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
@@ -347,6 +361,44 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 			public void handle(MouseEvent e) {
 //				System.out.println("fx: Mouse Dragged " + e.getX() + ", " + e.getY());
 				
+				mouseOldX = mousePosX;
+				mouseOldY = mousePosY;
+				mousePosX = e.getSceneX();
+				mousePosY = e.getSceneY();
+				mouseDeltaX = (mousePosX - mouseOldX); 
+				mouseDeltaY = (mousePosY - mouseOldY); 
+
+				if (e.isControlDown()) {} 
+				if (e.isShiftDown()) {}   
+
+//				if (e.isPrimaryButtonDown() && e.isSecondaryButtonDown()) {
+//					camera.setTranslateX(camera.getTranslateX() + mouseDeltaX);
+//					camera.setTranslateY(camera.getTranslateY() + mouseDeltaY);
+//				}
+				if (e.isPrimaryButtonDown()) {
+					
+					System.out.println("Old rxAngle Angle: " + cameraXform.rx.getAngle());
+					System.out.println("Old ryAngle Angle: " + cameraXform.ry.getAngle());
+					
+					cameraXform.ry.setAngle(cameraXform.ry.getAngle() + mouseDeltaX);  
+					cameraXform.rx.setAngle(cameraXform.rx.getAngle() - mouseDeltaY);  
+					
+					System.out.println("New rxAngle Angle: " + cameraXform.rx.getAngle());
+					System.out.println("New ryAngle Angle: " + cameraXform.ry.getAngle());
+				}
+				else if (e.isSecondaryButtonDown()) {
+					double z = camera.getTranslateZ();
+					System.out.println("Old z: " + z);
+					double newZ = z + mouseDeltaX;
+					camera.setTranslateZ(newZ);
+					System.out.println("New z: " + newZ);
+				
+				}
+				else if (e.isMiddleButtonDown()) {
+					cameraXform2.t.setX(cameraXform2.t.getX() + mouseDeltaX);  
+					cameraXform2.t.setY(cameraXform2.t.getY() + mouseDeltaY);  
+				}
+				
 				if(activeTarget instanceof Swing3DConverter) {
 					virtualPanel.setTarget
 					((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
@@ -375,7 +427,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		
 	}
 	
-	private void getViewPointFromCamera() {		
+	private Point3D getViewPointFromCamera() {		
 		
 		double zTranslate = Math.abs(camera.getTranslateZ());
 		double rxAngle = cameraXform.rx.getAngle();
@@ -390,6 +442,8 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		System.out.println("ryAngle: " + ryAngle);
 		System.out.println("Viewpoint: (" + x + ", " + y + ", " + z + ")");
 		System.out.println("");
+		
+		return new Point3D(x, y, z);
 	}
 	
 	private void setCameraFromViewPoint() {
@@ -440,7 +494,6 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 				
 				for (Shape s: target.getFXShapes()) {
 					s.setStrokeWidth(1/scale.get());
-					
 					swing2DGroup.getChildren().add(s);
 				}							
 			}else if (target instanceof Swing3DConverter) {
@@ -456,12 +509,13 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		});
 		
 		if(showWCS.get()) {
-			AxisFX axes = new AxisFX();
-			axes.getFXShapes().stream()
-				.forEach((axis) -> {
-					axis.setStrokeWidth(1/scale.get());
-					fx2DGroup.getChildren().add(axis);
-				});
+			AxisFX axes = new AxisFX(XAXIS_LENGTH * scale.get(), 
+									YAXIS_LENGTH * scale.get(), 
+									ZAXIS_LENGTH * scale.get());
+			Xform axesGroup = new Xform();
+			axesGroup.getChildren().addAll(axes.getFX3DShapes());
+			axesGroup.setScale(1/scale.get());
+			fx3DGroup.getChildren().addAll(axesGroup);
 		}
 		
 		swing2DGroup.setScale(scale.get());
