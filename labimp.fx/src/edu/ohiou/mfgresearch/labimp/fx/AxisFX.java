@@ -59,8 +59,8 @@ public class AxisFX extends FXObject {
         blueMaterial.setSpecularColor(Color.BLUE);
         
         xAxis.setMaterial(redMaterial);
-        yAxis.setMaterial(greenMaterial);
-        zAxis.setMaterial(blueMaterial);
+        yAxis.setMaterial(blueMaterial);
+        zAxis.setMaterial(greenMaterial);
 
 		return shapes;
 	}
