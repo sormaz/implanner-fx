@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -121,46 +122,46 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 				param -> new ReadOnlyObjectWrapper<>(param.getValue())
 				);
 
-		targetCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
-			
-			@Override
-			protected void updateItem(DrawableFX target, boolean empty) {
-				super.updateItem(target, empty);
-				
-				if(target == null) {
-					setGraphic(null);
-					return;
-				}
-				
-				if(target instanceof PartModelConverter) {
-					PartModelConverter t = (PartModelConverter)target;
-					
-					TreeView<Swing3DConverter> fTreeView 
-								= new TreeView<Swing3DConverter>();
-					
-					fTreeView.setMaxHeight(25);
-			
-					TreeItem<Swing3DConverter> root 
-										= new TreeItem<>(t);
-				
-					t.getFeatureList().forEach(s -> {
-						TreeItem<Swing3DConverter> item 
-								= new TreeItem<>(s);
-						fTreeView.setMaxHeight(fTreeView.getMaxHeight() + 25);
-						root.getChildren().add(item);
-					});
-					
-					root.setExpanded(true);
-					setPrefHeight(fTreeView.getMaxHeight()+10);
-					fTreeView.setRoot(root);
-					setGraphic(fTreeView);
-					
-				} else {
-					setGraphic(new Label(target.name().get()));
-				}			
-			}
-			
-		});
+//		targetCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
+//			
+//			@Override
+//			protected void updateItem(DrawableFX target, boolean empty) {
+//				super.updateItem(target, empty);
+//				
+//				if(target == null) {
+//					setGraphic(null);
+//					return;
+//				}
+//				
+//				if(target instanceof PartModelConverter) {
+//					PartModelConverter t = (PartModelConverter)target;
+//					
+//					TreeView<Swing3DConverter> fTreeView 
+//								= new TreeView<Swing3DConverter>();
+//					
+//					fTreeView.setMaxHeight(25);
+//			
+//					TreeItem<Swing3DConverter> root 
+//										= new TreeItem<>(t);
+//				
+//					t.getFeatureList().forEach(s -> {
+//						TreeItem<Swing3DConverter> item 
+//								= new TreeItem<>(s);
+//						fTreeView.setMaxHeight(fTreeView.getMaxHeight() + 25);
+//						root.getChildren().add(item);
+//					});
+//					
+//					root.setExpanded(true);
+//					setPrefHeight(fTreeView.getMaxHeight()+10);
+//					fTreeView.setRoot(root);
+//					setGraphic(fTreeView);
+//					
+//				} else {
+//					setGraphic(new Label(target.name().get()));
+//				}			
+//			}
+//			
+//		});
 		
 		visiblityCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
 			private final CheckBox visibilityBtn = new CheckBox();
@@ -288,6 +289,10 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 		canvas.setTargetList(tList);
 		targetView.setItems(canvas.getTargetList());
 	}
+	
+	public void addTargets(LinkedList<DrawableFX> targets) {
+		canvas.addTargets(targets);
+	}
 
 	public void addTarget(DrawableFX target) {
 		canvas.addTarget(target);
@@ -408,7 +413,8 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 			if(prtFile.exists() && stkFile.exists()) {
 				PartModelConverter newTarget = new PartModelConverter(prtFile);
 				newTarget.setStock(stkFile);
-				addTarget(newTarget);
+				addTarget(newTarget);				
+				addTargets(newTarget.getFeatureList());
 				stage.close();
 			}
 		});

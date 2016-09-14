@@ -38,21 +38,18 @@ public class PartModelConverter extends Swing3DConverter {
 				(((MfgPartModel)getSwingTarget()).getPartName());
 	}
 	
-	public ObservableList<Swing3DConverter> getFeatureList() {
+	public LinkedList<DrawableFX> getFeatureList() {
 		
-		ObservableList<Swing3DConverter> featureList 
-				= FXCollections.observableArrayList();
+		LinkedList<DrawableFX> featureList 
+				= new LinkedList<>();
 		
 		((MfgPartModel)getSwingTarget())
-				.getFeatureList().forEach(f -> {
-			
+				.getFeatureList().forEach(f -> {			
 					Swing3DConverter s = new Swing3DConverter(f);
-					featureList.add(s);
-					
+					featureList.add(s);				
 		});
 		
-		return featureList;
-		
+		return featureList;	
 	}
 	
 	@Override

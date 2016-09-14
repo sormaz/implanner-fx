@@ -18,6 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Point3D;
@@ -33,6 +34,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
@@ -153,6 +155,10 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		target.addListener(this);
 		updateView();
 	}
+	
+	public void addTargets(LinkedList<DrawableFX> targets) {
+		targets.forEach(target -> addTarget(target));
+	}
 
 	public DrawableFX getActiveTarget() {
 		return activeTarget;
@@ -213,12 +219,12 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		PlatformImpl.startup(() -> {});
 		
 		setupPanels();
-
-        setEventHandlers();
         
         setupGroups();
         
         buildCamera();
+        
+        setEventHandlers();
 
 	}
 	
@@ -302,6 +308,41 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	}
 	
 	private void setEventHandlers() {
+		
+		EventHandler<KeyEvent> onKeyPressed = event -> {
+			switch (event.getCode()) {
+			case UP:
+				System.out.println("Up pressed");
+				System.out.println("Old rxAngle Angle: " + cameraXform.rx.getAngle());			 
+				cameraXform.rx.setAngle((cameraXform.rx.getAngle() - 1) % 360);  				
+				System.out.println("New rxAngle Angle: " + cameraXform.rx.getAngle());
+				break;
+			case DOWN:
+				System.out.println("Down pressed");
+				System.out.println("Old rxAngle Angle: " + cameraXform.rx.getAngle());				 
+				cameraXform.rx.setAngle((cameraXform.rx.getAngle() + 1) % 360);  	
+				System.out.println("New rxAngle Angle: " + cameraXform.rx.getAngle());
+				break;
+			case LEFT:
+				System.out.println("Left pressed");
+				System.out.println("Old ryAngle Angle: " + cameraXform.ry.getAngle());				
+				cameraXform.ry.setAngle((cameraXform.ry.getAngle() + 1) % 360);  
+				System.out.println("New ryAngle Angle: " + cameraXform.ry.getAngle());
+				break;
+			case RIGHT:
+				System.out.println("Right pressed");
+				System.out.println("Old ryAngle Angle: " + cameraXform.ry.getAngle());				
+				cameraXform.ry.setAngle((cameraXform.ry.getAngle() - 1) % 360);  
+				System.out.println("New ryAngle Angle: " + cameraXform.ry.getAngle());
+				break;
+			default:
+				break;
+			}
+			setViewPointFromCamera();
+			updateView();
+		};
+		
+		addEventFilter(KeyEvent.KEY_PRESSED, onKeyPressed);
 		
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
