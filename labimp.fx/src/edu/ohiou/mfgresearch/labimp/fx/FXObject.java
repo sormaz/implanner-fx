@@ -24,6 +24,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.text.Text;
@@ -85,6 +87,46 @@ public abstract class FXObject implements DrawableFX {
 	public Pane getPanel() {
 		// TODO Auto-generated method stub
 		return new Pane();
+	}
+	
+	public Color getStrokeColor() {
+	    String propColor = properties.getProperty(this.getClass().getName() +
+                ".color", "000000");
+	    
+		Color color = Color.web(propColor); 
+		return color;
+	}
+	
+	public Color getFillColor() {
+	    String propColor = properties.getProperty(this.getClass().getName() +
+                ".fillColor", "000000");
+	    
+		Color color = Color.web(propColor); 
+		return color;
+	}
+	
+	public LinkedList<Shape> getFXShapesWColor() {
+		LinkedList<Shape> fxShapes = getFXShapes();
+		fxShapes.forEach(s -> {
+			s.setStroke(getStrokeColor());
+		});
+		return fxShapes;
+	}
+	
+	public LinkedList<Shape3D> getFX3DShapesWColor() {
+		LinkedList<Shape3D> fx3DShapes = getFX3DShapes();
+		fx3DShapes.forEach(s -> {
+			s.setMaterial(new PhongMaterial(getFillColor()));
+		});
+		return fx3DShapes;
+	}
+	
+	public LinkedList<Shape> getFXFillShapesWColor() {
+		LinkedList<Shape> fxFillShapes = getFXFillShapes();
+		fxFillShapes.forEach(s -> {
+			s.setStroke(getFillColor());
+		});
+		return fxFillShapes;
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import javafx.embed.swing.SwingNode;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
@@ -31,6 +32,24 @@ public abstract class SwingConverter extends FXObject {
 	public StringProperty name() {
 		return new SimpleStringProperty
 				(getSwingTarget().getClass().getSimpleName().toString());
+	}
+	
+	public Color getStrokeColor() {
+	    String propColor = properties.getProperty
+	    		(getSwingTarget().getClass().getName() +
+                ".color", "000000");
+	    
+		Color color = Color.web(propColor); 
+		return color;
+	}
+	
+	public Color getFillColor() {
+	    String propColor = properties.getProperty
+	    		(getSwingTarget().getClass().getName() +
+                ".fillColor", "000000");
+	    
+		Color color = Color.web(propColor); 
+		return color;
 	}
 
 	@Override

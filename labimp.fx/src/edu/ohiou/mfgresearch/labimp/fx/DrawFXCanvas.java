@@ -549,19 +549,19 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 			
 			if(target instanceof Swing2DConverter) {
 				
-				for (Shape s: target.getFXShapes()) {
+				for (Shape s: target.getFXShapesWColor()) {
 					s.setStrokeWidth(1/scale.get());
 					swing2DGroup.getChildren().add(s);
 				}							
 			}else if (target instanceof Swing3DConverter) {
 				
-				for (Shape s: target.getFXShapes()) {
+				for (Shape s: target.getFXShapesWColor()) {
 					swing3DGroup.getChildren().add(s);
 				}
 				
 			} else {
-				fx2DGroup.getChildren().addAll(target.getFXShapes());	
-				fx3DGroup.getChildren().addAll(target.getFX3DShapes());		
+				fx2DGroup.getChildren().addAll(target.getFXShapesWColor());	
+				fx3DGroup.getChildren().addAll(target.getFX3DShapesWColor());		
 			} 
 		});
 		
