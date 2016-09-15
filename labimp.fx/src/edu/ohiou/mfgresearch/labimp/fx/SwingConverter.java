@@ -91,8 +91,8 @@ public abstract class SwingConverter extends FXObject {
 		for(DrawString ds: swingStrings) {
 			Text fxText = new Text();
 			fxText.setText(ds.getContent());
-			fxText.setX(ds.gettPosition().getX());
-			fxText.setY(ds.gettPosition().getY());
+			fxText.setTranslateX(ds.gettPosition().getX());
+			fxText.setTranslateY(ds.gettPosition().getY());
 			
 			if(!Double.isNaN(ds.getSize())) {
 				fxText.setScaleX(ds.getSize());
