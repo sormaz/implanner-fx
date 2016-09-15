@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.interactivemesh.jfx.importer.ImportException;
+import com.interactivemesh.jfx.importer.stl.StlMeshImporter;
 import com.sun.javafx.application.PlatformImpl;
 
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
@@ -36,12 +38,19 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.CullFace;
+import javafx.scene.shape.DrawMode;
+import javafx.scene.shape.MeshView;
+import javafx.scene.shape.TriangleMesh;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import sun.reflect.generics.tree.Tree;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.TreeView;
@@ -68,7 +77,9 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	@FXML
 	Button slideBtn;
 	@FXML
-	MenuItem openFileMI;
+	MenuItem openPartFileMI;
+	@FXML
+	MenuItem openSTLFileMI;
 	@FXML
 	MenuItem exitMI;
 	@FXML
@@ -122,6 +133,22 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 				param -> new ReadOnlyObjectWrapper<>(param.getValue())
 				);
 
+		targetCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
+			@Override
+			protected void updateItem(DrawableFX target, boolean empty) {
+				super.updateItem(target, empty);
+				
+				if(target == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				setGraphic(new Label(target.name().get()));
+				Tooltip tooltip = new Tooltip(target.getToolTip());
+				setTooltip(tooltip);
+			}
+		});
+		
 //		targetCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
 //			
 //			@Override
@@ -317,7 +344,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	}
 
 	@FXML
-	private void handleOpenFileAction(ActionEvent event) {
+	private void handleOpenPartFileAction(ActionEvent event) {
 		
 		VBox root = new VBox();
 		HBox prtHbox = new HBox();
@@ -421,6 +448,40 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 		
 
 
+	}
+	
+	@FXML
+	private void handleOpenSTLFileAction(ActionEvent event) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open STL File");
+		
+		File existDirectory = 
+				new File(FXObject.properties.getProperty("STL_FILE_FOLDER"));
+		
+		if(existDirectory.exists()) {
+			fileChooser.setInitialDirectory(existDirectory);
+		} else {
+			fileChooser.setInitialDirectory(new File("."));
+		}
+
+		fileChooser.getExtensionFilters().addAll(
+				new ExtensionFilter("STL File", "*.stl"),
+				new ExtensionFilter("All Files", "*.*"));
+		File selectedFile = fileChooser.showOpenDialog(null);
+		if (selectedFile != null) {
+	        StlMeshImporter stlImporter = new StlMeshImporter();
+	        try {
+	            stlImporter.read(selectedFile);      
+		        TriangleMesh stlMesh = stlImporter.getImport();
+		        MeshView stlMeshView = new MeshView(stlMesh);	        
+		        Shape3DObject target = new Shape3DObject(stlMeshView);
+		        addTarget(target);
+	        }
+	        catch (ImportException e) {
+	    		System.out.println(e.getMessage());
+	    		System.out.println(Arrays.toString(e.getStackTrace()));
+	        }	        
+		}
 	}
 
 	@FXML

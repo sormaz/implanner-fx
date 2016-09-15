@@ -17,8 +17,10 @@
 			<menus>
 				<Menu mnemonicParsing="false" text="File">
 					<items>
-						<MenuItem fx:id="openFileMI" onAction="#handleOpenFileAction"
-							mnemonicParsing="false" text="Open File" />
+						<MenuItem fx:id="openPartFileMI" onAction="#handleOpenPartFileAction"
+							mnemonicParsing="false" text="Open Part File" />
+						<MenuItem fx:id="openSTLFileMI" onAction="#handleOpenSTLFileAction"
+							mnemonicParsing="false" text="Open STL File" />							
 						<MenuItem fx:id="exitMI" onAction="#handleExitAction"
 							mnemonicParsing="false" text="Exit" />
 					</items>
