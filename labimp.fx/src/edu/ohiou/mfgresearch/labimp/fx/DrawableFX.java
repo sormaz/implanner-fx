@@ -22,10 +22,6 @@ public interface DrawableFX {
 	
 	public LinkedList<Text> getFXStringList();
 	
-	public Color getStrokeColor();
-	
-	public Color getFillColor();
-	
 	public LinkedList<Shape> getFXShapesWColor();
 	
 	public LinkedList<Shape3D> getFX3DShapesWColor();
@@ -43,6 +39,8 @@ public interface DrawableFX {
 	
 	void display();
 
+	public String getToolTip();
+	
 	public StringProperty name();
 	
 	public BooleanProperty getVisible();

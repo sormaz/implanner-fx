@@ -26,6 +26,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.CullFace;
+import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.text.Text;
@@ -40,6 +42,10 @@ public abstract class FXObject implements DrawableFX {
 	private BooleanProperty IsVisible = new SimpleBooleanProperty(true);
 	static protected Properties properties = new Properties();
 	protected ObservableList<DrawListener> listeners = FXCollections.observableArrayList();
+	protected String defaultDrawMode = DrawMode.LINE.toString();
+	protected String defaultCullFace = CullFace.BACK.toString();
+	protected String defaultColor = "black";
+	protected String defaultFillColor ="black";
 	
 	static {
 		loadProperties(FXObject.class, "labimp.fx");
@@ -91,7 +97,7 @@ public abstract class FXObject implements DrawableFX {
 	
 	public Color getStrokeColor() {
 	    String propColor = properties.getProperty(this.getClass().getName() +
-                ".color", "000000");
+                ".color", defaultColor);
 	    
 		Color color = Color.web(propColor); 
 		return color;
@@ -99,10 +105,42 @@ public abstract class FXObject implements DrawableFX {
 	
 	public Color getFillColor() {
 	    String propColor = properties.getProperty(this.getClass().getName() +
-                ".fillColor", "000000");
+                ".fillColor", defaultFillColor);
 	    
 		Color color = Color.web(propColor); 
 		return color;
+	}
+	
+	public DrawMode getDrawMode() {
+	    String drawModeString = properties.getProperty(this.getClass().getName() +
+                ".drawMode", defaultDrawMode).toLowerCase();
+	    
+	    DrawMode drawMode;
+	    if(drawModeString.equals("fill")) {
+	    	drawMode = DrawMode.FILL;
+	    } else if(drawModeString.equals("line")) {
+	    	drawMode = DrawMode.LINE;
+	    } else {
+	    	drawMode = DrawMode.valueOf(defaultDrawMode);
+	    }
+	    return drawMode;
+	}
+	
+	public CullFace getCullFace() {
+	    String cullFaceString = properties.getProperty(this.getClass().getName() +
+                ".cullFace", defaultCullFace).toLowerCase();
+	    
+	    CullFace cullFace;
+	    if(cullFaceString.equals("back")) {
+	    	cullFace = CullFace.BACK;
+	    } else if(cullFaceString.equals("front")) {
+	    	cullFace = CullFace.FRONT;
+	    } else if(cullFaceString.equals("none")) {
+	    	cullFace = CullFace.NONE;
+	    } else {
+	    	cullFace = CullFace.valueOf(defaultCullFace);
+	    }    
+	    return cullFace;
 	}
 	
 	public LinkedList<Shape> getFXShapesWColor() {
@@ -114,9 +152,16 @@ public abstract class FXObject implements DrawableFX {
 	}
 	
 	public LinkedList<Shape3D> getFX3DShapesWColor() {
+		
+		DrawMode drawMode = getDrawMode();
+		CullFace cullFace = getCullFace();
+		Color fillColor = getFillColor();
+		
 		LinkedList<Shape3D> fx3DShapes = getFX3DShapes();
 		fx3DShapes.forEach(s -> {
-			s.setMaterial(new PhongMaterial(getFillColor()));
+			s.setMaterial(new PhongMaterial(fillColor));
+			s.setDrawMode(drawMode);
+			s.setCullFace(cullFace);
 		});
 		return fx3DShapes;
 	}
@@ -193,6 +238,11 @@ public abstract class FXObject implements DrawableFX {
 			      System.err.println(
 			      "\nProperties " + name + " not loaded from current folder.");
 			    }
+	  }
+	  
+	  @Override
+	  public String getToolTip() {
+		  return getClass().getName();
 	  }
 	  
 	  @Override
