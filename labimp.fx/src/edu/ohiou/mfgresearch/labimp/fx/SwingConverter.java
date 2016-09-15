@@ -37,9 +37,13 @@ public abstract class SwingConverter extends FXObject {
 	public Color getStrokeColor() {
 	    String propColor = properties.getProperty
 	    		(getSwingTarget().getClass().getName() +
-                ".color", "000000");
-	    
-		Color color = Color.web(propColor); 
+                ".color", "000000");	    
+	    Color color;
+	    try {
+			color = Color.web(propColor); 
+		} catch (Exception e) {
+			color = Color.web(defaultColor);
+		}
 		return color;
 	}
 	
@@ -47,8 +51,12 @@ public abstract class SwingConverter extends FXObject {
 	    String propColor = properties.getProperty
 	    		(getSwingTarget().getClass().getName() +
                 ".fillColor", "000000");
-	    
-		Color color = Color.web(propColor); 
+	    Color color;
+	    try {
+			color = Color.web(propColor); 
+		} catch (Exception e) {
+			color = Color.web(defaultFillColor);
+		}
 		return color;
 	}
 

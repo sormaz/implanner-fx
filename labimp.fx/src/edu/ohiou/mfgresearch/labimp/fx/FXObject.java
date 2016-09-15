@@ -98,16 +98,24 @@ public abstract class FXObject implements DrawableFX {
 	public Color getStrokeColor() {
 	    String propColor = properties.getProperty(this.getClass().getName() +
                 ".color", defaultColor);
-	    
-		Color color = Color.web(propColor); 
+	    Color color;
+	    try {
+			color = Color.web(propColor); 
+		} catch (Exception e) {
+			color = Color.web(defaultColor);
+		}
 		return color;
 	}
 	
 	public Color getFillColor() {
 	    String propColor = properties.getProperty(this.getClass().getName() +
-                ".fillColor", defaultFillColor);
-	    
-		Color color = Color.web(propColor); 
+                ".fillColor", defaultFillColor);    
+	    Color color;
+	    try {
+			color = Color.web(propColor); 
+		} catch (Exception e) {
+			color = Color.web(defaultFillColor);
+		}
 		return color;
 	}
 	
