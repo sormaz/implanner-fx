@@ -169,7 +169,8 @@ public abstract class FXObject implements DrawableFX {
 	public LinkedList<Shape> getFXFillShapesWColor() {
 		LinkedList<Shape> fxFillShapes = getFXFillShapes();
 		fxFillShapes.forEach(s -> {
-			s.setStroke(getFillColor());
+			s.setStroke(Color.TRANSPARENT);
+			s.setFill(getFillColor());
 		});
 		return fxFillShapes;
 	}
