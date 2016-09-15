@@ -184,4 +184,9 @@ public abstract class SwingConverter extends FXObject {
 		return sfx;
 	}
 
+	@Override
+	public String getToolTip() {
+		return getSwingTarget().getClass().getName();
+	}
+	
 }

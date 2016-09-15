@@ -31,7 +31,6 @@ public class SphereFX extends FXObject {
 		// TODO Auto-generated method stub
 		LinkedList<Shape3D> fxShape = new LinkedList();
 		Sphere sphere = new Sphere(radius);
-		sphere.drawModeProperty().set(DrawMode.LINE);
 		fxShape.add(sphere);
 		return fxShape;
 	}

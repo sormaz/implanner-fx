@@ -113,18 +113,6 @@ public class TestDrawableFX implements DrawableFX {
 	}
 
 	@Override
-	public Color getStrokeColor() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Color getFillColor() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public LinkedList<Shape> getFXShapesWColor() {
 		// TODO Auto-generated method stub
 		return null;
@@ -138,6 +126,12 @@ public class TestDrawableFX implements DrawableFX {
 
 	@Override
 	public LinkedList<Shape> getFXFillShapesWColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getToolTip() {
 		// TODO Auto-generated method stub
 		return null;
 	}

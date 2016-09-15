@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="/java-library/NX/NXOpen.jar"/>
 	<classpathentry kind="lib" path="/java-library/NX/NXOpenUF.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_102-32b"/>
+	<classpathentry kind="lib" path="C:/Users/Arif/git/implanner-fx/labimp.fx/libs/jimStlMeshImporterJFX.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
