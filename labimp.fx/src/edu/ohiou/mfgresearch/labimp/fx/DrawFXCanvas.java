@@ -55,6 +55,7 @@ import javafx.scene.shape.Sphere;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Affine;
+import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
@@ -229,6 +230,8 @@ public class DrawFXCanvas extends VBox implements DrawListener{
         buildCamera();
         
         setEventHandlers();
+        
+        correctCameraOrientation();
 
 	}
 	
@@ -487,6 +490,29 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	    	
 	    });
 		
+	}
+	
+	public void correctCameraOrientation() {
+        cameraXform.rx.angleProperty().addListener(e -> {
+        	
+        	double rxAngle = (360 + cameraXform.rx.getAngle()) % 360;
+        	
+        	if(rxAngle >= 90 && rxAngle <=270) {
+        		swing3DGroup.getTransforms().clear();
+        		
+        	Translate moveToCenter = new Translate(canvas.getWidth() / 2,
+						canvas.getHeight() / 2);	
+        	
+        	Rotate rotate = new Rotate(180);
+        	
+        	Translate moveToOrigin = new Translate(-canvas.getWidth() / 2,
+						- canvas.getHeight() / 2);	
+        	
+        	swing3DGroup.getTransforms().addAll(moveToCenter, rotate, moveToOrigin);
+        	} else {
+        		swing3DGroup.getTransforms().clear();
+        	}
+        });
 	}
 	
 	private void setViewPointFromCamera() {		
