@@ -392,7 +392,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 			fileChooser.setTitle("Open Part File");
 			
 			File existDirectory = 
-					new File(FXObject.properties.getProperty("UG_FILE_FOLDER"));
+					new File(FXObject.properties.getProperty("UG_FILE_FOLDER", "."));
 			
 			if(existDirectory.exists()) {
 				fileChooser.setInitialDirectory(existDirectory);
@@ -414,7 +414,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 			fileChooser.setTitle("Open Stock File");
 			
 			File existDirectory = 
-					new File(FXObject.properties.getProperty("UG_FILE_FOLDER"));
+					new File(FXObject.properties.getProperty("UG_FILE_FOLDER", "."));
 			
 			if(existDirectory.exists()) {
 				fileChooser.setInitialDirectory(existDirectory);
@@ -456,7 +456,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 		fileChooser.setTitle("Open STL File");
 		
 		File existDirectory = 
-				new File(FXObject.properties.getProperty("STL_FILE_FOLDER"));
+				new File(FXObject.properties.getProperty("STL_FILE_FOLDER", "."));
 		
 		if(existDirectory.exists()) {
 			fileChooser.setInitialDirectory(existDirectory);
