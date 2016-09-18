@@ -8,8 +8,8 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.interactivemesh.jfx.importer.ImportException;
-import com.interactivemesh.jfx.importer.stl.StlMeshImporter;
+//import com.interactivemesh.jfx.importer.ImportException;
+//import com.interactivemesh.jfx.importer.stl.StlMeshImporter;
 import com.sun.javafx.application.PlatformImpl;
 
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
@@ -452,36 +452,36 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	
 	@FXML
 	private void handleOpenSTLFileAction(ActionEvent event) {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open STL File");
-		
-		File existDirectory = 
-				new File(FXObject.properties.getProperty("STL_FILE_FOLDER", "."));
-		
-		if(existDirectory.exists()) {
-			fileChooser.setInitialDirectory(existDirectory);
-		} else {
-			fileChooser.setInitialDirectory(new File("."));
-		}
-
-		fileChooser.getExtensionFilters().addAll(
-				new ExtensionFilter("STL File", "*.stl"),
-				new ExtensionFilter("All Files", "*.*"));
-		File selectedFile = fileChooser.showOpenDialog(null);
-		if (selectedFile != null) {
-	        StlMeshImporter stlImporter = new StlMeshImporter();
-	        try {
-	            stlImporter.read(selectedFile);      
-		        TriangleMesh stlMesh = stlImporter.getImport();
-		        MeshView stlMeshView = new MeshView(stlMesh);	        
-		        Shape3DObject target = new Shape3DObject(stlMeshView);
-		        addTarget(target);
-	        }
-	        catch (ImportException e) {
-	    		System.out.println(e.getMessage());
-	    		System.out.println(Arrays.toString(e.getStackTrace()));
-	        }	        
-		}
+//		FileChooser fileChooser = new FileChooser();
+//		fileChooser.setTitle("Open STL File");
+//		
+//		File existDirectory = 
+//				new File(FXObject.properties.getProperty("STL_FILE_FOLDER", "."));
+//		
+//		if(existDirectory.exists()) {
+//			fileChooser.setInitialDirectory(existDirectory);
+//		} else {
+//			fileChooser.setInitialDirectory(new File("."));
+//		}
+//
+//		fileChooser.getExtensionFilters().addAll(
+//				new ExtensionFilter("STL File", "*.stl"),
+//				new ExtensionFilter("All Files", "*.*"));
+//		File selectedFile = fileChooser.showOpenDialog(null);
+//		if (selectedFile != null) {
+//	        StlMeshImporter stlImporter = new StlMeshImporter();
+//	        try {
+//	            stlImporter.read(selectedFile);      
+//		        TriangleMesh stlMesh = stlImporter.getImport();
+//		        MeshView stlMeshView = new MeshView(stlMesh);	        
+//		        Shape3DObject target = new Shape3DObject(stlMeshView);
+//		        addTarget(target);
+//	        }
+//	        catch (ImportException e) {
+//	    		System.out.println(e.getMessage());
+//	    		System.out.println(Arrays.toString(e.getStackTrace()));
+//	        }	        
+//		}
 	}
 
 	@FXML
