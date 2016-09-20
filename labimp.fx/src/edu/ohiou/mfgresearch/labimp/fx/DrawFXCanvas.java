@@ -57,7 +57,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	private static final double CAMERA_NEAR_CLIP = 0.1;
 	private static final double CAMERA_FAR_CLIP = 10000.0;
 
-	private static final double fieldOfView = 90;
+	private static final double FIELD_OF_VIEW = 90;
 
 	private static double mouseSpeed = 0.1;
 	private static double zoomRatioPercent = 5;
@@ -101,7 +101,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 
 	private final DrawWFPanel virtualPanel = new DrawWFPanel();
 
-	public enum MouseMode {
+	private enum MouseMode {
 		MODIFY_VIEW, MODIFY_TARGET
 	}
 
@@ -241,7 +241,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		cameraXform2.getChildren().add(cameraXform3);
 		cameraXform3.getChildren().add(camera);
 
-		camera.setFieldOfView(fieldOfView);
+		camera.setFieldOfView(FIELD_OF_VIEW);
 
 		camera.setNearClip(CAMERA_NEAR_CLIP);
 		camera.setFarClip(CAMERA_FAR_CLIP);
@@ -477,7 +477,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		updateView();
 	}
 
-	public void correctCameraOrientation() {
+	private void correctCameraOrientation() {
 
 		double rxAngle = (360 + cameraXform.rx.getAngle()) % 360;
 
