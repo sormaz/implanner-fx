@@ -89,7 +89,9 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	@FXML
 	MenuItem hideAllMI;
 
-	private ToggleGroup showActiveToggleGroup = new ToggleGroup();
+	private final CheckBox masterVisibilityControl = new CheckBox();
+	
+	private final ToggleGroup showActiveToggleGroup = new ToggleGroup();
 
 	public DrawFXPanel() {
 		URL fxmlURL = this.getClass().getResource("FXPanelView.fxml");
@@ -109,7 +111,6 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	@FXML
 	private void initialize() {
 
-		final CheckBox masterVisibilityControl = new CheckBox();
 		masterVisibilityControl.setSelected(true);
 		masterVisibilityControl.setOnAction((e) -> {
 			if(masterVisibilityControl.isSelected()) {
@@ -315,6 +316,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	public void setTargetList(ObservableList<DrawableFX> tList) {
 		canvas.setTargetList(tList);
 		targetView.setItems(canvas.getTargetList());
+		checkMasterVisibilityState(masterVisibilityControl);
 	}
 	
 	public void addTargets(LinkedList<DrawableFX> targets) {
