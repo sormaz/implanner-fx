@@ -192,6 +192,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		this.scale.set(scale);
 		virtualPanel.setScale(scale);
 		virtualPanel.createTargetTable();
+		fxRoot.setScale(100 / scale);
 	}
 
 	public Pane getCanvas() {
@@ -644,28 +645,6 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		viewPointZ.addListener((e,o,n) -> {
 			DecimalFormat df = new DecimalFormat("#.00");
 			zTxt.setText(df.format(viewPointZ.get()));
-		});
-
-		xTxt.focusedProperty().addListener(new ChangeListener<Boolean>()
-		{		
-			double oldValue;
-
-			@Override
-			public void changed(ObservableValue<? extends Boolean> arg0, 
-					Boolean oldPropertyValue, Boolean newPropertyValue)
-			{
-				if (newPropertyValue) {
-					oldValue = Double.valueOf(xTxt.getText());
-				} else {
-					try {
-						viewPointX.set(Double.valueOf(xTxt.getText()));
-						setCameraFromViewPoint();
-					} catch (Exception e) {
-						viewPointX.set(oldValue);
-						setCameraFromViewPoint();
-					}				
-				}
-			}
 		});
 
 		xTxt.focusedProperty().addListener(new ChangeListener<Boolean>()
