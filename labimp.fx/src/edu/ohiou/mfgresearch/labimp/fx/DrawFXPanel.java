@@ -247,7 +247,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 		setupSliding();		
 	}
 	
-	public void setupSliding() {
+	private void setupSliding() {
 		
 		final double expandedWidth = targetView.getPrefWidth();
 		
@@ -292,7 +292,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	        });
 	}
 	
-	public void checkMasterVisibilityState(CheckBox masterVisibilityControl) {
+	private void checkMasterVisibilityState(CheckBox masterVisibilityControl) {
 		Set<DrawableFX> visibleList = getTargetList()
 									.stream()
 									.filter((t) -> t.getVisible().get())
