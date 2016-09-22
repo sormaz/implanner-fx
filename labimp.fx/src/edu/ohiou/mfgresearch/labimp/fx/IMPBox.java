@@ -46,9 +46,9 @@ public class IMPBox extends ImpObject {
 	}
 	
 	public void setCenter(double x, double y, double z) {
-		center.setX(x);
-		center.setY(y);
-		center.setZ(z);
+		center.x=x;
+		center.y=y;
+		center.z=z;
 	}
 	
 	public LinkedList getPointSet() {

@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 import com.interactivemesh.jfx.importer.ImportException;
 import com.interactivemesh.jfx.importer.stl.StlMeshImporter;
+//import com.interactivemesh.jfx.importer.ImportException;
+//import com.interactivemesh.jfx.importer.stl.StlMeshImporter;
 import com.sun.javafx.application.PlatformImpl;
 
 import edu.ohiou.mfgresearch.labimp.draw.ImpObject;

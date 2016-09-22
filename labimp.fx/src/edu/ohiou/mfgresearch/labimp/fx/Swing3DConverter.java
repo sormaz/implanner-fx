@@ -55,9 +55,9 @@ public class Swing3DConverter extends SwingConverter {
 											((java.awt.geom.Point2D) o).getY()));
 			}
 			if (o instanceof javax.vecmath.Point3d) {
-				selectables.add(new Point3D(((javax.vecmath.Point3d) o).getX(), 
-											((javax.vecmath.Point3d) o).getY(),
-											((javax.vecmath.Point3d) o).getZ()));
+				selectables.add(new Point3D(((javax.vecmath.Point3d) o).x, 
+											((javax.vecmath.Point3d) o).y,
+											((javax.vecmath.Point3d) o).z));
 			}
 		}
 		return selectables;
