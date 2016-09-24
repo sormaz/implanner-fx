@@ -13,6 +13,12 @@ import javafx.scene.transform.Rotate;
 public class AxisFX extends FXObject {
 	
 	private double xLength, yLength, zLength;
+	public static int lineThickness = 1;
+	
+	static {
+		String thickness = getProperties().getProperty("lineThickness", "2");
+		lineThickness = Integer.parseInt(thickness);
+	}
 	
 	public AxisFX() {
 		this(5, 6, 7);
