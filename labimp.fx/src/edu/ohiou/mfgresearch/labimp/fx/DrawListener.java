@@ -5,7 +5,7 @@ import javafx.scene.layout.Pane;
 
 public interface DrawListener {
 	
-	public void display();
+	public void display(String ... args);
 	
 	public void updateView();
 	
