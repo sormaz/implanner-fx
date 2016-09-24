@@ -76,17 +76,7 @@ public class TestDrawableFX implements DrawableFX {
 		return null;
 	}
 
-	@Override
-	public void display() {
-		// TODO Auto-generated method stub	
-		
-		//Arif Ahmed - ApplicationLauncherExternal now takes
-		//DrawListeners instead of DrawableFX
-		//This code will need to be rewritten.
-//		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
-//		app.setTarget(this);
-//		app.launch(this);		
-	}
+
 
 	@Override
 	public StringProperty name() {
@@ -134,6 +124,12 @@ public class TestDrawableFX implements DrawableFX {
 	public String getToolTip() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void display(String... args) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
