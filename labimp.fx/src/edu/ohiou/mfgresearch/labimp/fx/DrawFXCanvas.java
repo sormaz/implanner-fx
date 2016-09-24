@@ -8,7 +8,7 @@ import com.sun.javafx.application.PlatformImpl;
 
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import edu.ohiou.mfgresearch.labimp.draw.DrawableWF;
-
+import javafx.application.Application;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -412,6 +412,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 					((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
 					((DrawWFPanel)virtualPanel.gettCanvas()).
 					modifyTargetPoint((int)e.getX(), (int)e.getY());
+
 				} else {
 
 				}	
@@ -820,10 +821,10 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	}
 
 	@Override
-	public void display() {
+	public void display(String ... args) {
 		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
 		app.setListener(this);
-		app.launch(this);			
+		Application.launch(app.getClass(), args);			
 	}
 
 }
