@@ -37,7 +37,7 @@ public interface DrawableFX {
 	
 	public Pane getPanel();
 	
-	void display();
+	void display(String ... args);
 
 	public String getToolTip();
 	
