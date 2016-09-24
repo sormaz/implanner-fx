@@ -19,6 +19,7 @@ import edu.ohiou.mfgresearch.implanner.features.MfgFeature;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import javafx.animation.Animation;
 import javafx.animation.Transition;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.ObservableList;
@@ -91,8 +92,8 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	@FXML
 	MenuItem hideAllMI;
 
-	private final CheckBox masterVisibilityControl = new CheckBox();
-	
+	private  CheckBox masterVisibilityControl;
+
 	private final ToggleGroup showActiveToggleGroup = new ToggleGroup();
 
 	public DrawFXPanel() {
@@ -106,13 +107,13 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 			loader.load();
 		} catch (IOException exception) {
 			System.out.println(exception.getMessage());
-    		System.out.println(Arrays.toString(exception.getStackTrace()));
+			System.out.println(Arrays.toString(exception.getStackTrace()));
 		}	
 	}
 
 	@FXML
 	private void initialize() {
-
+		masterVisibilityControl = new CheckBox();
 		masterVisibilityControl.setSelected(true);
 		masterVisibilityControl.setOnAction((e) -> {
 			if(masterVisibilityControl.isSelected()) {
@@ -140,59 +141,59 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 			@Override
 			protected void updateItem(DrawableFX target, boolean empty) {
 				super.updateItem(target, empty);
-				
+
 				if(target == null) {
 					setGraphic(null);
 					return;
 				}
-				
+
 				setGraphic(new Label(target.name().get()));
 				Tooltip tooltip = new Tooltip(target.getToolTip());
 				setTooltip(tooltip);
 			}
 		});
-		
-//		targetCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
-//			
-//			@Override
-//			protected void updateItem(DrawableFX target, boolean empty) {
-//				super.updateItem(target, empty);
-//				
-//				if(target == null) {
-//					setGraphic(null);
-//					return;
-//				}
-//				
-//				if(target instanceof PartModelConverter) {
-//					PartModelConverter t = (PartModelConverter)target;
-//					
-//					TreeView<Swing3DConverter> fTreeView 
-//								= new TreeView<Swing3DConverter>();
-//					
-//					fTreeView.setMaxHeight(25);
-//			
-//					TreeItem<Swing3DConverter> root 
-//										= new TreeItem<>(t);
-//				
-//					t.getFeatureList().forEach(s -> {
-//						TreeItem<Swing3DConverter> item 
-//								= new TreeItem<>(s);
-//						fTreeView.setMaxHeight(fTreeView.getMaxHeight() + 25);
-//						root.getChildren().add(item);
-//					});
-//					
-//					root.setExpanded(true);
-//					setPrefHeight(fTreeView.getMaxHeight()+10);
-//					fTreeView.setRoot(root);
-//					setGraphic(fTreeView);
-//					
-//				} else {
-//					setGraphic(new Label(target.name().get()));
-//				}			
-//			}
-//			
-//		});
-		
+
+		//		targetCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
+		//			
+		//			@Override
+		//			protected void updateItem(DrawableFX target, boolean empty) {
+		//				super.updateItem(target, empty);
+		//				
+		//				if(target == null) {
+		//					setGraphic(null);
+		//					return;
+		//				}
+		//				
+		//				if(target instanceof PartModelConverter) {
+		//					PartModelConverter t = (PartModelConverter)target;
+		//					
+		//					TreeView<Swing3DConverter> fTreeView 
+		//								= new TreeView<Swing3DConverter>();
+		//					
+		//					fTreeView.setMaxHeight(25);
+		//			
+		//					TreeItem<Swing3DConverter> root 
+		//										= new TreeItem<>(t);
+		//				
+		//					t.getFeatureList().forEach(s -> {
+		//						TreeItem<Swing3DConverter> item 
+		//								= new TreeItem<>(s);
+		//						fTreeView.setMaxHeight(fTreeView.getMaxHeight() + 25);
+		//						root.getChildren().add(item);
+		//					});
+		//					
+		//					root.setExpanded(true);
+		//					setPrefHeight(fTreeView.getMaxHeight()+10);
+		//					fTreeView.setRoot(root);
+		//					setGraphic(fTreeView);
+		//					
+		//				} else {
+		//					setGraphic(new Label(target.name().get()));
+		//				}			
+		//			}
+		//			
+		//		});
+
 		visiblityCol.setCellFactory(param -> new TableCell<DrawableFX, DrawableFX>() {
 			private final CheckBox visibilityBtn = new CheckBox();
 
@@ -249,57 +250,57 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 
 		setupSliding();		
 	}
-	
+
 	private void setupSliding() {
-		
+
 		final double expandedWidth = targetView.getPrefWidth();
-		
+
 		targetView.setPrefWidth(expandedWidth);
-		
+
 		slideBtn.setOnAction(new EventHandler<ActionEvent>() {
-	          @Override public void handle(ActionEvent actionEvent) {
-	            // create an animation to hide sidebar.
-	            final Animation hideSidebar = new Transition() {
-	              { setCycleDuration(Duration.millis(250)); }
-	              protected void interpolate(double frac) {
-	                final double curWidth = expandedWidth * (1.0 - frac);
-	                targetView.setPrefWidth(curWidth);
-	                targetView.setTranslateX(-expandedWidth + curWidth);
-	              }
-	            };
-	            hideSidebar.onFinishedProperty().set(new EventHandler<ActionEvent>() {
-	              @Override public void handle(ActionEvent actionEvent) {
-	            	targetView.setVisible(false);	            	  
-	              }
-	            });
-	    
-	            // create an animation to show a sidebar.
-	            final Animation showSidebar = new Transition() {
-	              { setCycleDuration(Duration.millis(250)); }
-	              protected void interpolate(double frac) {
-	                final double curWidth = expandedWidth * frac;
-	                targetView.setPrefWidth(curWidth);
-	                targetView.setTranslateX(-expandedWidth + curWidth);
-	              }
-	            };
-	    
-	            if (showSidebar.statusProperty().get() == Animation.Status.STOPPED && hideSidebar.statusProperty().get() == Animation.Status.STOPPED) {
-	              if (targetView.isVisible()) {
-	                hideSidebar.play();
-	              } else {
-	            	targetView.setVisible(true);
-	                showSidebar.play();
-	              }
-	            }
-	          }
-	        });
+			@Override public void handle(ActionEvent actionEvent) {
+				// create an animation to hide sidebar.
+				final Animation hideSidebar = new Transition() {
+					{ setCycleDuration(Duration.millis(250)); }
+					protected void interpolate(double frac) {
+						final double curWidth = expandedWidth * (1.0 - frac);
+						targetView.setPrefWidth(curWidth);
+						targetView.setTranslateX(-expandedWidth + curWidth);
+					}
+				};
+				hideSidebar.onFinishedProperty().set(new EventHandler<ActionEvent>() {
+					@Override public void handle(ActionEvent actionEvent) {
+						targetView.setVisible(false);	            	  
+					}
+				});
+
+				// create an animation to show a sidebar.
+				final Animation showSidebar = new Transition() {
+					{ setCycleDuration(Duration.millis(250)); }
+					protected void interpolate(double frac) {
+						final double curWidth = expandedWidth * frac;
+						targetView.setPrefWidth(curWidth);
+						targetView.setTranslateX(-expandedWidth + curWidth);
+					}
+				};
+
+				if (showSidebar.statusProperty().get() == Animation.Status.STOPPED && hideSidebar.statusProperty().get() == Animation.Status.STOPPED) {
+					if (targetView.isVisible()) {
+						hideSidebar.play();
+					} else {
+						targetView.setVisible(true);
+						showSidebar.play();
+					}
+				}
+			}
+		});
 	}
-	
+
 	private void checkMasterVisibilityState(CheckBox masterVisibilityControl) {
 		Set<DrawableFX> visibleList = getTargetList()
-									.stream()
-									.filter((t) -> t.getVisible().get())
-									.collect(Collectors.toSet());
+				.stream()
+				.filter((t) -> t.getVisible().get())
+				.collect(Collectors.toSet());
 		if(visibleList.isEmpty()) {
 			masterVisibilityControl.setIndeterminate(false);
 			masterVisibilityControl.setSelected(false);
@@ -320,7 +321,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 		targetView.setItems(canvas.getTargetList());
 		checkMasterVisibilityState(masterVisibilityControl);
 	}
-	
+
 	public void addTargets(LinkedList<DrawableFX> targets) {
 		canvas.addTargets(targets);
 	}
@@ -342,14 +343,14 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 			viewPanel.getChildren().add(activeTarget.getPanel());
 
 		} catch (Exception e) {
-    		System.out.println(e.getMessage());
-    		System.out.println(Arrays.toString(e.getStackTrace()));
+			System.out.println(e.getMessage());
+			System.out.println(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
 	@FXML
 	private void handleOpenPartFileAction(ActionEvent event) {
-		
+
 		VBox root = new VBox();
 		HBox prtHbox = new HBox();
 		Label prtLbl = new Label("Part File Location:   ");
@@ -357,22 +358,22 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 		HBox.setHgrow(prtTxt, Priority.ALWAYS);
 		Button prtBtn = new Button("...");
 		prtHbox.getChildren().addAll(prtLbl, prtTxt, prtBtn);
-		
+
 		prtHbox.getChildren().forEach(n -> {
 			HBox.setMargin(n, new Insets(10,10,10,10));
 		});
-		
+
 		HBox stkHbox = new HBox();
 		Label stkLbl = new Label("Stock File Location:");
 		TextField stkTxt = new TextField("");
 		HBox.setHgrow(stkTxt, Priority.ALWAYS);
 		Button stkBtn = new Button("...");
 		stkHbox.getChildren().addAll(stkLbl, stkTxt, stkBtn);
-		
+
 		stkHbox.getChildren().forEach(n -> {
 			HBox.setMargin(n, new Insets(10,10,10,10));
 		});
-		
+
 		HBox btnHbox = new HBox();
 		btnHbox.setAlignment(Pos.CENTER_RIGHT);
 		Button okBtn = new Button("Ok");
@@ -380,30 +381,30 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 		btnHbox.getChildren().forEach(n -> {
 			HBox.setMargin(n, new Insets(10,10,10,10));
 		});
-		
+
 		root.getChildren().add(prtHbox);
 		root.getChildren().add(stkHbox);
 		root.getChildren().add(btnHbox);
-		
+
 		Scene scene = new Scene(root, 600, 150);
 		Stage stage = new Stage();
 		stage.resizableProperty().set(false);
 		stage.setScene(scene);
 		stage.show();
-		
+
 		prtBtn.setOnAction(e -> {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Open Part File");
-			
+
 			File existDirectory = 
 					new File(FXObject.properties.getProperty("UG_FILE_FOLDER", "."));
-			
+
 			if(existDirectory.exists()) {
 				fileChooser.setInitialDirectory(existDirectory);
 			} else {
 				fileChooser.setInitialDirectory(new File("."));
 			}
-	
+
 			fileChooser.getExtensionFilters().addAll(
 					new ExtensionFilter("Part File", "*.prt"),
 					new ExtensionFilter("All Files", "*.*"));
@@ -412,20 +413,20 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 				prtTxt.setText(selectedFile.getPath());
 			}
 		});
-		
+
 		stkBtn.setOnAction(e -> {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Open Stock File");
-			
+
 			File existDirectory = 
 					new File(FXObject.properties.getProperty("UG_FILE_FOLDER", "."));
-			
+
 			if(existDirectory.exists()) {
 				fileChooser.setInitialDirectory(existDirectory);
 			} else {
 				fileChooser.setInitialDirectory(new File("."));
 			}
-	
+
 			fileChooser.getExtensionFilters().addAll(
 					new ExtensionFilter("Part File", "*.prt"),
 					new ExtensionFilter("All Files", "*.*"));
@@ -435,12 +436,12 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 
 			}
 		});
-		
+
 		okBtn.setOnAction(e -> {
-			
+
 			File prtFile = new File(prtTxt.getText());
 			File stkFile = new File(stkTxt.getText());
-			
+
 			if(prtFile.exists() && stkFile.exists()) {
 				PartModelConverter newTarget = new PartModelConverter(prtFile);
 				newTarget.setStock(stkFile);
@@ -449,19 +450,19 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 				stage.close();
 			}
 		});
-		
+
 
 
 	}
-	
+
 	@FXML
 	private void handleOpenSTLFileAction(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open STL File");
-		
+
 		File existDirectory = 
 				new File(FXObject.properties.getProperty("STL_FILE_FOLDER", "."));
-		
+
 		if(existDirectory.exists()) {
 			fileChooser.setInitialDirectory(existDirectory);
 		} else {
@@ -473,18 +474,18 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 				new ExtensionFilter("All Files", "*.*"));
 		File selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile != null) {
-	        StlMeshImporter stlImporter = new StlMeshImporter();
-	        try {
-	            stlImporter.read(selectedFile);      
-		        TriangleMesh stlMesh = stlImporter.getImport();
-		        MeshView stlMeshView = new MeshView(stlMesh);	        
-		        Shape3DObject target = new Shape3DObject(stlMeshView);
-		        addTarget(target);
-	        }
-	        catch (ImportException e) {
-	    		System.out.println(e.getMessage());
-	    		System.out.println(Arrays.toString(e.getStackTrace()));
-	        }	        
+			StlMeshImporter stlImporter = new StlMeshImporter();
+			try {
+				stlImporter.read(selectedFile);      
+				TriangleMesh stlMesh = stlImporter.getImport();
+				MeshView stlMeshView = new MeshView(stlMesh);	        
+				Shape3DObject target = new Shape3DObject(stlMeshView);
+				addTarget(target);
+			}
+			catch (ImportException e) {
+				System.out.println(e.getMessage());
+				System.out.println(Arrays.toString(e.getStackTrace()));
+			}	        
 		}
 	}
 
@@ -517,10 +518,10 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	}
 
 	@Override
-	public void display() {
+	public void display(String ... args) {
 		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
 		app.setListener(this);
-		app.launch(this);	
+		Application.launch(app.getClass(), args);	
 	}
 
 	@Override
