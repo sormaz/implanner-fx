@@ -79,13 +79,16 @@ public abstract class FXObject implements DrawableFX {
 	}
 
 	@Override
-	public void display() {
+	public void display(String ... args) {
 			
-		if(listeners.isEmpty()) addListener(new DrawFXPanel());		
+		if(listeners.isEmpty()) 
+			addListener(new DrawFXPanel());		
 		
-		listeners.get(0).display();
 		
-//		listeners.stream().forEach(l -> l.display());
+		listeners.add(new DrawFXPanel());
+//		listeners.get(0).display(args);
+		
+		listeners.stream().forEach(l -> l.display());
 		
 	}
 
