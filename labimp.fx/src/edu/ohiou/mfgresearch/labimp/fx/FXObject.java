@@ -84,8 +84,6 @@ public abstract class FXObject implements DrawableFX {
 		if(listeners.isEmpty()) 
 			addListener(new DrawFXPanel());		
 		
-		
-		listeners.add(new DrawFXPanel());
 //		listeners.get(0).display(args);
 		
 		listeners.stream().forEach(l -> l.display());
