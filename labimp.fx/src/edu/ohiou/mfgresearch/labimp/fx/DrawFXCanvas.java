@@ -597,6 +597,14 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 				fx3DGroup.getChildren()
 				.addAll(target.getFX3DShapesWColor());		
 			} 
+			
+			target.getFXStringList().forEach(t -> {
+				Scale mirrorYZ = new Scale(1, -1, -1);
+				t.getTransforms().add(mirrorYZ);
+				t.getTransforms().add(new Scale(0.04, 0.04, 0.04));
+				fx2DGroup.getChildren().add(t);
+			});
+			
 		});
 
 		if(showWCS.get()) {
