@@ -78,6 +78,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 	private final SimpleDoubleProperty viewPointY = new SimpleDoubleProperty();
 	private final SimpleDoubleProperty viewPointZ = new SimpleDoubleProperty();	
 	private final SimpleDoubleProperty scale = new SimpleDoubleProperty();	
+	private final SimpleBooleanProperty showString = new SimpleBooleanProperty();
 	private final SimpleBooleanProperty showWCS = new SimpleBooleanProperty();
 
 	private final Xform root = new Xform(); 
@@ -598,13 +599,14 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 				.addAll(target.getFX3DShapesWColor());		
 			} 
 			
-			target.getFXStringList().forEach(t -> {
-				Scale mirrorYZ = new Scale(1, -1, -1);
-				t.getTransforms().add(mirrorYZ);
-				t.getTransforms().add(new Scale(0.04, 0.04, 0.04));
-				fx2DGroup.getChildren().add(t);
-			});
-			
+			if(showString.get()) {
+				target.getFXStringList().forEach(t -> {
+					Scale mirrorYZ = new Scale(1, -1, -1);
+					t.getTransforms().add(mirrorYZ);
+					t.getTransforms().add(new Scale(0.04, 0.04, 0.04));
+					fx2DGroup.getChildren().add(t);
+				});
+			}
 		});
 
 		if(showWCS.get()) {
@@ -787,12 +789,18 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 				}
 			}
 		});
+		
+		CheckBox showStringCheck = new CheckBox("Show String");
+		GridPane.setHalignment(showStringCheck, HPos.CENTER);
+		showStringCheck.setPadding(new Insets(4, 4, 4, 4));
+		showStringCheck.selectedProperty().bindBidirectional(showString);
+		showStringCheck.setOnAction((e) -> updateView());
 
 		CheckBox wcsCheck = new CheckBox("Show WorldCS");
 		GridPane.setHalignment(wcsCheck, HPos.CENTER);
 		wcsCheck.setPadding(new Insets(4, 4, 4, 4));
 		wcsCheck.selectedProperty().bindBidirectional(showWCS);
-		wcsCheck.setOnAction((e) -> {updateView();});
+		wcsCheck.setOnAction((e) -> updateView());
 
 		Button redisplayBtn = new Button("ReDisplay");
 		redisplayBtn.setPrefWidth(Double.MAX_VALUE);
@@ -804,8 +812,9 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 		canvasControls.add(zTxt, 4, 0, 1, 1);
 		canvasControls.add(scaleLbl, 5, 0, 1, 1);
 		canvasControls.add(scaleTxt, 6, 0, 1, 1);
-		canvasControls.add(wcsCheck, 7, 0, 3, 1);
-		canvasControls.add(redisplayBtn, 10, 0, 2, 1);
+		canvasControls.add(showStringCheck, 7, 0, 2, 1);
+		canvasControls.add(wcsCheck, 9, 0, 3, 1);
+		canvasControls.add(redisplayBtn, 12, 0, 2, 1);
 
 		for (int i = 0; 
 				i < GridPane.getColumnIndex(redisplayBtn) + 
