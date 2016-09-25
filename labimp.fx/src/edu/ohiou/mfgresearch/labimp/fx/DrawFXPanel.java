@@ -10,12 +10,8 @@ import java.util.stream.Collectors;
 
 import com.interactivemesh.jfx.importer.ImportException;
 import com.interactivemesh.jfx.importer.stl.StlMeshImporter;
-//import com.interactivemesh.jfx.importer.ImportException;
-//import com.interactivemesh.jfx.importer.stl.StlMeshImporter;
 import com.sun.javafx.application.PlatformImpl;
 
-import edu.ohiou.mfgresearch.labimp.draw.ImpObject;
-import edu.ohiou.mfgresearch.implanner.features.MfgFeature;
 import edu.ohiou.mfgresearch.labimp.draw.DrawWFPanel;
 import javafx.animation.Animation;
 import javafx.animation.Transition;
@@ -41,25 +37,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.CullFace;
-import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
-import sun.reflect.generics.tree.Tree;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableView;
-import javafx.scene.control.TreeView;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 
@@ -72,27 +59,15 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	@FXML
 	private TableView<DrawableFX> targetView;
 	@FXML
-	private TableColumn<DrawableFX, DrawableFX> targetCol; 
+	private TableColumn<DrawableFX, DrawableFX> 
+					targetCol, visiblityCol, setActiveCol;
 	@FXML
-	private TableColumn<DrawableFX, DrawableFX> visiblityCol;
+	private Button slideBtn;
 	@FXML
-	private TableColumn<DrawableFX, DrawableFX> setActiveCol;
+	private MenuItem openPartFileMI, openSTLFileMI, exitMI, 
+							clearAllMI, showAllMI, hideAllMI;
 	@FXML
-	Button slideBtn;
-	@FXML
-	MenuItem openPartFileMI;
-	@FXML
-	MenuItem openSTLFileMI;
-	@FXML
-	MenuItem exitMI;
-	@FXML
-	MenuItem clearAllMI;
-	@FXML
-	MenuItem showAllMI;
-	@FXML
-	MenuItem hideAllMI;
-
-	private  CheckBox masterVisibilityControl;
+	private CheckBox masterVisibilityControl;
 
 	private final ToggleGroup showActiveToggleGroup = new ToggleGroup();
 
@@ -113,8 +88,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 
 	@FXML
 	private void initialize() {
-		masterVisibilityControl = new CheckBox();
-		masterVisibilityControl.setSelected(true);
+
 		masterVisibilityControl.setOnAction((e) -> {
 			if(masterVisibilityControl.isSelected()) {
 				handleShowAllAction(e);
@@ -123,7 +97,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 			}
 		});
 
-		visiblityCol.setGraphic(masterVisibilityControl);
+//		visiblityCol.setGraphic(masterVisibilityControl);
 
 		targetCol.setCellValueFactory(				
 				param -> new ReadOnlyObjectWrapper<>(param.getValue())
@@ -216,7 +190,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 				setGraphic(visibilityBtn);
 				visibilityBtn.setOnAction(event -> {
 					target.changeVisibility();
-					checkMasterVisibilityState(masterVisibilityControl);
+					checkMasterVisibilityState();
 					updateView();
 				}); 
 			}
@@ -241,7 +215,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 				setGraphic(setActiveBtn);
 				setActiveBtn.setOnAction(event -> {
 					setActiveTarget(target);
-					checkMasterVisibilityState(masterVisibilityControl);
+					checkMasterVisibilityState();
 				});
 			}
 		});
@@ -296,7 +270,7 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 		});
 	}
 
-	private void checkMasterVisibilityState(CheckBox masterVisibilityControl) {
+	private void checkMasterVisibilityState() {
 		Set<DrawableFX> visibleList = getTargetList()
 				.stream()
 				.filter((t) -> t.getVisible().get())
@@ -319,15 +293,17 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	public void setTargetList(ObservableList<DrawableFX> tList) {
 		canvas.setTargetList(tList);
 		targetView.setItems(canvas.getTargetList());
-		checkMasterVisibilityState(masterVisibilityControl);
+		checkMasterVisibilityState();
 	}
 
 	public void addTargets(LinkedList<DrawableFX> targets) {
 		canvas.addTargets(targets);
+		checkMasterVisibilityState();
 	}
 
 	public void addTarget(DrawableFX target) {
 		canvas.addTarget(target);
+		checkMasterVisibilityState();
 	}
 
 	public DrawableFX getActiveTarget() {

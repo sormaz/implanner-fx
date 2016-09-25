@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.CheckBox?>
 
 <fx:root prefHeight="800.0" prefWidth="1000.0" type="BorderPane"
 	stylesheets="@FXPanelStyle.css" xmlns="http://javafx.com/javafx/8"
@@ -47,7 +48,12 @@
 						<TableColumn fx:id="targetCol" sortable="false"
 							maxWidth="5000.0" minWidth="10.0" prefWidth="100.0" text="Target" />
 						<TableColumn fx:id="visiblityCol" sortable="false"
-							maxWidth="5000.0" minWidth="10.0" prefWidth="60.0" text="Set Visible" />
+							maxWidth="5000.0" minWidth="10.0" prefWidth="60.0" text="Set Visible">
+							<graphic>
+								<CheckBox fx:id="masterVisibilityControl">
+								</CheckBox>
+							</graphic>					
+						</TableColumn>
 						<TableColumn fx:id="setActiveCol" sortable="false"
 							prefWidth="60.0" text="Set Active" />
 					</columns>
