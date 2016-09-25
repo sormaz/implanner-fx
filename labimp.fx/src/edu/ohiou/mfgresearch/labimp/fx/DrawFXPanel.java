@@ -497,7 +497,13 @@ public class DrawFXPanel extends BorderPane implements DrawListener{
 	public void display(String ... args) {
 		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
 		app.setListener(this);
-		Application.launch(app.getClass(), args);	
+		Thread t = new Thread () {
+			public void run () {
+				Application.launch(app.getClass(), args);	
+			}
+		};
+		t.start();
+
 	}
 
 	@Override
