@@ -78,7 +78,7 @@
 				<DrawFXCanvas fx:id="canvas" />
 				<TitledPane>
 					<content>
-						<StackPane fx:id="viewPanel" prefHeight="200.0"
+						<StackPane fx:id="viewPanel" prefHeight="400.0"
 							prefWidth="200.0" minHeight="200.0" />
 					</content>
 				</TitledPane>
