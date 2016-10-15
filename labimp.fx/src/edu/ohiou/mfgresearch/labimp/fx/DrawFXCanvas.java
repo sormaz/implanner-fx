@@ -839,9 +839,15 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 
 	@Override
 	public void display(String ... args) {
-//		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
-//		app.setListener(this);
-//		Application.launch(app.getClass(), args);			
+		ApplicationLauncherExternal app = new ApplicationLauncherExternal();	
+		app.setListener(this);
+		Thread t = new Thread () {
+			public void run () {
+				Application.launch(app.getClass(), args);	
+			}
+		};
+		t.start();
+	
 	}
 
 }
