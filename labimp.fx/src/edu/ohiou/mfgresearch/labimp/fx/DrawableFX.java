@@ -15,78 +15,77 @@ import javafx.scene.text.Text;
 public interface DrawableFX {
 	
 	/**
-	 * Defines all 2D shapes that does not have fill color. 
+	 * 2D shapes that does not have fill color. 
 	 * @return list of 2D shapes
 	 */
 	public LinkedList<Shape> getFXShapes();
 	
 	/**
-	 * Defines all 3D shapes. 
+	 * 3D shapes. 
 	 * @return list of 3D shapes
 	 */
 	public LinkedList<Shape3D> getFX3DShapes();
 	
 	/**
-	 * Defines all 2D shapes that has fill color.
+	 * 2D shapes that has fill color.
 	 * @return list of 2D shapes
 	 */
 	public LinkedList<Shape> getFXFillShapes();
 	
 	/**
-	 * Defines all strings with size, position and orientation.
+	 * All strings with size, position and orientation.
 	 * @return list of strings
 	 */
 	public LinkedList<Text> getFXStringList();
 	
 	/**
-	 * This is where we attach stroke color to the 2D shapes.
+	 * Stroke color is added to 2D shapes (from getFXShapes()).
 	 * Canvas calls this method to get list of shapes with their desired stroke color.
 	 * @return list of 2D shapes
 	 */
 	public LinkedList<Shape> getFXShapesWColor();
 	
 	/**
-	 * This is where we attach properties like 
-	 * draw mode, cull face and color to 3D shapes.
-	 * Canvas calls this method to get list of shapes with their desired color.
-	 * @return list of 2D shapes
+	 * Properties like draw mode, cull face and color are applied to 3D shapes (from getFX3DShapes()).
+	 * Canvas calls this method to get list of 3D shapes with their desired properties.
+	 * @return list of 3D shapes
 	 */
 	public LinkedList<Shape3D> getFX3DShapesWColor();
 
 	/**
-	 * This is where we attach fill color to the 2D shapes.
+	 * Fill color is added to 2D shapes (from getFXFillShapes()).
 	 * Canvas calls this method to get list of shapes with their desired fill color.
 	 * @return list of 2D shapes
 	 */
 	public LinkedList<Shape> getFXFillShapesWColor();
 	
 	/**
-	 * Defines list of modifiable points or objects.
+	 * List of modifiable points or objects.
 	 * @return list of selectables.
 	 */
 	@SuppressWarnings("rawtypes")
 	public LinkedList getFXSelectables();
 
 	/**
-	 * Method to add DrawListener to this object.
-	 * @param listener listener to display this object.
+	 * Adds DrawListener to this object.
+	 * @param listener listener to be added this object.
 	 */
 	public void addListener(DrawListener listener);
 	
 	/**
-	 * Method to remove DrawListener from this object.
-	 * @param listener listener to display this object.
+	 * Removes DrawListener from this object.
+	 * @param listener listener to be remove from this object.
 	 */
 	public void removeListener(DrawListener listener);
 	
 	/**
-	 * Defines panel to control this object. 
+	 * Panel to provide controls for this object. 
 	 * @return panel that provides controls to modify object.
 	 */
 	public Pane getPanel();
 	
 	/**
-	 * Method to display this object inside it's respective listeners.
+	 * Displays this object inside through listeners.
 	 * @param args string argument to pass to listener.
 	 */
 	void display(String ... args);
@@ -110,7 +109,7 @@ public interface DrawableFX {
 	public BooleanProperty getVisible();
 	
 	/**
-	 * Change current visibility status of this object.
+	 * Changes current visibility status of this object.
 	 */
 	public void changeVisibility();
 	
