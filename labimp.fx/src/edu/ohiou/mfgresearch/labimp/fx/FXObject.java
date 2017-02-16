@@ -39,12 +39,39 @@ import javafx.stage.Stage;
  */
 public abstract class FXObject implements DrawableFX {
 
+	/**
+	 * Property to state visibility.
+	 */
 	private BooleanProperty IsVisible = new SimpleBooleanProperty(true);
+	
+	/**
+	 * Properties loaded from labimp.fx.properties file.
+	 */
 	static protected Properties properties = new Properties();
+	
+	/**
+	 * Listeners to display this object.
+	 */
 	protected ObservableList<DrawListener> listeners = FXCollections.observableArrayList();
+	
+	/**
+	 * Default draw mode property for 3D shapes.
+	 */
 	protected String defaultDrawMode = DrawMode.LINE.toString();
+	
+	/**
+	 * Default cull face property for 3D shapes.
+	 */
 	protected String defaultCullFace = CullFace.BACK.toString();
+	
+	/**
+	 * Default stroke color for 2D shapes.
+	 */
 	protected String defaultColor = "black";
+	
+	/**
+	 * Default fill color for 2D and 3D shapes.
+	 */
 	protected String defaultFillColor ="black";
 	
 	static {
@@ -65,6 +92,10 @@ public abstract class FXObject implements DrawableFX {
 		return new SimpleStringProperty(getClass().getSimpleName().toString());
 	}
 	
+	/**
+	 * Properties from labimp.fx.properties file.
+	 * @return properties from labimp.fx.properties file.
+	 */
 	static public Properties getProperties () {
 		return properties;
 	}
@@ -96,6 +127,10 @@ public abstract class FXObject implements DrawableFX {
 		return new Pane();
 	}
 	
+	/**
+	 * Stroke color for this object. If property file is empty, default color is used.
+	 * @return stroke color for this object.
+	 */
 	public Color getStrokeColor() {
 	    String propColor = properties.getProperty(this.getClass().getName() +
                 ".color", defaultColor);
@@ -108,6 +143,10 @@ public abstract class FXObject implements DrawableFX {
 		return color;
 	}
 	
+	/**
+	 * Fill color for this object. If property file is empty, default color is used.
+	 * @return fill color for this object.
+	 */
 	public Color getFillColor() {
 	    String propColor = properties.getProperty(this.getClass().getName() +
                 ".fillColor", defaultFillColor);    
@@ -120,6 +159,11 @@ public abstract class FXObject implements DrawableFX {
 		return color;
 	}
 	
+	/**
+	 * Draw mode for 3D shapes. If property file is empty, default draw mode is used.
+	 * Draw mode could be either "fill" or "line".
+	 * @return draw mode for 3D shapes.
+	 */
 	public DrawMode getDrawMode() {
 	    String drawModeString = properties.getProperty(this.getClass().getName() +
                 ".drawMode", defaultDrawMode).toLowerCase();
@@ -135,6 +179,11 @@ public abstract class FXObject implements DrawableFX {
 	    return drawMode;
 	}
 	
+	/**
+	 * Cull face for 3D shapes. If property file is empty, default cull face is used.
+	 * Cull face could be either "front" or "back" or "none".
+	 * @return draw mode for 3D shapes.
+	 */
 	public CullFace getCullFace() {
 	    String cullFaceString = properties.getProperty(this.getClass().getName() +
                 ".cullFace", defaultCullFace).toLowerCase();
@@ -214,6 +263,11 @@ public abstract class FXObject implements DrawableFX {
 		return new LinkedList<>();
 	}
 	
+	/**
+	 * Load properties from a property file.
+	 * @param c class to find resource.
+	 * @param name name of property file.
+	 */
 	  public static void loadProperties (Class c, String name) {
 		   try {
 			      URL resourcePropertyURL = c.getResource(
