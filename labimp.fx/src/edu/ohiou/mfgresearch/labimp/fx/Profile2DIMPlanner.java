@@ -95,7 +95,7 @@ public class Profile2DIMPlanner extends ViewObject {
 		Profile2DIMPlanner target = new Profile2DIMPlanner (pts);
 		GUIApplet applet = new Draw2DApplet(target);
 		target.settApplet(applet);
-		((Draw2DPanel)target.gettCanvas()).setDisplayStrings(true);
+		((Draw2DPanel)target.geettCanvas()).setDisplayStrings(true);
 
 		target.display();
 	}
@@ -112,12 +112,12 @@ public class Profile2DIMPlanner extends ViewObject {
 	}
 
 	@SuppressWarnings("unchecked")
-	public LinkedList<Shape> getFillList() {	
-		return getDrawList();
+	public LinkedList<Shape> geetFillList() {	
+		return geetDrawList();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public LinkedList getDrawList () {
+	public LinkedList geetDrawList () {
 		Path2D fillShape;
 
 		fillShape = new Path2D.Double();

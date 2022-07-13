@@ -59,10 +59,10 @@ public class PartModelConverter extends Swing3DConverter {
 		
 		JPanel jp;
 		
-		if(getSwingTarget().gettPanel() == null) {
+		if(getSwingTarget().geettPanel() == null) {
 			jp = new MfgPartModeFpnPanel((MfgPartModel)getSwingTarget());
 		} else {
-			jp = getSwingTarget().gettPanel();
+			jp = getSwingTarget().geettPanel();
 		}
 
 		SwingNode n = new SwingNode();

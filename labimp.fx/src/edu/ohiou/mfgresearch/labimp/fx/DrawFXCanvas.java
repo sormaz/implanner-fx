@@ -338,7 +338,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 					((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
 				}
 
-				((DrawWFPanel)virtualPanel.gettCanvas()).
+				((DrawWFPanel)virtualPanel.geettCanvas()).
 				mouseClicked((int)e.getX(), (int)e.getY());
 				updateView();
 
@@ -360,7 +360,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 					((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
 				}	
 
-				((DrawWFPanel)virtualPanel.gettCanvas()).
+				((DrawWFPanel)virtualPanel.geettCanvas()).
 				mousePressed((int)e.getX(), (int)e.getY());	
 				updateView();
 
@@ -376,10 +376,10 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 					virtualPanel.setTarget
 					((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
 
-					((DrawWFPanel)virtualPanel.gettCanvas()).
+					((DrawWFPanel)virtualPanel.geettCanvas()).
 					mouseMoved((int)e.getX(), (int)e.getY());
 
-					if (((DrawWFPanel)virtualPanel.gettCanvas()).mouseMode 
+					if (((DrawWFPanel)virtualPanel.geettCanvas()).mouseMode 
 							== DrawWFPanel.MODIFY_TARGET) {
 						mouseMode = MouseMode.MODIFY_TARGET;
 					} else {
@@ -411,7 +411,7 @@ public class DrawFXCanvas extends VBox implements DrawListener{
 				if(activeTarget instanceof Swing3DConverter) {
 					virtualPanel.setTarget
 					((DrawableWF)((Swing3DConverter) activeTarget).getSwingTarget());
-					((DrawWFPanel)virtualPanel.gettCanvas()).
+					((DrawWFPanel)virtualPanel.geettCanvas()).
 					modifyTargetPoint((int)e.getX(), (int)e.getY());
 
 				} else {

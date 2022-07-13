@@ -57,7 +57,7 @@ public class Globe extends ImpObject {
 		return pointSet;
 	}
 	
-	public LinkedList getShapeList(DrawWFPanel canvas) {
+	public LinkedList geetShapeList(DrawWFPanel canvas) {
 		LinkedList shapeList = new LinkedList();
 		
 		double startAngle = 0;
@@ -98,12 +98,16 @@ public class Globe extends ImpObject {
 		}		
 			
 		for (Ellipse e: ellipses) {
-			for (Object a : e.getShapeList(canvas)){
+			for (Object a : e.geetShapeList(canvas)){
 			shapeList.add(a);
 			}			
 		}
 
 		return shapeList;
+	}
+	
+	public String toString () {
+		return "Globe";
 	}
 	
 	public static void main (String [] args) {

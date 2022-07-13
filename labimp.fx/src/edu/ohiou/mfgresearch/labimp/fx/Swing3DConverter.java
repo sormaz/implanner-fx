@@ -37,7 +37,7 @@ public class Swing3DConverter extends SwingConverter {
 		if(!listeners.contains(listener)) return new LinkedList<Shape>();
 		DrawWFPanel virtualPanel = listener.getVirtualPanel();
 		virtualPanel.setTarget(swingTarget);
-		Path swingPath = getFXShapes(swingTarget.getShapeList(virtualPanel));
+		Path swingPath = getFXShapes(swingTarget.geetShapeList(virtualPanel));
 		
 		LinkedList<Shape> fxShapes = new LinkedList<Shape>();
 		fxShapes.add(swingPath);

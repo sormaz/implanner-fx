@@ -34,7 +34,7 @@ public class CubicCurveIMPlanner extends ViewObject {
 		this.end = end;	
 	}
 
-	public LinkedList<Shape> getDrawList() {
+	public LinkedList<Shape> geetDrawList() {
 		LinkedList<Shape> list = new LinkedList<Shape>();
 		list.add(new CubicCurve2D.Double(start.getX(),start.getY(), 
 											ctrl1.getX(),ctrl1.getY(),
@@ -43,7 +43,7 @@ public class CubicCurveIMPlanner extends ViewObject {
 		return list;
 	}
 
-	public LinkedList<Shape> getFillList() {
+	public LinkedList<Shape> geetFillList() {
 		LinkedList<Shape> list = new LinkedList<Shape>();
 
 		list.add(new Ellipse2D.Double(start.getX()-0.1, start.getY()-0.1,0.2,0.2));
@@ -53,7 +53,7 @@ public class CubicCurveIMPlanner extends ViewObject {
 		return list;
 	}
 
-	public LinkedList<DrawString> getStringList() {
+	public LinkedList<DrawString> geetStringList() {
 		LinkedList<DrawString> stringList = new LinkedList<DrawString>();
 		try {
 			stringList.add(new DrawString("This is an example of a cubic curve.", 2.5f, -1, 0.4));
@@ -84,7 +84,7 @@ public class CubicCurveIMPlanner extends ViewObject {
 	public static void main(String[] args) {
 		CubicCurveIMPlanner cc = new CubicCurveIMPlanner();
 		Draw2DApplet da = new Draw2DApplet(cc);
-		((Draw2DPanel)cc.gettCanvas()).setDisplayStrings(true);
+		((Draw2DPanel)cc.geettCanvas()).setDisplayStrings(true);
 		cc.display();
 
 	}

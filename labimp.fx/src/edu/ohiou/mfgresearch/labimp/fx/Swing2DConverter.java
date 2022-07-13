@@ -25,7 +25,7 @@ public class Swing2DConverter extends SwingConverter {
 	}
 	
 	public LinkedList<Shape> getFXShapes() {
-		Path swingPath = getFXShapes(swingTarget.getDrawList());
+		Path swingPath = getFXShapes(swingTarget.geetDrawList());
 		
 		LinkedList<Shape> fxShapes = new LinkedList();
 		fxShapes.add(swingPath);
@@ -34,7 +34,7 @@ public class Swing2DConverter extends SwingConverter {
 	}
 	
 	public LinkedList<Shape> getFXFillShapes() {
-		Path swingPath = getFXShapes(swingTarget.getFillList());
+		Path swingPath = getFXShapes(swingTarget.geetFillList());
 		
 		LinkedList<Shape> fxShapes = new LinkedList<>();
 		fxShapes.add(swingPath);

@@ -65,11 +65,11 @@ public abstract class SwingConverter extends FXObject {
 		
 		StackPane viewPanel = new StackPane();
 		
-		if(getSwingTarget().gettPanel() == null) {
+		if(getSwingTarget().geettPanel() == null) {
 			getSwingTarget().init();
 		}
 
-		JPanel jp = getSwingTarget().gettPanel();
+		JPanel jp = getSwingTarget().geettPanel();
 		SwingNode n = new SwingNode();
 		n.setContent(jp);
 
@@ -92,15 +92,15 @@ public abstract class SwingConverter extends FXObject {
 	}
 	
 	public LinkedList<Text> getFXStringList() {
-		LinkedList<DrawString> swingStrings = getSwingTarget().getStringList();
+		LinkedList<DrawString> swingStrings = getSwingTarget().geetStringList();
 
 		LinkedList<Text> fxStrings = new LinkedList<>();
 		
 		for(DrawString ds: swingStrings) {
 			Text fxText = new Text();
 			fxText.setText(ds.getContent());
-			fxText.setTranslateX(ds.gettPosition().getX());
-			fxText.setTranslateY(ds.gettPosition().getY());
+			fxText.setTranslateX(ds.geettPosition().getX());
+			fxText.setTranslateY(ds.geettPosition().getY());
 			
 			if(!Double.isNaN(ds.getSize())) {
 				fxText.setScaleX(ds.getSize());

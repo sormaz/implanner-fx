@@ -57,7 +57,7 @@ public class IMPBox extends ImpObject {
 		return pointSet;
 	}
 	
-	public LinkedList getShapeList(DrawWFPanel canvas) {
+	public LinkedList geetShapeList(DrawWFPanel canvas) {
 		LinkedList shapeList = new LinkedList();
 		try {		
 			LineSegment line1 =
@@ -99,24 +99,28 @@ public class IMPBox extends ImpObject {
 					new LineSegment(new Point3d(center.x + width, center.y + height, center.z), 
 							new Point3d(center.x + width, center.y + height, center.z + depth));
 
-			shapeList.addAll(line1.getShapeList(canvas));
-			shapeList.addAll(line2.getShapeList(canvas));
-			shapeList.addAll(line3.getShapeList(canvas));
-			shapeList.addAll(line4.getShapeList(canvas));
-			shapeList.addAll(line5.getShapeList(canvas));
-			shapeList.addAll(line6.getShapeList(canvas));
-			shapeList.addAll(line7.getShapeList(canvas));
-			shapeList.addAll(line8.getShapeList(canvas));
-			shapeList.addAll(line9.getShapeList(canvas));
-			shapeList.addAll(line10.getShapeList(canvas));
-			shapeList.addAll(line11.getShapeList(canvas));
-			shapeList.addAll(line12.getShapeList(canvas));
+			shapeList.addAll(line1.geetShapeList(canvas));
+			shapeList.addAll(line2.geetShapeList(canvas));
+			shapeList.addAll(line3.geetShapeList(canvas));
+			shapeList.addAll(line4.geetShapeList(canvas));
+			shapeList.addAll(line5.geetShapeList(canvas));
+			shapeList.addAll(line6.geetShapeList(canvas));
+			shapeList.addAll(line7.geetShapeList(canvas));
+			shapeList.addAll(line8.geetShapeList(canvas));
+			shapeList.addAll(line9.geetShapeList(canvas));
+			shapeList.addAll(line10.geetShapeList(canvas));
+			shapeList.addAll(line11.geetShapeList(canvas));
+			shapeList.addAll(line12.geetShapeList(canvas));
 		} catch (Exception e) {
 			return new LinkedList<>();
 		}
 
 
 		return shapeList;
+	}
+	
+	public String toString () {
+		return "IMPBox";
 	}
 	
 	public static void main (String [] args) {
